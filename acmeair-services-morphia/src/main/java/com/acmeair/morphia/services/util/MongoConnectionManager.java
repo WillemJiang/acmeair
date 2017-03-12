@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Properties;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
@@ -29,27 +28,14 @@ import com.mongodb.WriteConcern;
 
 public class MongoConnectionManager implements MorphiaConstants{
 
-	private static AtomicReference<MongoConnectionManager> connectionManager = new AtomicReference<MongoConnectionManager>();
-	
 	private final static Logger logger = Logger.getLogger(MongoConnectionManager.class.getName());
 	
 	@Resource(name = JNDI_NAME)
 	protected DB db;
 	private static Datastore datastore;
-	
-	public static MongoConnectionManager getConnectionManager() {
-		if (connectionManager.get() == null) {
-			synchronized (connectionManager) {
-				if (connectionManager.get() == null) {
-					connectionManager.set(new MongoConnectionManager());
-				}
-			}
-		}
-		return connectionManager.get();
-	}
-	
-	
-	private MongoConnectionManager (){
+
+
+	MongoConnectionManager(String host, String port, String database){
 
 		Morphia morphia = new Morphia();
 		// Set default client options, and then check if there is a properties file.
@@ -92,7 +78,7 @@ public class MongoConnectionManager implements MorphiaConstants{
 			.maxWaitTime(maxWaitTime)
 			.threadsAllowedToBlockForConnectionMultiplier(threadsAllowedToBlockForConnectionMultiplier);
 
-				
+
 		try {
 			//Check if VCAP_SERVICES exist, and if it does, look up the url from the credentials.
 			String vcapJSONString = System.getenv("VCAP_SERVICES");
@@ -100,30 +86,30 @@ public class MongoConnectionManager implements MorphiaConstants{
 				logger.info("Reading VCAP_SERVICES");
 				Object jsonObject = JSONValue.parse(vcapJSONString);
 				JSONObject vcapServices = (JSONObject)jsonObject;
-				JSONArray mongoServiceArray =null;					
+				JSONArray mongoServiceArray =null;
 				for (Object key : vcapServices.keySet()){
 					if (key.toString().startsWith("mongo")){
 						mongoServiceArray = (JSONArray) vcapServices.get(key);
 						break;
 					}
 				}
-				
+
 				if (mongoServiceArray == null) {
 					logger.severe("VCAP_SERVICES existed, but a mongo service was not definied.");
-				} else {					
-					JSONObject mongoService = (JSONObject)mongoServiceArray.get(0); 
+				} else {
+					JSONObject mongoService = (JSONObject)mongoServiceArray.get(0);
 					JSONObject credentials = (JSONObject)mongoService.get("credentials");
 					String url = (String) credentials.get("url");
-					logger.fine("service url = " + url);				
+					logger.fine("service url = " + url);
 					MongoClientURI mongoURI = new MongoClientURI(url, builder);
 					MongoClient mongo = new MongoClient(mongoURI);
 
 					morphia.getMapper().getConverters().addConverter(new BigDecimalConverter());
 					datastore = morphia.createDatastore( mongo ,mongoURI.getDatabase());
-				}	
+				}
 
 			} else {
-				//VCAP_SERVICES don't exist, so use the DB resource  
+				//VCAP_SERVICES don't exist, so use the DB resource
 				logger.fine("No VCAP_SERVICES found");
 				if(db == null){
 					try {
@@ -131,23 +117,15 @@ public class MongoConnectionManager implements MorphiaConstants{
 						db = (DB) new InitialContext().lookup(JNDI_NAME);
 					} catch (NamingException e) {
 						logger.severe("Caught NamingException : " + e.getMessage() );
-					}	        
+					}
 				}
 
 				if(db == null){
-					String host; 
-					String port;
-					String database;
 					logger.info("Creating the MongoDB Client connection. Looking up host and port information " );
-					try {	        	
-						host = (String) new InitialContext().lookup("java:comp/env/" + HOSTNAME);
-						port = (String) new InitialContext().lookup("java:comp/env/" + PORT);
-						database = (String) new InitialContext().lookup("java:comp/env/" + DATABASE);
+					try {
 						ServerAddress server = new ServerAddress(host, Integer.parseInt(port));
 						MongoClient mongo = new MongoClient(server);
 						db = mongo.getDB(database);
-					} catch (NamingException e) {
-						logger.severe("Caught NamingException : " + e.getMessage() );			
 					} catch (Exception e) {
 						logger.severe("Caught Exception : " + e.getMessage() );
 					}
@@ -156,14 +134,14 @@ public class MongoConnectionManager implements MorphiaConstants{
 				if(db == null){
 					logger.severe("Unable to retreive reference to database, please check the server logs.");
 				} else {
-					
+
 					morphia.getMapper().getConverters().addConverter(new BigDecimalConverter());
 					datastore = morphia.createDatastore(new MongoClient(db.getMongo().getConnectPoint(),builder.build()), db.getName());
 				}
 			}
 		} catch (UnknownHostException e) {
-			logger.severe("Caught Exception : " + e.getMessage() );				
-		}			
+			logger.severe("Caught Exception : " + e.getMessage() );
+		}
 
 		logger.info("created mongo datastore with options:"+datastore.getMongo().getMongoClientOptions());
 	}

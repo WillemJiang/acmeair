@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Inject;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -18,46 +13,28 @@ import com.acmeair.service.BookingService;
 import com.acmeair.service.CustomerService;
 import com.acmeair.service.FlightService;
 import com.acmeair.service.ServiceLocator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 
-
+@Configuration
 @Path("/config")
 public class AcmeAirConfiguration {
-    
-	@Inject
-	BeanManager beanManager;
+
 	Logger logger = Logger.getLogger(AcmeAirConfiguration.class.getName());
 
-	private BookingService bs = ServiceLocator.instance().getService(BookingService.class);
-	private CustomerService customerService = ServiceLocator.instance().getService(CustomerService.class);
-	private FlightService flightService = ServiceLocator.instance().getService(FlightService.class);
+	@Autowired
+	private BookingService bs;
+	@Autowired
+	private CustomerService customerService;
+	@Autowired
+	private FlightService flightService;
 
 	
     public AcmeAirConfiguration() {
         super();
     }
 
-	@PostConstruct
-	private void initialization()  {		
-		if(beanManager == null){
-			logger.info("Attempting to look up BeanManager through JNDI at java:comp/BeanManager");
-			try {
-				beanManager = (BeanManager) new InitialContext().lookup("java:comp/BeanManager");
-			} catch (NamingException e) {
-				logger.severe("BeanManager not found at java:comp/BeanManager");
-			}
-		}
-		
-		if(beanManager == null){
-			logger.info("Attempting to look up BeanManager through JNDI at java:comp/env/BeanManager");
-			try {
-				beanManager = (BeanManager) new InitialContext().lookup("java:comp/env/BeanManager");
-			} catch (NamingException e) {
-				logger.severe("BeanManager not found at java:comp/env/BeanManager ");
-			}
-		}
-	}
-    
-    
+
 	@GET
 	@Path("/dataServices")
 	@Produces("application/json")

@@ -3,9 +3,25 @@ task wrapper(type: Wrapper) {
    gradleVersion = '2.6'
 }
 
+buildscript {
+    ext {
+        springBootVersion = '1.5.2.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
 subprojects {
     apply plugin: 'java'
     apply plugin: 'eclipse'
+    apply plugin: 'org.springframework.boot'
+    sourceCompatibility = 1.8
+
     repositories {
         mavenCentral()
         mavenLocal()
@@ -13,6 +29,8 @@ subprojects {
 
     dependencies {
         compile 'javax:javaee-web-api:7.0'
+        compile('org.springframework.boot:spring-boot-starter-web')
+        testCompile('org.springframework.boot:spring-boot-starter-test')
     }
 }
 
@@ -26,16 +44,6 @@ project(':acmeair-services') {
 
     }
 }
-
-project(':acmeair-services-wxs') {
-    dependencies {
-        compile project(':acmeair-common')
-        compile project(':acmeair-services')
-        compile 'com.ibm.websphere.objectgrid:objectgrid:8.6.0.2'
-    }
-}
-
-
 
 project(':acmeair-services-morphia') {
     dependencies {
@@ -75,19 +83,12 @@ project(':acmeair-webapp') {
         if ("$includeService".equalsIgnoreCase("morphia") || "$includeService".equalsIgnoreCase("ALL")) {
            println "Including mongoDB morphia service "
            compile (project(':acmeair-services-morphia')) {
-              transitive = false
+              transitive = true
            }
  
            compile ('org.mongodb.morphia:morphia:0.110')  {
               transitive = false
            }
-        }
-
-        if ("$includeService".equalsIgnoreCase("wxs") || "$includeService".equalsIgnoreCase("ALL")) {
-           println "Including WXS service "
-
-           compile project(':acmeair-services-wxs')
-           providedRuntime 'com.ibm.websphere.objectgrid:objectgrid:8.6.0.2'
         }
 
         providedRuntime 'javax:javaee-web-api:7.0'

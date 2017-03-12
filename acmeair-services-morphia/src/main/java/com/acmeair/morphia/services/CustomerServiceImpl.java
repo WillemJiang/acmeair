@@ -2,8 +2,6 @@ package com.acmeair.morphia.services;
 
 import java.util.Date;
 
-import javax.annotation.PostConstruct;
-
 import com.acmeair.entities.Customer;
 import com.acmeair.entities.Customer.MemberShipStatus;
 import com.acmeair.entities.Customer.PhoneType;
@@ -13,28 +11,24 @@ import com.acmeair.morphia.entities.CustomerAddressImpl;
 import com.acmeair.morphia.entities.CustomerSessionImpl;
 import com.acmeair.morphia.MorphiaConstants;
 import com.acmeair.morphia.entities.CustomerImpl;
-import com.acmeair.morphia.services.util.MongoConnectionManager;
 import com.acmeair.service.DataService;
 import com.acmeair.service.CustomerService;
 
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-
-
+@Service
 @DataService(name=MorphiaConstants.KEY,description=MorphiaConstants.KEY_DESCRIPTION)
 public class CustomerServiceImpl extends CustomerService implements MorphiaConstants {	
 		
 //	private final static Logger logger = Logger.getLogger(CustomerService.class.getName()); 
-	
+
+	@Autowired
 	protected Datastore datastore;
-		
-	
-	@PostConstruct
-	public void initialization() {	
-		datastore = MongoConnectionManager.getConnectionManager().getDatastore();
-	}
-	
+
+
 	@Override
 	public Long count() {
 		return datastore.find(CustomerImpl.class).countAll();

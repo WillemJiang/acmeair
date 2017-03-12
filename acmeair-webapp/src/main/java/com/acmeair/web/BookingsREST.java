@@ -23,19 +23,25 @@ import javax.ws.rs.core.Response.Status;
 
 import com.acmeair.entities.Booking;
 import com.acmeair.service.BookingService;
-import com.acmeair.service.ServiceLocator;
 import com.acmeair.web.dto.BookingInfo;
 import com.acmeair.web.dto.BookingReceiptInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping(value = "/bookings")
 @Path("/bookings")
 public class BookingsREST {
-	
-	private BookingService bs = ServiceLocator.instance().getService(BookingService.class);
+
+	@Autowired
+	private BookingService bs;
 	
 	@POST
 	@Consumes({"application/x-www-form-urlencoded"})
 	@Path("/bookflights")
 	@Produces("application/json")
+//	@RequestMapping(method = RequestMethod.GET, value = "/{id}", produces = "application/json")
 	public /*BookingInfo*/ Response bookFlights(
 			@FormParam("userid") String userid,
 			@FormParam("toFlightId") String toFlightId,
@@ -67,6 +73,7 @@ public class BookingsREST {
 	@GET
 	@Path("/bybookingnumber/{userid}/{number}")
 	@Produces("application/json")
+//	@RequestMapping(method = RequestMethod.GET, value = "/{id}", produces = "application/json")
 	public BookingInfo getBookingByNumber(
 			@PathParam("number") String number,
 			@PathParam("userid") String userid) {

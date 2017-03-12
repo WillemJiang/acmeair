@@ -16,15 +16,17 @@
 package com.acmeair.loader;
 
 import com.acmeair.entities.Customer;
-import com.acmeair.entities.CustomerAddress;
 import com.acmeair.entities.Customer.PhoneType;
+import com.acmeair.entities.CustomerAddress;
 import com.acmeair.service.CustomerService;
-import com.acmeair.service.ServiceLocator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class CustomerLoader {
 
-	private CustomerService customerService = ServiceLocator.instance().getService(CustomerService.class);
+	@Autowired
+	private CustomerService customerService;
 
 	
 	public void loadCustomers(long numCustomers) {

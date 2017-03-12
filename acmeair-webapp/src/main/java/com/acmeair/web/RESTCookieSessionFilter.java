@@ -17,8 +17,6 @@ package com.acmeair.web;
 
 import java.io.IOException;
 
-import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -31,8 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.acmeair.entities.CustomerSession;
 import com.acmeair.service.CustomerService;
-import com.acmeair.service.ServiceLocator;
 import com.acmeair.service.TransactionService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class RESTCookieSessionFilter implements Filter {
 	
@@ -40,13 +38,12 @@ public class RESTCookieSessionFilter implements Filter {
 	private static final String LOGIN_PATH = "/rest/api/login";
 	private static final String LOGOUT_PATH = "/rest/api/login/logout";
 	private static final String LOADDB_PATH = "/rest/api/loaddb";
-	
-	private CustomerService customerService = ServiceLocator.instance().getService(CustomerService.class);
-	private TransactionService transactionService = ServiceLocator.instance().getService(TransactionService.class);; 
 
-	@Inject
-	BeanManager beanManager;
-	
+	@Autowired
+	private CustomerService customerService;
+	@Autowired
+	private TransactionService transactionService;
+
 	@Override
 	public void destroy() {
 	}

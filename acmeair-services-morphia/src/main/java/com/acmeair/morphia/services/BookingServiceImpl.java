@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
 import org.mongodb.morphia.Datastore;
 
 import com.acmeair.entities.Booking;
@@ -14,40 +11,35 @@ import com.acmeair.entities.Customer;
 import com.acmeair.entities.Flight;
 import com.acmeair.morphia.MorphiaConstants;
 import com.acmeair.morphia.entities.BookingImpl;
-import com.acmeair.morphia.services.util.MongoConnectionManager;
 import com.acmeair.service.BookingService;
 import com.acmeair.service.CustomerService;
 import com.acmeair.service.DataService;
 import com.acmeair.service.FlightService;
 import com.acmeair.service.KeyGenerator;
-import com.acmeair.service.ServiceLocator;
 
 import org.mongodb.morphia.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-
-
+@Service
 @DataService(name=MorphiaConstants.KEY,description=MorphiaConstants.KEY_DESCRIPTION)
 public class BookingServiceImpl implements BookingService, MorphiaConstants {
 
 	//private final static Logger logger = Logger.getLogger(BookingService.class.getName()); 
 
-		
+	@Autowired
 	Datastore datastore;
 	
-	@Inject 
+	@Autowired
 	KeyGenerator keyGenerator;
-	
-	private FlightService flightService = ServiceLocator.instance().getService(FlightService.class);
-	private CustomerService customerService = ServiceLocator.instance().getService(CustomerService.class);
+
+	@Autowired
+	private FlightService flightService;
+
+	@Autowired
+	private CustomerService customerService;
 
 
-	@PostConstruct
-	public void initialization() {	
-		datastore = MongoConnectionManager.getConnectionManager().getDatastore();	
-	}	
-	
-	
-	
 	public String bookFlight(String customerId, String flightId) {
 		try{
 			Flight f = flightService.getFlightByFlightId(flightId, null);

@@ -26,14 +26,18 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import com.acmeair.entities.Flight;
 import com.acmeair.service.FlightService;
-import com.acmeair.service.ServiceLocator;
 import com.acmeair.web.dto.TripFlightOptions;
 import com.acmeair.web.dto.TripLegInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping(value = "/flights")
 @Path("/flights")
 public class FlightsREST {
-	
-	private FlightService flightService = ServiceLocator.instance().getService(FlightService.class);
+	@Autowired
+	private FlightService flightService;
 	
 	// TODO:  Consider a pure GET implementation of this service, but maybe not much value due to infrequent similar searches
 	@POST

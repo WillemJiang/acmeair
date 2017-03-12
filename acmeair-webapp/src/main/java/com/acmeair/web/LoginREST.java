@@ -20,14 +20,19 @@ import javax.ws.rs.core.*;
 
 import com.acmeair.entities.CustomerSession;
 import com.acmeair.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-
+@RestController
+@RequestMapping(value = "/login")
 @Path("/login")
 public class LoginREST {
 	
 	public static String SESSIONID_COOKIE_NAME = "sessionid";
-	
-	private CustomerService customerService = ServiceLocator.instance().getService(CustomerService.class);
+
+	@Autowired
+	private CustomerService customerService;
 	
 	
 	@POST

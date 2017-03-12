@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import com.acmeair.entities.AirportCodeMapping;
@@ -30,32 +29,28 @@ import com.acmeair.morphia.MorphiaConstants;
 import com.acmeair.morphia.entities.AirportCodeMappingImpl;
 import com.acmeair.morphia.entities.FlightImpl;
 import com.acmeair.morphia.entities.FlightSegmentImpl;
-import com.acmeair.morphia.services.util.MongoConnectionManager;
 import com.acmeair.service.DataService;
 import com.acmeair.service.FlightService;
 import com.acmeair.service.KeyGenerator;
 
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 @DataService(name=MorphiaConstants.KEY,description=MorphiaConstants.KEY_DESCRIPTION)
 public class FlightServiceImpl extends FlightService implements  MorphiaConstants {
 
 	//private final static Logger logger = Logger.getLogger(FlightService.class.getName()); 
-		
+
+	@Autowired
 	Datastore datastore;
 	
 	@Inject
 	KeyGenerator keyGenerator;
-	
 
-	
-	@PostConstruct
-	public void initialization() {	
-		datastore = MongoConnectionManager.getConnectionManager().getDatastore();
-	}
-	
-	
+
 	@Override
 	public Long countFlights() {
 		return datastore.find(FlightImpl.class).countAll();

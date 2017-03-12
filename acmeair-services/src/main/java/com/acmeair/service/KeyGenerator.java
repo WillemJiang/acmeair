@@ -15,6 +15,9 @@
 *******************************************************************************/
 package com.acmeair.service;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class KeyGenerator {
 	
 	public Object generate() {

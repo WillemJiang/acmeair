@@ -23,13 +23,17 @@ import com.acmeair.entities.Customer;
 import com.acmeair.entities.CustomerAddress;
 import com.acmeair.service.*;
 import com.acmeair.web.dto.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.core.Context;
-
+@RestController
+@RequestMapping(value = "/customer")
 @Path("/customer")
 public class CustomerREST {
-	
-	private CustomerService customerService = ServiceLocator.instance().getService(CustomerService.class);
+
+	@Autowired
+	private CustomerService customerService;
 	
 	@Context 
 	private HttpServletRequest request;
