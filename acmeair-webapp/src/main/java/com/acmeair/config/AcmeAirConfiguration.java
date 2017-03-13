@@ -1,7 +1,6 @@
 package com.acmeair.config;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.ws.rs.GET;
@@ -12,7 +11,6 @@ import javax.ws.rs.core.Response;
 import com.acmeair.service.BookingService;
 import com.acmeair.service.CustomerService;
 import com.acmeair.service.FlightService;
-import com.acmeair.service.ServiceLocator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -39,23 +37,9 @@ public class AcmeAirConfiguration {
 	@Path("/dataServices")
 	@Produces("application/json")
 	public ArrayList<ServiceData> getDataServiceInfo() {
-		try {	
-			ArrayList<ServiceData> list = new ArrayList<ServiceData>();
-			Map<String, String> services =  ServiceLocator.instance().getServices();
-			logger.fine("Get data service configuration info");
-			for (Map.Entry<String, String> entry : services.entrySet()){
-				ServiceData data = new ServiceData();
-				data.name = entry.getKey();
-				data.description = entry.getValue();
-				list.add(data);
-			}
-			
-			return list;
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+    	// We don't use the ServiceLocator to lookup the DataService
+		ArrayList<ServiceData> list = new ArrayList();
+		return list;
 	}
 
 	
@@ -65,7 +49,7 @@ public class AcmeAirConfiguration {
 	public Response getActiveDataServiceInfo() {
 		try {		
 			logger.fine("Get active Data Service info");
-			return  Response.ok(ServiceLocator.instance().getServiceType()).build();
+			return  Response.ok("morphia").build();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
