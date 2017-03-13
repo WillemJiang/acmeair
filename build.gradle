@@ -28,8 +28,7 @@ subprojects {
     }
 
     dependencies {
-        compile 'javax:javaee-web-api:7.0'
-        compile('org.springframework.boot:spring-boot-starter-web')
+        compile('org.springframework.boot:spring-boot-starter-jersey')
         testCompile('org.springframework.boot:spring-boot-starter-test')
     }
 }
@@ -94,7 +93,6 @@ project(':acmeair-webapp') {
            }
         }
 
-        providedRuntime 'javax:javaee-web-api:7.0'
     }
 }
 
