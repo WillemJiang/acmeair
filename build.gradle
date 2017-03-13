@@ -66,6 +66,9 @@ project(':acmeair-loader') {
 project(':acmeair-webapp') {
     apply plugin: 'war'
 
+    bootRepackage {
+        mainClass = 'com.acmeair.AcmAirApplication'
+    }
     dependencies {
         compile project(':acmeair-common')
         compile project(':acmeair-services')
