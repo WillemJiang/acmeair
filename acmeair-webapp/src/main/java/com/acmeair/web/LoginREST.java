@@ -23,7 +23,7 @@ import com.acmeair.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-@Path("/login")
+@Path("/api/login")
 public class LoginREST {
 	
 	public static String SESSIONID_COOKIE_NAME = "sessionid";

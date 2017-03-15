@@ -13,7 +13,7 @@ import com.acmeair.service.CustomerService;
 import com.acmeair.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Path("/config")
+@Path("/info/config")
 public class AcmeAirConfiguration {
 
 	Logger logger = Logger.getLogger(AcmeAirConfiguration.class.getName());

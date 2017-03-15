@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.acmeair.entities.CustomerSession;
 import com.acmeair.service.CustomerService;
-import com.acmeair.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class RESTCookieSessionFilter implements Filter {
@@ -41,8 +40,7 @@ public class RESTCookieSessionFilter implements Filter {
 
 	@Autowired
 	private CustomerService customerService;
-	@Autowired
-	private TransactionService transactionService;
+	
 
 	@Override
 	public void destroy() {
@@ -56,13 +54,13 @@ public class RESTCookieSessionFilter implements Filter {
 		
 		String path = request.getContextPath() + request.getServletPath() + request.getPathInfo();
 		// The following code is to ensure that OG is always set on the thread	
-		try{			
+		/*try{
 			if (transactionService!=null)
 				transactionService.prepareForTransaction();
 		}catch( Exception e)
 		{
 			e.printStackTrace();
-		}
+		}*/
 	
 		
 		if (path.endsWith(LOGIN_PATH) || path.endsWith(LOGOUT_PATH) || path.endsWith(LOADDB_PATH)) {

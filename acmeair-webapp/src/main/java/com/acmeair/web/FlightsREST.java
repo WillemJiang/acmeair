@@ -30,7 +30,7 @@ import com.acmeair.web.dto.TripFlightOptions;
 import com.acmeair.web.dto.TripLegInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Path("/flights")
+@Path("/api/flights")
 public class FlightsREST {
 	@Autowired
 	private FlightService flightService;

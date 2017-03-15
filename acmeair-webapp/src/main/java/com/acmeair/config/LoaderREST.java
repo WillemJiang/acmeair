@@ -11,7 +11,7 @@ import com.acmeair.loader.Loader;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-@Path("/loader")
+@Path("/info/loader")
 public class LoaderREST {
 
 //	private static Logger logger = Logger.getLogger(LoaderREST.class.getName());

@@ -27,7 +27,7 @@ import com.acmeair.web.dto.BookingInfo;
 import com.acmeair.web.dto.BookingReceiptInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Path("/bookings")
+@Path("/api/bookings")
 public class BookingsREST {
 
 	@Autowired

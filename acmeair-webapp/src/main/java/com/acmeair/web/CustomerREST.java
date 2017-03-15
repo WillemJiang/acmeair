@@ -25,7 +25,7 @@ import com.acmeair.service.*;
 import com.acmeair.web.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Path("/customer")
+@Path("/api/customer")
 public class CustomerREST {
 
 	@Autowired
