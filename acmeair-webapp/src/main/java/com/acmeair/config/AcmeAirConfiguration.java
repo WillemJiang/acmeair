@@ -12,20 +12,19 @@ import com.acmeair.service.BookingService;
 import com.acmeair.service.CustomerService;
 import com.acmeair.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
 @Path("/config")
 public class AcmeAirConfiguration {
 
 	Logger logger = Logger.getLogger(AcmeAirConfiguration.class.getName());
 
 	@Autowired
-	private BookingService bs;
+	private BookingService     bs;
 	@Autowired
-	private CustomerService customerService;
+	private CustomerService    customerService;
 	@Autowired
-	private FlightService flightService;
+	private FlightService      flightService;
+	
 
 	
     public AcmeAirConfiguration() {
@@ -49,7 +48,8 @@ public class AcmeAirConfiguration {
 	public Response getActiveDataServiceInfo() {
 		try {		
 			logger.fine("Get active Data Service info");
-			return  Response.ok("morphia").build();
+			// We just have one implementation here
+			return  Response.ok("Morphia").build();
 		}
 		catch (Exception e) {
 			e.printStackTrace();

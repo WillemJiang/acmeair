@@ -14,7 +14,7 @@
     <url-pattern>/rest/api/*</url-pattern>
   </filter-mapping>
   <servlet>
-    <servlet-name>com.acmeair.web.AppConfig</servlet-name>     
+    <servlet-name>com.acmeair.web.AppConfig</servlet-name>
   </servlet>
   <servlet>
     <servlet-name>com.acmeair.web.AcmeAirApp</servlet-name>

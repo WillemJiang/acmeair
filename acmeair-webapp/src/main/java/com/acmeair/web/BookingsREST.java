@@ -26,11 +26,7 @@ import com.acmeair.service.BookingService;
 import com.acmeair.web.dto.BookingInfo;
 import com.acmeair.web.dto.BookingReceiptInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping(value = "/bookings")
 @Path("/bookings")
 public class BookingsREST {
 

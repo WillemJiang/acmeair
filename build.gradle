@@ -28,7 +28,7 @@ subprojects {
     }
 
     dependencies {
-        compile('org.springframework.boot:spring-boot-starter-jersey')
+        compile('org.springframework.boot:spring-boot-starter')
         testCompile('org.springframework.boot:spring-boot-starter-test')
     }
 }
@@ -40,6 +40,7 @@ project(':acmeair-services') {
     dependencies {
         compile project(':acmeair-common')
         compile 'com.googlecode.json-simple:json-simple:1.1.1'
+        compile 'javax.inject:javax.inject:1'
 
     }
 }
@@ -58,6 +59,7 @@ project(':acmeair-loader') {
     dependencies {
         compile project(':acmeair-common')
         compile project(':acmeair-services')
+        compile project(':acmeair-services-morphia')
     }
 }
 
@@ -71,9 +73,11 @@ project(':acmeair-webapp') {
     dependencies {
         compile project(':acmeair-common')
         compile project(':acmeair-services')
+        compile project(':acmeair-services-morphia')
         compile project(':acmeair-loader')
-
-        def includeService = "ALL"
+        compile("org.springframework.boot:spring-boot-starter-web")
+        compile('org.springframework.boot:spring-boot-starter-jersey')
+        /*def includeService = "ALL"
         if (project.hasProperty('service') ) {
            println "property service exists and has a value of $service "
            includeService = service
@@ -91,7 +95,7 @@ project(':acmeair-webapp') {
            compile ('org.mongodb.morphia:morphia:0.110')  {
               transitive = false
            }
-        }
+        }*/
 
     }
 }
