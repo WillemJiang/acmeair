@@ -49,6 +49,7 @@ project(':acmeair-services-morphia') {
     dependencies {
         compile project(':acmeair-common')
         compile project(':acmeair-services')
+        compile project(':acmeair-customer-service')
         compile 'org.mongodb:mongo-java-driver:2.13.0'
         compile 'org.mongodb.morphia:morphia:0.110'
     }
@@ -60,6 +61,7 @@ project(':acmeair-loader') {
         compile project(':acmeair-common')
         compile project(':acmeair-services')
         compile project(':acmeair-services-morphia')
+        compile project(':acmeair-customer-service')
     }
 }
 
@@ -75,6 +77,7 @@ project(':acmeair-webapp') {
         compile project(':acmeair-services')
         compile project(':acmeair-services-morphia')
         compile project(':acmeair-loader')
+        compile project(':acmeair-customer-service')
         compile("org.springframework.boot:spring-boot-starter-web")
         compile('org.springframework.boot:spring-boot-starter-jersey')
         testCompile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", version: "2.0.0"
