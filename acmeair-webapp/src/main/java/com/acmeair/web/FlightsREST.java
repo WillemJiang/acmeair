@@ -29,12 +29,8 @@ import com.acmeair.service.FlightService;
 import com.acmeair.web.dto.TripFlightOptions;
 import com.acmeair.web.dto.TripLegInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping(value = "/flights")
-@Path("/flights")
+@Path("/api/flights")
 public class FlightsREST {
 	@Autowired
 	private FlightService flightService;

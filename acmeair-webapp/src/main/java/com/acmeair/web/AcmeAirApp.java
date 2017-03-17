@@ -1,15 +1,20 @@
 package com.acmeair.web;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.ws.rs.core.Application;
+import com.acmeair.config.AcmeAirConfiguration;
+import com.acmeair.config.LoaderREST;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.servlet.ServletProperties;
+import org.springframework.context.annotation.Configuration;
+
 import javax.ws.rs.ApplicationPath;
 
-@ApplicationPath("/rest/api")
-public class AcmeAirApp extends Application {
-    public Set<Class<?>> getClasses() {
-        return new HashSet<Class<?>>(Arrays.asList(BookingsREST.class, CustomerREST.class, FlightsREST.class, LoginREST.class));
+@Configuration
+@ApplicationPath("/rest")
+public class AcmeAirApp extends ResourceConfig {
+    public AcmeAirApp() {
+        registerClasses(BookingsREST.class, CustomerREST.class, FlightsREST.class, LoginREST.class);
+        registerClasses(LoaderREST.class, AcmeAirConfiguration.class);
+        property(ServletProperties.FILTER_FORWARD_ON_404, true);
     }
-}
+}   

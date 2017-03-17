@@ -16,6 +16,7 @@
 package com.acmeair.loader;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,15 +24,16 @@ import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+@Component
 public class Loader {
 	public static String REPOSITORY_LOOKUP_KEY = "com.acmeair.repository.type";
 
 	private static Logger logger = Logger.getLogger(Loader.class.getName());
-	
-	@Autowired
+    
+    @Autowired
 	private FlightLoader flightLoader;
-	@Autowired
-	private CustomerLoader customerLoader;
+    @Autowired
+    private CustomerLoader customerLoader;
 
 	public String queryLoader() {			
 		String message = System.getProperty("loader.numCustomers");
@@ -74,7 +76,6 @@ public class Loader {
 	
 	
 	private String execute(long numCustomers) {
-
     	double length = 0;
 		try {
 			long start = System.currentTimeMillis();
@@ -119,6 +120,7 @@ public class Loader {
 		}
     	return props;
 	}
+    
 	/*
 	private void execute(String args[]) {
 		ApplicationContext ctx = null;

@@ -26,7 +26,6 @@ import com.acmeair.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public class FlightLoader {
 	
