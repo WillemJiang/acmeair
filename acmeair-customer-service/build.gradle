@@ -1,0 +1,20 @@
+version '2.0.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.googlecode.json-simple:json-simple:1.1.1'
+    compile 'javax.inject:javax.inject:1'
+    compile 'org.mongodb:mongo-java-driver:2.13.0'
+    compile 'org.mongodb.morphia:morphia:0.110'
+
+    compile project(':acmeair-services')
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
