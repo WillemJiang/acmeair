@@ -13,6 +13,8 @@ dependencies {
     compile 'javax.inject:javax.inject:1'
     compile 'org.mongodb:mongo-java-driver:2.13.0'
     compile 'org.mongodb.morphia:morphia:0.110'
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile('org.springframework.boot:spring-boot-starter-jersey')
 
     compile project(':acmeair-services')
 
