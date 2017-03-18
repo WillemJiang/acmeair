@@ -9,7 +9,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import com.acmeair.service.BookingService;
-import com.acmeair.service.CustomerService;
 import com.acmeair.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,8 +19,6 @@ public class AcmeAirConfiguration {
 
 	@Autowired
 	private BookingService     bs;
-	@Autowired
-	private CustomerService    customerService;
 	@Autowired
 	private FlightService      flightService;
 	
@@ -106,39 +103,7 @@ public class AcmeAirConfiguration {
 			return Response.ok(-1).build();
 		}
 	}
-	
-	@GET
-	@Path("/countCustomers")
-	@Produces("application/json")
-	public Response countCustomer() {
-		try {
-			Long customerCount = customerService.count();
-			
-			return Response.ok(customerCount).build();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return Response.ok(-1).build();
-		}
-	}
-	
-	
-	@GET
-	@Path("/countSessions")
-	@Produces("application/json")
-	public Response countCustomerSessions() {
-		try {
-			Long customerCount = customerService.countSessions();
-			
-			return Response.ok(customerCount).build();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return Response.ok(-1).build();
-		}
-	}
-	
-	
+
 	@GET
 	@Path("/countFlights")
 	@Produces("application/json")
