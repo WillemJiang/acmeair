@@ -11,10 +11,7 @@ import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import org.bson.Document;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -100,21 +97,29 @@ public class AcmAirApplicationTest {
         }});
     }
 
+    @After
+    public void tearDown() throws Exception {
+        database.drop();
+    }
+
     @Test
-    public void canRetrievedBookingInfoByNumberWhenLoggedIn() {
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(
-                "/rest/api/login",
-                loginRequest(customerId, password),
-                String.class
+    public void countsNumberOfConsumers() {
+        HttpHeaders headers = headerWithCookieOfLoginSession();
+
+        ResponseEntity<Long> consumerCount = restTemplate.exchange(
+                "/rest/info/config/countCustomers",
+                GET,
+                new HttpEntity<>(headers),
+                Long.class
         );
 
-        assertThat(responseEntity.getStatusCode(), is(OK));
+        assertThat(consumerCount.getStatusCode(), is(OK));
+        assertThat(consumerCount.getBody(), is(1L));
+    }
 
-        List<String> cookies = responseEntity.getHeaders().get(SET_COOKIE);
-        assertThat(cookies, is(notNullValue()));
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(COOKIE, String.join(";", cookies));
+    @Test
+    public void canRetrievedBookingInfoByNumberWhenLoggedIn() {
+        HttpHeaders headers = headerWithCookieOfLoginSession();
 
         ResponseEntity<BookingInfo> bookingInfoResponseEntity = restTemplate.exchange(
                 "/rest/api/bookings/bybookingnumber/{userid}/{number}",
@@ -132,6 +137,23 @@ public class AcmAirApplicationTest {
         assertThat(bookingInfo.getCustomerId(), is(booking.getCustomerId()));
         assertThat(bookingInfo.getFlightId(), is(booking.getFlightId()));
         assertThat(bookingInfo.getDateOfBooking(), is(booking.getDateOfBooking()));
+    }
+
+    private HttpHeaders headerWithCookieOfLoginSession() {
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(
+                "/rest/api/login",
+                loginRequest(customerId, password),
+                String.class
+        );
+
+        assertThat(responseEntity.getStatusCode(), is(OK));
+
+        List<String> cookies = responseEntity.getHeaders().get(SET_COOKIE);
+        assertThat(cookies, is(notNullValue()));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(COOKIE, String.join(";", cookies));
+        return headers;
     }
 
     private HttpEntity<MultiValueMap<String, String>> loginRequest(String login, String password) {

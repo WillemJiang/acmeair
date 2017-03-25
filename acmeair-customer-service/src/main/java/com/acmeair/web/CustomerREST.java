@@ -36,7 +36,7 @@ public class CustomerREST {
 
 
 	private boolean validate(String customerid)	{
-		String loginUser = (String) request.getAttribute(RESTCookieSessionFilter.LOGIN_USER);
+		String loginUser = (String) request.getAttribute("acmeair.login_user");
 		return customerid.equals(loginUser);
 	}
 	@GET

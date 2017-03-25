@@ -82,4 +82,13 @@ public class LoginREST {
 			return null;
 		}
 	}
+
+	@POST
+	@Path("/validate")
+	@Consumes({"application/x-www-form-urlencoded"})
+	@Produces(MediaType.APPLICATION_JSON)
+	public /* Customer */ Response validateCustomer(@FormParam("sessionId") String sessionId) {
+		return Response.ok(customerService.validateSession(sessionId), MediaType.APPLICATION_JSON).build();
+	}
+
 }
