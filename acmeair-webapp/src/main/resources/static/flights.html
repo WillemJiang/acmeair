@@ -401,7 +401,7 @@
 <button dojoType="dijit.form.Button" id="SearchByDepartureAirport" onClick="searchForFlights()">查找航班</button><button dojoType="dijit.form.Button" id="BrowseByAirport" onClick="browseForFlights()">选择航班</button><br/>
 			</div>
 			<div data-dojo-type="dijit.layout.ContentPane" title="results" id="pane2">
-				<h1>Outbound flights from <span id="outboundFrom"></span> to <span id="outboundTo"></span></h1>
+				<h1>去程航班 起飞 <span id="outboundFrom"></span> 到达 <span id="outboundTo"></span></h1>
 				<table data-dojo-type="dojox.grid.DataGrid" id="gridOutbound" style="height: 200px">
 					<script type="dojo/connect" event="onCellClick" args="e">cellclick(e)</script> 
     	        	<thead>
@@ -415,7 +415,7 @@
 						</tr>
 					</thead>
 				</table>
-				<h1>Return flights from <span id="returnFrom"></span> to <span id="returnTo"></span></h1>
+				<h1>回程航班 起飞 <span id="returnFrom"></span> 到达 <span id="returnTo"></span></h1>
 				<table data-dojo-type="dojox.grid.DataGrid" id="gridReturn" style="height: 200px">
 					<script type="dojo/connect" event="onCellClick" args="e">cellclick(e)</script>
     	        	<thead>
