@@ -17,7 +17,7 @@
 <html>
 
 <head>
-  <title>Acme Air - flights</title>
+  <title>Acme Air - 航班</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dijit/themes/claro/claro.css">
@@ -324,20 +324,20 @@
 
 <body class="claro">
 <span id="variousDialogs" style="display:none">
-<div dojoType="dijit.Dialog" id="loginWaitDialog" title="Please Wait">
+<div dojoType="dijit.Dialog" id="loginWaitDialog" title="请稍等">
 		<table width="258">
-			<tr><td>Logging in ...</td></tr>
+			<tr><td>登录中 ...</td></tr>
 		</table>
 </div>
 
-<div dojoType="dijit.Dialog" id="loginDialog" title="Login">
+<div dojoType="dijit.Dialog" id="loginDialog" title="登录">
 		<table width="258">
 			<tr>
-				<td><label>Login</label></td>
+				<td><label>登录名</label></td>
 				<td><input type="text" trim="true" dojoType="dijit.form.TextBox" value="uid0@email.com" name="login" id="userId"/></td>
 			</tr>
 			<tr>
-				<td><label>Password</label></td>
+				<td><label>密码</label></td>
 				<td><input type="password" trim="true" dojoType="dijit.form.TextBox" value="password" name="password" id="password"/></td>
 			</tr>
 			<tr>
@@ -347,9 +347,9 @@
 				<td colspan="2" align="center">
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
-							<td  align="center" valign="top" width="40%"><button dojoType="dijit.form.Button" id="LoginButton" onClick="login()">Ok</button></td>
+							<td  align="center" valign="top" width="40%"><button dojoType="dijit.form.Button" id="LoginButton" onClick="login()">确定</button></td>
 							<td align="left" valign="top" width="3%">&nbsp;</td>
-							<td align="left" valign="top" width="57%"><button dojoType="dijit.form.Button" onclick="hideLoginDialog()" id="Cancel">Cancel</button></td>
+							<td align="left" valign="top" width="57%"><button dojoType="dijit.form.Button" onclick="hideLoginDialog()" id="Cancel">取消</button></td>
 						</tr>
 					</table>
 				</td>
@@ -357,10 +357,10 @@
 		</table>
 </div>
 <div dojoType="dijit.Dialog" id="bookingStatusDialog" title="Booking Status">
-	<p>Successfully booked flight(s)</p>
-	To Flight:  <div id="bookingToFlight"></div><br/>
-	Return Flight:  <div id="bookingReturnFlight"></div><br/>
-	<button dojoType="dijit.form.Button" onclick="dijit.byId('bookingStatusDialog').hide()" id="bookingStatusDialogOkButton">Ok</button>
+	<p>航班预定成功</p>
+	去程航班:  <div id="bookingToFlight"></div><br/>
+	回程航班:  <div id="bookingReturnFlight"></div><br/>
+	<button dojoType="dijit.form.Button" onclick="dijit.byId('bookingStatusDialog').hide()" id="bookingStatusDialogOkButton">确定</button>
 </div>
 </span>
 <div data-dojo-type="dojo.store.Memory"
@@ -371,7 +371,7 @@
 	<br/>
 	<header>
 		<img src="images/AcmeAir.png" alt="Acme Air"/><br/>
-		<div class="text-align: left">Flights, Baggage, and Loyalty all with a Smile</div><br/>
+		<div class="text-align: left">使用顺心航空服务，一切顺心 Flights, Baggage, and Loyalty all with a Smile</div><br/>
 	</header>
 	<div id="welcomeback"><div id="loggedinwelcome"></div>
 	</div>
@@ -381,24 +381,24 @@
 		</span>
 
 		<div id="toolbar5" data-dojo-type="dijit.Toolbar">
-			<div data-dojo-type="ToolbarSectionStart" data-dojo-props='label:"Actions"'></div>
-			<div id="toolbar5.home" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='index.html'">Home</div>
-			<div id="toolbar5.flights" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='flights.html'">Flights</div>
-			<div id="toolbar5.checkin" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='checkin.html'">Checkin</div>
-			<div id="toolbar5.login" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="showLoginDialog()">Login</div>
-			<div id="toolbar5.logout" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="logout()">Logout</div>
-			<div id="toolbar5.account" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='customerprofile.html'">Account</div>
+			<div data-dojo-type="ToolbarSectionStart" data-dojo-props='label:"操作"'></div>
+			<div id="toolbar5.home" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='index.html'">首页</div>
+			<div id="toolbar5.flights" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='flights.html'">航班</div>
+			<div id="toolbar5.checkin" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='checkin.html'">乘机</div>
+			<div id="toolbar5.login" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="showLoginDialog()">登录</div>
+			<div id="toolbar5.logout" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="logout()">登出</div>
+			<div id="toolbar5.account" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='customerprofile.html'">账户</div>
 		</div>
 		
 		<div class="content">
 		<div data-dojo-type="dijit.layout.StackContainer" id="stackContainer" data-dojo-props="doLayout: false">
 			<div data-dojo-type="dijit.layout.ContentPane" title="query">
-<label for="oneWayCheck">One Way Flight: </label><input id="oneWayCheck" name="oneWayCheck" dojoType="dijit.form.CheckBox" value="oneway" onChange="changeReturnAtEnabled()"></input><br/>
-<label for="fromAirport">Leave From: </label><select dojoType="dijit.form.FilteringSelect" value="" name="fromAirport" id="fromAirport" data-dojo-props="store:airportStore, searchAttr:'airportName'" required="true"></select><br/>
-<label for="toAirport">Arrive At: </label><select dojoType="dijit.form.FilteringSelect" value="" name="toAirport" id="toAirport" data-dojo-props="store:airportStore, searchAttr:'airportName'" required="true"></select><br/>
-<label for="fromDate">Leave On: </label><input type="text" name="fromDate" id="fromDate" data-dojo-type="dijit.form.DateTextBox" required="false" value="now"/><br/>
-<div id="toDateDiv"><label for="toDate">Return On: </label><input type="text" name="toDate" id="toDate" data-dojo-type="dijit.form.DateTextBox" required="false" value="now"/><br/></div>
-<button dojoType="dijit.form.Button" id="SearchByDepartureAirport" onClick="searchForFlights()">Find Flights</button><button dojoType="dijit.form.Button" id="BrowseByAirport" onClick="browseForFlights()">Browse Flights</button><br/>
+<label for="oneWayCheck">单程航班: </label><input id="oneWayCheck" name="oneWayCheck" dojoType="dijit.form.CheckBox" value="oneway" onChange="changeReturnAtEnabled()"></input><br/>
+<label for="fromAirport">起飞: </label><select dojoType="dijit.form.FilteringSelect" value="" name="fromAirport" id="fromAirport" data-dojo-props="store:airportStore, searchAttr:'airportName'" required="true"></select><br/>
+<label for="toAirport">到达: </label><select dojoType="dijit.form.FilteringSelect" value="" name="toAirport" id="toAirport" data-dojo-props="store:airportStore, searchAttr:'airportName'" required="true"></select><br/>
+<label for="fromDate">去程时间: </label><input type="text" name="fromDate" id="fromDate" data-dojo-type="dijit.form.DateTextBox" required="false" value="now"/><br/>
+<div id="toDateDiv"><label for="toDate">回程时间: </label><input type="text" name="toDate" id="toDate" data-dojo-type="dijit.form.DateTextBox" required="false" value="now"/><br/></div>
+<button dojoType="dijit.form.Button" id="SearchByDepartureAirport" onClick="searchForFlights()">查找航班</button><button dojoType="dijit.form.Button" id="BrowseByAirport" onClick="browseForFlights()">选择航班</button><br/>
 			</div>
 			<div data-dojo-type="dijit.layout.ContentPane" title="results" id="pane2">
 				<h1>Outbound flights from <span id="outboundFrom"></span> to <span id="outboundTo"></span></h1>
@@ -406,12 +406,12 @@
 					<script type="dojo/connect" event="onCellClick" args="e">cellclick(e)</script> 
     	        	<thead>
         	        	<tr>
-							<th field="flightSegmentId" width="80px">Flight</th>
-							<th field="scheduledDepartureTime" formatter="dateFormatter" width="175px">Departure Time</th>
-							<th field="scheduledArrivalTime" formatter="dateFormatter" width="175px">Arrival Time</th>
-							<th field="firstClassBaseCost" formatter="currencyFormatter" width="120px">First Class Cost</th>
-							<th field="economyClassBaseCost" formatter="currencyFormatter" width="120px">Economy Cost</th>
-							<th field="selected" width="120px" formatter="formatSelected">Select Flight</th>
+							<th field="flightSegmentId" width="80px">航班</th>
+							<th field="scheduledDepartureTime" formatter="dateFormatter" width="175px">起飞时间</th>
+							<th field="scheduledArrivalTime" formatter="dateFormatter" width="175px">到达时间</th>
+							<th field="firstClassBaseCost" formatter="currencyFormatter" width="120px">头等舱</th>
+							<th field="economyClassBaseCost" formatter="currencyFormatter" width="120px">经济舱</th>
+							<th field="selected" width="120px" formatter="formatSelected">选择航班</th>
 						</tr>
 					</thead>
 				</table>
@@ -420,17 +420,17 @@
 					<script type="dojo/connect" event="onCellClick" args="e">cellclick(e)</script>
     	        	<thead>
         	        	<tr>
-							<th field="flightSegmentId" width="80px">Flight</th>
-							<th field="scheduledDepartureTime" formatter="dateFormatter" width="175px">Departure Time</th>
-							<th field="scheduledArrivalTime" formatter="dateFormatter" width="175px">Arrival Time</th>
-							<th field="firstClassBaseCost" formatter="currencyFormatter" width="120px">First Class Cost</th>
-							<th field="economyClassBaseCost" formatter="currencyFormatter" width="120px">Economy Cost</th>
-							<th field="selected" width="120px" formatter="formatSelected">Select Flight</th>
+							<th field="flightSegmentId" width="80px">航班</th>
+							<th field="scheduledDepartureTime" formatter="dateFormatter" width="175px">起飞时间</th>
+							<th field="scheduledArrivalTime" formatter="dateFormatter" width="175px">到达时间</th>
+							<th field="firstClassBaseCost" formatter="currencyFormatter" width="120px">头等舱</th>
+							<th field="economyClassBaseCost" formatter="currencyFormatter" width="120px">经济舱</th>
+							<th field="selected" width="120px" formatter="formatSelected">选择航班</th>
 						</tr>
 					</thead>
 				</table>
-				<button dojoType="dijit.form.Button" id="redoSearch" onClick="dijit.byId('stackContainer').back()">Redo Search</button>
-				<button dojoType="dijit.form.Button" id="bookFlights" onClick="bookFlights()">Book Selected Flights</button>
+				<button dojoType="dijit.form.Button" id="redoSearch" onClick="dijit.byId('stackContainer').back()">重新查找</button>
+				<button dojoType="dijit.form.Button" id="bookFlights" onClick="bookFlights()">预定选定航班</button>
 			</div>
 		</div>
 		</div>
