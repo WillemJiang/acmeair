@@ -17,13 +17,13 @@
 <html>
 
 <head>
-  <title>Acme Air - Your Account</title>
+  <title>Acme Air - 你的账号</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dijit/themes/claro/claro.css">
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dijit/themes/dijit.css">
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dojox/grid/resources/claroGrid.css">
-  
+
   <script type="text/javascript" src="js/acmeair-common.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
 
@@ -31,7 +31,7 @@
 	dojo.require("dojo.parser");
 
 	dojo.require("dojo.cookie");
-	
+
 	dojo.require("dijit.form.TextBox");
 	dojo.require("dijit.form.NumberTextBox");
 	dojo.require("dijit.form.FilteringSelect");
@@ -39,9 +39,9 @@
     dojo.require("dijit.Dialog");
     dojo.require("dijit.Toolbar");
     dojo.require("dijit.Declaration");
-	
+
 	dojo.addOnLoad(pageLoaded);
-			
+
 	function pageLoaded() {
 		var loggedinuser = dojo.cookie("loggedinuser");
 		if (loggedinuser == null) {
@@ -49,11 +49,11 @@
 			window.location.href="index.html";
 			return;
 		}
-		
+
 	   	updateLoggedInUserWelcome();
 	   	loadCustomerProfileData(loggedinuser);
 	}
-		    
+
     function loadCustomerProfileData(userid) {
     	dojo.xhrGet({
 			url: 'rest/api/customer/byid/' + userid,
@@ -66,7 +66,7 @@
 			}
 		});
     }
-    
+
     function updateFormData(customerdata) {
 		dijit.byId('accountIdInput').set('value', customerdata._id);
 		dijit.byId('milesYTDInput').set('value', customerdata.miles_ytd);
@@ -83,16 +83,16 @@
 		dijit.byId('countryInput').set('value', customerdata.address.country);
 		dijit.byId('postalCodeInput').set('value', customerdata.address.postalCode);
     }
-		
+
     function updateProfile() {
     	var userid = dojo.cookie("loggedinuser");
     	var password = dijit.byId('passwordInput').value;
-    	
+
     	if (password == '') {
     		alert("please specify your current password");
     		return;
     	}
-    	
+
     	var customerData = {
 			'_id': dijit.byId('accountIdInput').value,
 			'password': dijit.byId('passwordInput').value,
@@ -106,11 +106,11 @@
 				'postalCode': dijit.byId('postalCodeInput').value
 			}
 		}
-    	
+
 		if (!(dijit.byId('street2AddressInput').value == '')) {
 			customerData.address.streetAddress2 = dijit.byId('street2AddressInput').value;
 		}
-    	
+
 		dojo.xhrPost({
 			url: 'rest/api/customer/byid/' + userid,
 			postData : dojo.toJson(customerData),
@@ -125,27 +125,27 @@
 			}
 		});
     }
-	
+
   </script>
 </head>
 
 <body class="claro">
 
 <span id="variousDialogs" style="display:none">
-<div dojoType="dijit.Dialog" id="loginWaitDialog" title="Please Wait">
+<div dojoType="dijit.Dialog" id="loginWaitDialog" title="请等待">
 		<table width="258">
-			<tr><td>Logging in ...</td></tr>
+			<tr><td>登录中...</td></tr>
 		</table>
 </div>
 
-<div dojoType="dijit.Dialog" id="loginDialog" title="Login">
+<div dojoType="dijit.Dialog" id="loginDialog" title="登录">
 		<table width="258">
 			<tr>
-				<td><label>Login</label></td>
+				<td><label>登录名</label></td>
 				<td><input type="text" trim="true" dojoType="dijit.form.TextBox" value="uid0@email.com" name="login" id="userId"/></td>
 			</tr>
 			<tr>
-				<td><label>Password</label></td>
+				<td><label>密码</label></td>
 				<td><input type="password" trim="true" dojoType="dijit.form.TextBox" value="password" name="password" id="password"/></td>
 			</tr>
 			<tr>
@@ -155,18 +155,18 @@
 				<td colspan="2" align="center">
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
-							<td  align="center" valign="top" width="40%"><button dojoType="dijit.form.Button" id="LoginButton" onClick="login()">Ok</button></td>
+							<td  align="center" valign="top" width="40%"><button dojoType="dijit.form.Button" id="LoginButton" onClick="login()">确定</button></td>
 							<td align="left" valign="top" width="3%">&nbsp;</td>
-							<td align="left" valign="top" width="57%"><button dojoType="dijit.form.Button" onclick="hideLoginDialog()" id="Cancel">Cancel</button></td>
+							<td align="left" valign="top" width="57%"><button dojoType="dijit.form.Button" onclick="hideLoginDialog()" id="Cancel">取消</button></td>
 						</tr>
 					</table>
 				</td>
 			</tr>
 		</table>
 </div>
-<div dojoType="dijit.Dialog" id="updatedStatusDialog" title="Information Updated">
-	<p>Customer Information Updated Successfully</p>
-	<button dojoType="dijit.form.Button" onclick="dijit.byId('updatedStatusDialog').hide()" id="updatedStatusDialogOkButton">Ok</button>
+<div dojoType="dijit.Dialog" id="updatedStatusDialog" title="信息已更新">
+	<p>用户信息已经更新成功</p>
+	<button dojoType="dijit.form.Button" onclick="dijit.byId('updatedStatusDialog').hide()" id="updatedStatusDialogOkButton">确定</button>
 </div>
 </span>
 
@@ -184,95 +184,96 @@
 		</span>
 
 		<div id="toolbar5" data-dojo-type="dijit.Toolbar">
-			<div data-dojo-type="ToolbarSectionStart" data-dojo-props='label:"Actions"'></div>
-			<div id="toolbar5.home" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='index.html'">Home</div>
-			<div id="toolbar5.flights" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='flights.html'">Flights</div>
-			<div id="toolbar5.checkin" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='checkin.html'">Checkin</div>
-			<div id="toolbar5.login" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="showLoginDialog()">Login</div>
-			<div id="toolbar5.logout" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="logout()">Logout</div>
-			<div id="toolbar5.account" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='customerprofile.html'">Account</div>		
+ 			<div data-dojo-type="ToolbarSectionStart" data-dojo-props='label:"操作"'></div>
+ 			<div id="toolbar5.home" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='index.html'">主页</div>
+ 			<div id="toolbar5.flights" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='flights.html'">航班</div>
+ 			<div id="toolbar5.checkin" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='checkin.html'">乘机</div>
+ 			<div id="toolbar5.login" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="showLoginDialog()">登录</div>
+ 			<div id="toolbar5.logout" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="logout()">登出</div>
+ 			<div id="toolbar5.account" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true' onClick="window.location='customerprofile.html'">账户</div>
 		</div>
-		
+
 		<div class="content">
-      	<table>
-      		<tr>
-      			<td colspan="2"><h2>Account Profile Information:</h2></td>
-      		</tr>
-      		<tr>
-      			<td>account id:</td>
-      			<td><input type="text" dojoType="dijit.form.TextBox" id="accountIdInput" data-dojo-props="readOnly:true"></input></td>
-      		</tr>
-      		<tr>
-      			<td>password:</td>
-      			<td><input type="password" dojoType="dijit.form.TextBox" id="passwordInput" data-dojo-props="trim:true" required="true"></input></td>
-      		</tr>
-      		<tr>
-      			<td colspan="2"><h2>Contact Information:</h2></td>
-      		</tr>
-      		<tr>
-      			<td>Phone Number:</td>
-      			<td><input type="text" dojoType="dijit.form.TextBox" id="phoneNumberInput" data-dojo-props="trim:true" required="true"></input></td>
-      		</tr>
-      		<tr>
-      			<td>Phone Type:</td>
-      			<td>
-      			<select dojoType="dijit.form.FilteringSelect" id="phoneNumberTypeInput">
-      				<option value="MOBILE">Mobile</option>
-      				<option value="HOME">Home</option>
-      				<option value="BUSINESS">Business</option>
-      				<option value="UNKNOWN">Unspecified</option>
-      			</select>
-      			</td>
-      		</tr>
-      		<tr>
-      			<td>Street Address:</td>
-      			<td><input type="text" dojoType="dijit.form.TextBox" id="street1AddressInput" data-dojo-props="trim:true" required="true"></input></td>
-      		</tr>
-      		<tr>
-      			<td>Street Address 2:</td>
-      			<td><input type="text" dojoType="dijit.form.TextBox" id="street2AddressInput" data-dojo-props="trim:true"></input></td>
-      		</tr>
-      		<tr>
-      			<td>City:</td>
-      			<td><input type="text" dojoType="dijit.form.TextBox" id="cityInput" data-dojo-props="trim:true" required="true"></input></td>
-      		</tr>
-      		<tr>
-      			<td>State (Province):</td>
-      			<td><input type="text" dojoType="dijit.form.TextBox" id="stateProvinceInput" data-dojo-props="trim:true" required="true"></input></td>
-      		</tr>
-      		<tr>
-      			<td>Country:</td>
-      			<td><input type="text" dojoType="dijit.form.TextBox" id="countryInput" data-dojo-props="trim:true" required="true"></input></td>
-      		</tr>
-      		<tr>
-      			<td>Postal Code:</td>
-      			<td><input type="text" dojoType="dijit.form.TextBox" id="postalCodeInput" data-dojo-props="trim:true" required="true"></input></td>
-      		</tr>
-      		<tr>
-      			<td colspan="2"><h2>Customer Loyalty Information:</h2></td>
-      		</tr>
-      		<tr>
-      			<td>Membership status:</td>
-      			<td><input type="text" dojoType="dijit.form.TextBox" id="memberShipStatusInput" data-dojo-props="readOnly:true"></input></td>
-      		</tr>
-      		<tr>
-      			<td>Miles year to date:</td>
-      			<td><input type="text" dojoType="dijit.form.NumberTextBox" id="milesYTDInput" data-dojo-props="readOnly:true"></input></td>
-      		</tr>
-      		<tr>
-      			<td>Total miles:</td>
-      			<td><input type="text" dojoType="dijit.form.NumberTextBox" id="totalMilesInput" data-dojo-props="readOnly:true"></input></td>
-      		</tr>
-      		<tr>
-      			<td rowspan="2"><button dojoType="dijit.form.Button" id="updateProfileButton" onClick="updateProfile()">Update Profile</button></td>
-      		</tr>
-      	</table>
+			<table>
+				<tr>
+					<td colspan="2"><h2>账户信息:</h2></td>
+				</tr>
+				<tr>
+					<td>账户名:</td>
+					<td><input type="text" dojoType="dijit.form.TextBox" id="accountIdInput" data-dojo-props="readOnly:true"></input></td>
+				</tr>
+				<tr>
+					<td>密码:</td>
+					<td><input type="password" dojoType="dijit.form.TextBox" id="passwordInput" data-dojo-props="trim:true" required="true"></input></td>
+				</tr>
+				<tr>
+					<td colspan="2"><h2>联系信息:</h2></td>
+				</tr>
+				<tr>
+					<td>电话号码:</td>
+					<td><input type="text" dojoType="dijit.form.TextBox" id="phoneNumberInput" data-dojo-props="trim:true" required="true"></input></td>
+				</tr>
+				<tr>
+					<td>电话类型:</td>
+					<td>
+						<select dojoType="dijit.form.FilteringSelect" id="phoneNumberTypeInput">
+							<option value="MOBILE">手机</option>
+							<option value="HOME">家庭电话</option>
+							<option value="BUSINESS">工作电话</option>
+							<option value="UNKNOWN">没有指定</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>街道地址:</td>
+					<td><input type="text" dojoType="dijit.form.TextBox" id="street1AddressInput" data-dojo-props="trim:true" required="true"></input></td>
+				</tr>
+				<tr>
+					<td>街道地址2:</td>
+					<td><input type="text" dojoType="dijit.form.TextBox" id="street2AddressInput" data-dojo-props="trim:true"></input></td>
+				</tr>
+				<tr>
+					<td>市:</td>
+					<td><input type="text" dojoType="dijit.form.TextBox" id="cityInput" data-dojo-props="trim:true" required="true"></input></td>
+				</tr>
+				<tr>
+					<td>省:</td>
+					<td><input type="text" dojoType="dijit.form.TextBox" id="stateProvinceInput" data-dojo-props="trim:true" required="true"></input></td>
+				</tr>
+				<tr>
+					<td>国家:</td>
+					<td><input type="text" dojoType="dijit.form.TextBox" id="countryInput" data-dojo-props="trim:true" required="true"></input></td>
+				</tr>
+				<tr>
+					<td>邮政编码:</td>
+					<td><input type="text" dojoType="dijit.form.TextBox" id="postalCodeInput" data-dojo-props="trim:true" required="true"></input></td>
+				</tr>
+				<tr>
+					<td colspan="2"><h2>常旅客信息:</h2></td>
+				</tr>
+				<tr>
+					<td>会员状态:</td>
+					<td><input type="text" dojoType="dijit.form.TextBox" id="memberShipStatusInput" data-dojo-props="readOnly:true"></input></td>
+				</tr>
+				<tr>
+					<td>当年里程:</td>
+					<td><input type="text" dojoType="dijit.form.NumberTextBox" id="milesYTDInput" data-dojo-props="readOnly:true"></input></td>
+				</tr>
+				<tr>
+					<td>里程汇总:</td>
+					<td><input type="text" dojoType="dijit.form.NumberTextBox" id="totalMilesInput" data-dojo-props="readOnly:true"></input></td>
+				</tr>
+				<tr>
+					<td rowspan="2">
+						<button dojoType="dijit.form.Button" id="updateProfileButton" onClick="updateProfile()">更新</button>
+					</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	<footer>
-		<p>Acme Air</p>
+ 		<p>Acme航空</p>
 	</footer>
-	<a href="config.html">configure the Acme Air environment. </a>
 </div>
 
 <p>&nbsp;</p>
