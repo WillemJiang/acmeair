@@ -16,10 +16,18 @@
 package com.acmeair.web;
 
 import com.acmeair.entities.CustomerSession;
+import com.acmeair.morphia.entities.CustomerSessionImpl;
 import com.acmeair.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -40,12 +48,12 @@ public class RESTCookieSessionFilter implements Filter {
 	private static final String LOGOUT_PATH = "/rest/api/login/logout";
 	private static final String LOADDB_PATH = "/rest/api/loaddb";
 
-	@Autowired
-	private CustomerService customerService;
-	@Value("${customer.service.address}")
+    @Value("${customer.service.address}")
 	private String          customerServiceAddress;
 
-	@Override
+    private RestTemplate restTemplate = new RestTemplate();
+
+    @Override
 	public void destroy() {
 	}
 
@@ -104,8 +112,13 @@ public class RESTCookieSessionFilter implements Filter {
 				return;
 			}
 			// Need the URLDecoder so that I can get @ not %40
-			CustomerSession cs = customerService.validateSession(sessionId);
-			if (cs != null) {
+            ResponseEntity<CustomerSessionImpl> responseEntity = restTemplate.postForEntity(
+                    customerServiceAddress + "/rest/api/login/validate",
+                    validationRequest(sessionId),
+                    CustomerSessionImpl.class
+            );
+            CustomerSession cs = responseEntity.getBody();
+            if (cs != null) {
 				request.setAttribute(LOGIN_USER, cs.getCustomerid());
 				chain.doFilter(req, resp);
 				return;
@@ -119,6 +132,16 @@ public class RESTCookieSessionFilter implements Filter {
 		// if we got here, we didn't detect the session cookie, so we need to return 404
 		response.sendError(HttpServletResponse.SC_FORBIDDEN);
 	}
+
+    private HttpEntity<MultiValueMap<String, String>> validationRequest(String sessionId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("sessionId", sessionId);
+
+        return new HttpEntity<>(map, headers);
+    }
 
     private void redirect(HttpServletResponse response, String path) {
         response.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);
