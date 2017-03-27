@@ -15,15 +15,14 @@
 *******************************************************************************/
 package com.acmeair.morphia.entities;
 
-import java.io.Serializable;
-import java.util.Date;
-
+import com.acmeair.entities.Booking;
+import com.acmeair.entities.Flight;
+import com.acmeair.web.dto.CustomerInfo;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
-import com.acmeair.entities.Booking;
-import com.acmeair.entities.Customer;
-import com.acmeair.entities.Flight;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity(value="booking")
 public class BookingImpl implements Booking, Serializable{
@@ -46,11 +45,11 @@ public class BookingImpl implements Booking, Serializable{
 		this.dateOfBooking = dateOfFlight;
 	}
 	
-	public BookingImpl(String bookingId, Date dateOfFlight, Customer customer, Flight flight) {		
+	public BookingImpl(String bookingId, Date dateOfFlight, CustomerInfo customer, Flight flight) {
 		this._id = bookingId;
 		this.flightId = flight.getFlightId();
 		this.dateOfBooking = dateOfFlight;
-		this.customerId = customer.getCustomerId();		
+		this.customerId = customer.getUsername();
 	}
 	
 	

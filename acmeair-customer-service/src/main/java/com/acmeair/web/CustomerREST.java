@@ -47,10 +47,25 @@ public class CustomerREST {
 			// make sure the user isn't trying to update a customer other than the one currently logged in
 			if (!validate(customerid)) {
 				return Response.status(Response.Status.FORBIDDEN).build();
-				
+
 			}
 			Customer customer = customerService.getCustomerByUsername(customerid);	
 			CustomerInfo customerDTO = new CustomerInfo(customer);			
+			return Response.ok(customerDTO).build();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@GET
+	@Path("/{custid}")
+	@Produces("application/json")
+	public Response getCustomer(@PathParam("custid") String customerid) {
+		try {
+			Customer customer = customerService.getCustomerByUsername(customerid);
+			CustomerInfo customerDTO = new CustomerInfo(customer);
 			return Response.ok(customerDTO).build();
 		}
 		catch (Exception e) {

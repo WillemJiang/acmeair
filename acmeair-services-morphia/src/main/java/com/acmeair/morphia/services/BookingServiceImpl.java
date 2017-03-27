@@ -1,25 +1,27 @@
 package com.acmeair.morphia.services;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.mongodb.morphia.Datastore;
-
 import com.acmeair.entities.Booking;
-import com.acmeair.entities.Customer;
 import com.acmeair.entities.Flight;
 import com.acmeair.morphia.MorphiaConstants;
 import com.acmeair.morphia.entities.BookingImpl;
 import com.acmeair.service.BookingService;
-import com.acmeair.service.CustomerService;
 import com.acmeair.service.DataService;
 import com.acmeair.service.FlightService;
 import com.acmeair.service.KeyGenerator;
-
+import com.acmeair.web.dto.CustomerInfo;
+import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @DataService(name=MorphiaConstants.KEY,description=MorphiaConstants.KEY_DESCRIPTION)
@@ -36,16 +38,25 @@ public class BookingServiceImpl implements BookingService, MorphiaConstants {
 	@Autowired
 	private FlightService flightService;
 
-	@Autowired
-	private CustomerService customerService;
+	@Value("${customer.service.address}")
+	private String customerServiceAddress;
 
+	private final RestTemplate restTemplate = new RestTemplate();
 
 	public String bookFlight(String customerId, String flightId) {
 		try{
 			Flight f = flightService.getFlightByFlightId(flightId, null);
-			Customer c = customerService.getCustomerByUsername(customerId);
-			
-			Booking newBooking = new BookingImpl(keyGenerator.generate().toString(), new Date(), c, f);
+			ResponseEntity<CustomerInfo> resp = restTemplate.getForEntity(
+					customerServiceAddress + "/rest/api/customer/{custid}",
+					CustomerInfo.class,
+					customerId
+			);
+
+			if (resp.getStatusCode() != HttpStatus.OK) {
+				throw new NoSuchElementException("No such customer with id " + customerId);
+			}
+
+			Booking newBooking = new BookingImpl(keyGenerator.generate().toString(), new Date(), resp.getBody(), f);
 
 			datastore.save(newBooking);
 			return newBooking.getBookingId();
@@ -99,5 +110,5 @@ public class BookingServiceImpl implements BookingService, MorphiaConstants {
 	@Override
 	public Long count() {
 		return datastore.find(BookingImpl.class).countAll();
-	}	
+	}
 }

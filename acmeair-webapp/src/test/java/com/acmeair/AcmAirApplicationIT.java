@@ -1,7 +1,9 @@
 package com.acmeair;
 
+import com.acmeair.loader.CustomerLoader;
 import com.acmeair.morphia.entities.BookingImpl;
 import com.acmeair.web.dto.BookingInfo;
+import com.acmeair.web.dto.BookingReceiptInfo;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
@@ -21,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +35,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 import static org.springframework.http.HttpHeaders.COOKIE;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.OK;
 
 @RunWith(SpringRunner.class)
@@ -44,7 +48,13 @@ import static org.springframework.http.HttpStatus.OK;
 public class AcmAirApplicationIT {
     private MongoClient      mongoClient;
 
-    private final String      customerId = "mike";
+    private final String  toFlightId     = "toFlightId";
+    private final String  toFlightSegId  = "toFlightSegId";
+    private final String  retFlightId    = "retFlightId";
+    private final String  retFlightSegId = "retFlightSegId";
+    private final boolean oneWay         = false;
+
+    private final String      customerId = "uid0@email.com";
     private final String      password   = "password";
     private final BookingImpl booking    = new BookingImpl("1", new Date(), customerId, "SIN-2131");
 
@@ -53,6 +63,9 @@ public class AcmAirApplicationIT {
 
     @Value("${mongo.port}")
     private int mongoDbPort;
+
+    @Autowired
+    private CustomerLoader customerLoader;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -70,10 +83,17 @@ public class AcmAirApplicationIT {
             put("dateOfBooking", booking.getDateOfBooking());
         }});
 
-        addDocumentToCollection("customer", new HashMap<String, Object>() {{
-            put("_id", customerId);
-            put("password", password);
-        }});
+        customerLoader.loadCustomers(1);
+
+        addDocumentToCollection(
+                "flight",
+                new HashMap<String, Object>() {{
+                    put("_id", toFlightId);
+                }},
+                new HashMap<String, Object>() {{
+                    put("_id", retFlightId);
+                }}
+        );
     }
 
     @After
@@ -119,6 +139,35 @@ public class AcmAirApplicationIT {
         assertThat(bookingInfo.getDateOfBooking(), is(booking.getDateOfBooking()));
     }
 
+    @Test
+    public void canBookFlightsWhenLoggedIn() {
+        HttpHeaders headers = headerWithCookieOfLoginSession();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("userid", customerId);
+        map.add("toFlightId", toFlightId);
+        map.add("toFlightSegId", toFlightSegId);
+        map.add("retFlightId", retFlightId);
+        map.add("retFlightSegId", retFlightSegId);
+        map.add("oneWayFlight", String.valueOf(oneWay));
+
+        ResponseEntity<BookingReceiptInfo> bookingInfoResponseEntity = restTemplate.exchange(
+                "/rest/api/bookings/bookflights",
+                POST,
+                new HttpEntity<>(map, headers),
+                BookingReceiptInfo.class
+        );
+
+        assertThat(bookingInfoResponseEntity.getStatusCode(), is(OK));
+
+        BookingReceiptInfo bookingInfo = bookingInfoResponseEntity.getBody();
+
+        assertThat(bookingInfo.isOneWay(), is(oneWay));
+        assertThat(bookingInfo.getDepartBookingId(), is(notNullValue()));
+        assertThat(bookingInfo.getReturnBookingId(), is(notNullValue()));
+    }
+
     private HttpHeaders headerWithCookieOfLoginSession() {
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(
                 "/rest/api/login",
@@ -152,8 +201,9 @@ public class AcmAirApplicationIT {
         return new HttpEntity<>(map, headers);
     }
 
-    private void addDocumentToCollection(String collectionName, HashMap<String, Object> map) {
+    @SafeVarargs
+    private final void addDocumentToCollection(String collectionName, HashMap<String, Object>... maps) {
         database.createCollection(collectionName);
-        database.getCollection(collectionName).insertOne(new Document(map));
+        Arrays.stream(maps).forEach(map -> database.getCollection(collectionName).insertOne(new Document(map)));
     }
 }
