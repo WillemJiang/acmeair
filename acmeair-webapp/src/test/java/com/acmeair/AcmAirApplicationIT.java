@@ -4,14 +4,10 @@ import com.acmeair.morphia.entities.BookingImpl;
 import com.acmeair.web.dto.BookingInfo;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
-import de.flapdoodle.embed.mongo.MongodExecutable;
-import de.flapdoodle.embed.mongo.MongodProcess;
-import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
-import de.flapdoodle.embed.mongo.config.Net;
-import de.flapdoodle.embed.mongo.distribution.Version;
 import org.bson.Document;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,14 +39,10 @@ import static org.springframework.http.HttpStatus.OK;
         classes = AcmAirApplication.class,
         webEnvironment = RANDOM_PORT,
         properties = {
-                "mongo.host=localhost",
-                "mongo.port=27017"
+                "mongo.host=localhost"
         })
-public class AcmAirApplicationTest {
-    private static final MongodStarter starter = MongodStarter.getDefaultInstance();
-    private static MongodExecutable mongodExecutable;
-    private static MongodProcess    mongodProcess;
-    private static MongoClient      mongoClient;
+public class AcmAirApplicationIT {
+    private MongoClient      mongoClient;
 
     private final String      customerId = "mike";
     private final String      password   = "password";
@@ -59,29 +51,16 @@ public class AcmAirApplicationTest {
     @Value("${mongo.database}")
     private String databaseName;
 
+    @Value("${mongo.port}")
+    private int mongoDbPort;
+
     @Autowired
     private TestRestTemplate restTemplate;
     private MongoDatabase    database;
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        mongodExecutable = starter.prepare(new MongodConfigBuilder()
-                                                   .version(Version.Main.PRODUCTION)
-                                                   .net(new Net("localhost", 27017, false))
-                                                   .build());
-
-        mongodProcess = mongodExecutable.start();
-        mongoClient = new MongoClient("localhost", 27017);
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-        mongodProcess.stop();
-        mongodExecutable.stop();
-    }
-
     @Before
     public void setUp() {
+        mongoClient = new MongoClient("localhost", mongoDbPort);
         database = mongoClient.getDatabase(databaseName);
 
         addDocumentToCollection("booking", new HashMap<String, Object>() {{
@@ -100,6 +79,7 @@ public class AcmAirApplicationTest {
     @After
     public void tearDown() throws Exception {
         database.drop();
+        mongoClient.close();
     }
 
     @Test
@@ -146,6 +126,11 @@ public class AcmAirApplicationTest {
                 String.class
         );
 
+        responseEntity = restTemplate.postForEntity(
+                responseEntity.getHeaders().getLocation(),
+                loginRequest(customerId, password),
+                String.class
+        );
         assertThat(responseEntity.getStatusCode(), is(OK));
 
         List<String> cookies = responseEntity.getHeaders().get(SET_COOKIE);

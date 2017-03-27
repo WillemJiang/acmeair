@@ -15,7 +15,11 @@
 *******************************************************************************/
 package com.acmeair.web;
 
-import java.io.IOException;
+import com.acmeair.entities.CustomerSession;
+import com.acmeair.service.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -26,11 +30,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.acmeair.entities.CustomerSession;
-import com.acmeair.service.CustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import java.io.IOException;
 
 @Component
 public class RESTCookieSessionFilter implements Filter {
@@ -42,13 +42,14 @@ public class RESTCookieSessionFilter implements Filter {
 
 	@Autowired
 	private CustomerService customerService;
-	
+	@Value("${customer.service.address}")
+	private String          customerServiceAddress;
 
 	@Override
 	public void destroy() {
 	}
 
-	
+
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp,	FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest)req;
@@ -66,8 +67,17 @@ public class RESTCookieSessionFilter implements Filter {
 		{
 			e.printStackTrace();
 		}*/
-	
-		
+
+
+		if (path.endsWith(LOGIN_PATH)) {
+            redirect(response, LOGIN_PATH);
+			return;
+		} else if (path.endsWith(LOGOUT_PATH)) {
+            redirect(response, LOGOUT_PATH);
+			return;
+
+		}
+
 		if (path.endsWith(LOGIN_PATH) || path.endsWith(LOGOUT_PATH) || path.endsWith(LOADDB_PATH)) {
 			// if logging in, logging out, or loading the database, let the request flow
 			chain.doFilter(req, resp);
@@ -110,7 +120,12 @@ public class RESTCookieSessionFilter implements Filter {
 		response.sendError(HttpServletResponse.SC_FORBIDDEN);
 	}
 
-	@Override
+    private void redirect(HttpServletResponse response, String path) {
+        response.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);
+        response.setHeader("Location", customerServiceAddress + path);
+    }
+
+    @Override
 	public void init(FilterConfig config) throws ServletException {
 	}
 }

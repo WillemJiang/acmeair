@@ -47,11 +47,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>de.flapdoodle.embed</groupId>
-            <artifactId>de.flapdoodle.embed.mongo</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <scope>compile</scope>
@@ -172,7 +167,7 @@
                 <configuration>
                     <systemPropertyVariables>
                         <mongo.port>${mongo.port}</mongo.port>
-                        <customer.service.address>localhost:${customer.service.port}</customer.service.address>
+                        <customer.service.address>http://localhost:${customer.service.port}</customer.service.address>
                     </systemPropertyVariables>
                 </configuration>
                 <executions>

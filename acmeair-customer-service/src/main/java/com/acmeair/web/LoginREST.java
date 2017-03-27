@@ -20,12 +20,15 @@ import javax.ws.rs.core.*;
 
 import com.acmeair.entities.CustomerSession;
 import com.acmeair.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Path("/api/login")
 public class LoginREST {
-	
+	public static final Logger logger = LoggerFactory.getLogger("LoginREST");
+
 	public static String SESSIONID_COOKIE_NAME = "sessionid";
 
 	@Autowired
@@ -36,13 +39,16 @@ public class LoginREST {
 	@Consumes({"application/x-www-form-urlencoded"})
 	@Produces("text/plain")
 	public Response login(@FormParam("login") String login, @FormParam("password") String password) {
+		logger.info("Received login request of username [{}]", login);
 		try {
 			boolean validCustomer = customerService.validateCustomer(login, password);
 			
 			if (!validCustomer) {
+				logger.info("No such user exists with username [{}]", login);
 				return Response.status(Response.Status.FORBIDDEN).build();
 			}
-			
+
+			logger.info("Validated user [{}] successfully", login);
 			CustomerSession session = customerService.createSession(login);
 			// TODO:  Need to fix the security issues here - they are pretty gross likely
 			NewCookie sessCookie = new NewCookie(SESSIONID_COOKIE_NAME, session.getId());
