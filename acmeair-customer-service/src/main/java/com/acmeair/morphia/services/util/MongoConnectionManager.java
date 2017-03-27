@@ -1,30 +1,26 @@
 package com.acmeair.morphia.services.util;
 
-import java.io.IOException;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.Properties;
-import java.util.logging.Logger;
-
-import javax.annotation.Resource;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
 import com.acmeair.morphia.BigDecimalConverter;
 import com.acmeair.morphia.MorphiaConstants;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Morphia;
-
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
 import com.mongodb.ServerAddress;
 import com.mongodb.WriteConcern;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Morphia;
+
+import javax.annotation.Resource;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Properties;
+import java.util.logging.Logger;
 
 public class MongoConnectionManager implements MorphiaConstants{
 

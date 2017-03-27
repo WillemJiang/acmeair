@@ -84,4 +84,107 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.18.1</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>mongo</name>
+                            <alias>acmeair-mongo</alias>
+                            <run>
+                                <wait>
+                                    <log>waiting for connections on port</log>
+                                    <time>60000</time>
+                                </wait>
+                                <ports>
+                                    <port>mongo.port:27017</port>
+                                </ports>
+                            </run>
+                        </image>
+                        <image>
+                            <name>acmeair-customer-service:${project.version}</name>
+                            <alias>customer-service</alias>
+                            <build>
+                                <from>java:8</from>
+                                <ports>
+                                    <port>8082</port>
+                                </ports>
+                                <assembly>
+                                    <mode>tar</mode>
+                                    <descriptor>${project.basedir}/src/assembly/customer-service.xml</descriptor>
+                                </assembly>
+                                <entryPoint>
+                                    <shell>java -Dserver.port=8082 -jar /maven/acmeair/acmeair-customer-service-exec.jar
+                                    </shell>
+                                </entryPoint>
+                            </build>
+                            <run>
+                                <links>
+                                    <link>acmeair-mongo:mongo.acmeair.com</link>
+                                </links>
+                                <wait>
+                                    <log>Tomcat started on port</log>
+                                    <time>60000</time>
+                                </wait>
+                                <ports>
+                                    <port>customer.service.port:8082</port>
+                                </ports>
+                                <dependsOn>
+                                    <dependsOn>acmeair-mongo</dependsOn>
+                                </dependsOn>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>build</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>start</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <mongo.port>${mongo.port}</mongo.port>
+                        <customer.service.address>localhost:${customer.service.port}</customer.service.address>
+                    </systemPropertyVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
