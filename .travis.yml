@@ -6,4 +6,4 @@ services:
   - docker
 
 script:
-  - mvn -Ddocker.keepRunning=true clean verify
+  - mvn clean verify -Ddocker.showLogs 

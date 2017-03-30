@@ -124,7 +124,7 @@
                                 </links>
                                 <wait>
                                     <log>Tomcat started on port</log>
-                                    <time>60000</time>
+                                    <time>100000</time>
                                 </wait>
                                 <ports>
                                     <port>customer.service.port:8082</port>
