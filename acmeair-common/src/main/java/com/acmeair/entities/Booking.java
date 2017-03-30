@@ -21,16 +21,16 @@ import java.util.Date;
 public interface Booking {
 
 
-	public String getBookingId();
+	String getBookingId();
 		
 	
-	public String getFlightId();
+	String getFlightId();
 	
 	
-	public String getCustomerId();
+	String getCustomerId();
 	
 	
-	public Date getDateOfBooking();
+	Date getDateOfBooking();
 	
 
 }

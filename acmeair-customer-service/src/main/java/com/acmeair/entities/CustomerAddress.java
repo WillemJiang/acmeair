@@ -19,17 +19,17 @@ package com.acmeair.entities;
 public interface CustomerAddress {
 
 	
-	public String getStreetAddress1();
-	public void setStreetAddress1(String streetAddress1);
-	public String getStreetAddress2();
-	public void setStreetAddress2(String streetAddress2);
-	public String getCity();
-	public void setCity(String city);
-	public String getStateProvince();
-	public void setStateProvince(String stateProvince);
-	public String getCountry();
-	public void setCountry(String country);
-	public String getPostalCode();
-	public void setPostalCode(String postalCode);
+	String getStreetAddress1();
+	void setStreetAddress1(String streetAddress1);
+	String getStreetAddress2();
+	void setStreetAddress2(String streetAddress2);
+	String getCity();
+	void setCity(String city);
+	String getStateProvince();
+	void setStateProvince(String stateProvince);
+	String getCountry();
+	void setCountry(String country);
+	String getPostalCode();
+	void setPostalCode(String postalCode);
 		
 }

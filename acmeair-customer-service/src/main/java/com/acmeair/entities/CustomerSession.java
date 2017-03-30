@@ -21,16 +21,16 @@ import java.util.Date;
 public interface CustomerSession {
 
 	
-	public String getId();
+	String getId();
 
 
-	public String getCustomerid();
+	String getCustomerid();
 
 
-	public Date getLastAccessedTime();
+	Date getLastAccessedTime();
 	
 
-	public Date getTimeoutTime();
+	Date getTimeoutTime();
 
 	
 }

@@ -19,12 +19,12 @@ package com.acmeair.entities;
 public interface AirportCodeMapping{
 	
 	
-	public String getAirportCode();
+	String getAirportCode();
 	
-	public void setAirportCode(String airportCode);
+	void setAirportCode(String airportCode);
 	
-	public String getAirportName();
+	String getAirportName();
 	
-	public void setAirportName(String airportName);
+	void setAirportName(String airportName);
 
 }
