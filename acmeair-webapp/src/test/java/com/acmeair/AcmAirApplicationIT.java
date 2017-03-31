@@ -36,6 +36,7 @@ import static org.springframework.http.HttpHeaders.COOKIE;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;
 
 @RunWith(SpringRunner.class)
@@ -104,7 +105,7 @@ public class AcmAirApplicationIT {
 
     @Test
     public void countsNumberOfConsumers() {
-        HttpHeaders headers = headerWithCookieOfLoginSession();
+        HttpHeaders headers = new HttpHeaders();
 
         ResponseEntity<Long> consumerCount = restTemplate.exchange(
                 "/rest/info/config/countCustomers",
@@ -115,6 +116,22 @@ public class AcmAirApplicationIT {
 
         assertThat(consumerCount.getStatusCode(), is(OK));
         assertThat(consumerCount.getBody(), is(1L));
+    }
+    
+    @Test
+    public void checkBookingWithoutLoggedIn() {
+        HttpHeaders headers = new HttpHeaders();
+        
+        ResponseEntity<BookingInfo> bookingInfoResponseEntity = restTemplate.exchange(
+                "/rest/api/bookings/bybookingnumber/{userid}/{number}",
+                GET,
+                new HttpEntity<String>(headers),
+                BookingInfo.class,
+                booking.getCustomerId(),
+                booking.getBookingId()
+        );
+        // Just make sure we need to login first
+        assertThat(bookingInfoResponseEntity.getStatusCode(), is(FORBIDDEN));
     }
 
     @Test
