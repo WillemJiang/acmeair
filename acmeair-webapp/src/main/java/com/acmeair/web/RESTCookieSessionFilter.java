@@ -17,7 +17,7 @@ package com.acmeair.web;
 
 import com.acmeair.entities.CustomerSession;
 import com.acmeair.morphia.entities.CustomerSessionImpl;
-import com.acmeair.service.CustomerService;
+import com.acmeair.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -51,7 +51,8 @@ public class RESTCookieSessionFilter implements Filter {
     @Value("${customer.service.address}")
 	private String          customerServiceAddress;
 
-    private RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private LoginService loginService;
 
     @Override
 	public void destroy() {
@@ -105,12 +106,7 @@ public class RESTCookieSessionFilter implements Filter {
 				return;
 			}
 			// Need the URLDecoder so that I can get @ not %40
-            ResponseEntity<CustomerSessionImpl> responseEntity = restTemplate.postForEntity(
-                    customerServiceAddress + "/rest/api/login/validate",
-                    validationRequest(sessionId),
-                    CustomerSessionImpl.class
-            );
-            CustomerSession cs = responseEntity.getBody();
+			CustomerSession cs = getCustomerSession(sessionId);
             if (cs != null) {
 				request.setAttribute(LOGIN_USER, cs.getCustomerid());
 				chain.doFilter(req, resp);
@@ -125,16 +121,12 @@ public class RESTCookieSessionFilter implements Filter {
 		// if we got here, we didn't detect the session cookie, so we need to return 404
 		response.sendError(HttpServletResponse.SC_FORBIDDEN);
 	}
-
-    private HttpEntity<MultiValueMap<String, String>> validationRequest(String sessionId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("sessionId", sessionId);
-
-        return new HttpEntity<>(map, headers);
-    }
+	
+	private CustomerSession getCustomerSession(String sessionId) {
+		return loginService.validateCustomerSession(sessionId);
+	}
+	
+	
 
     private void redirect(HttpServletResponse response, String path) {
         response.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);

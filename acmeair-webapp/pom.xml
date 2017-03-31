@@ -18,17 +18,14 @@
         <dependency>
             <groupId>acmeair</groupId>
             <artifactId>acmeair-loader</artifactId>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>acmeair</groupId>
             <artifactId>acmeair-customer-common</artifactId>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jersey</artifactId>
-            <scope>compile</scope>
             <exclusions>
                 <exclusion>
                     <artifactId>commons-logging</artifactId>
@@ -39,7 +36,10 @@
         <dependency>
             <groupId>acmeair</groupId>
             <artifactId>acmeair-services</artifactId>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-hystrix</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -49,7 +49,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <scope>compile</scope>
             <exclusions>
                 <exclusion>
                     <artifactId>commons-logging</artifactId>
@@ -60,7 +59,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <scope>compile</scope>
             <exclusions>
                 <exclusion>
                     <artifactId>commons-logging</artifactId>
@@ -71,12 +69,10 @@
         <dependency>
             <groupId>acmeair</groupId>
             <artifactId>acmeair-services-morphia</artifactId>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>acmeair</groupId>
             <artifactId>acmeair-common</artifactId>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
