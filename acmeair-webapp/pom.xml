@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>acmeair</groupId>
-            <artifactId>acmeair-customer-service</artifactId>
+            <artifactId>acmeair-customer-common</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>

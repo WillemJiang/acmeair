@@ -24,6 +24,10 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>acmeair</groupId>
+            <artifactId>acmeair-customer-common</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
         </dependency>
