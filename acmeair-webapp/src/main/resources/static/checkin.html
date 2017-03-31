@@ -47,7 +47,7 @@
 		    	var grid, store, dataStore;
 		    	
 		    	dojo.xhrGet({
-					url: "rest/api/bookings/byuser/" + dojo.cookie("loggedinuser"),
+					url: "bookings/rest/api/bookings/byuser/" + dojo.cookie("loggedinuser"),
 					handleAs: "json",
 					load: function(response, ioArgs) {
 						var theData = { items : response };
@@ -151,7 +151,7 @@
 				xhrContent.userid = customerId;
 				dojo.xhrPost({
 					content : xhrContent,
-					url : 'rest/api/bookings/cancelbooking',
+					url : 'bookings/rest/api/bookings/cancelbooking',
 					load : function(response, ioArgs) {
 						alert("Booking Canceled.");
 						createAndStartGrid();

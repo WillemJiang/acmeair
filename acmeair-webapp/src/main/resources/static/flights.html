@@ -60,7 +60,7 @@
 				returnDate: returnDate,
 				oneWay: oneWayChecked
 			},
-			url: 'rest/api/flights/queryflights',
+			url: 'bookings/rest/api/flights/queryflights',
 			handleAs: "json",
 			load: function(response, ioArgs) {
 				if (response.tripFlights.length == 0) {
@@ -123,7 +123,7 @@
 				toAirport: toAirport,
 				oneWay: oneWayChecked
 			},
-			url: 'rest/api/flights/browseflights',
+			url: 'bookings/rest/api/flights/browseflights',
 			handleAs: "json",
 			load: function(response, ioArgs) {
 				if (response.tripFlights.length == 0) {
@@ -287,7 +287,7 @@
 		
 		dojo.xhrPost({
 			content : xhrContent,
-			url : 'rest/api/bookings/bookflights',
+			url : 'bookings/rest/api/bookings/bookflights',
 			handleAs: "json",
 			load : function(response, ioArgs) {
 				dojo.byId("bookingToFlight").innerHTML = response.departBookingId;

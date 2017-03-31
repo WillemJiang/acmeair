@@ -74,10 +74,18 @@
             <groupId>acmeair</groupId>
             <artifactId>acmeair-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zuul</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
@@ -164,6 +172,7 @@
                     <systemPropertyVariables>
                         <mongo.port>${mongo.port}</mongo.port>
                         <customer.service.address>http://localhost:${customer.service.port}</customer.service.address>
+                        <zuul.routes.customers.url>http://localhost:${customer.service.port}</zuul.routes.customers.url>
                     </systemPropertyVariables>
                 </configuration>
                 <executions>

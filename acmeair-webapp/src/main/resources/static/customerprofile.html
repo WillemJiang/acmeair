@@ -56,7 +56,7 @@
 
     function loadCustomerProfileData(userid) {
     	dojo.xhrGet({
-			url: 'rest/api/customer/byid/' + userid,
+			url: 'customers/rest/api/customer/byid/' + userid,
 			handleAs: "json",
 			load: function(response, ioArgs) {
 				updateFormData(response);
@@ -112,7 +112,7 @@
 		}
 
 		dojo.xhrPost({
-			url: 'rest/api/customer/byid/' + userid,
+			url: 'customers/rest/api/customer/byid/' + userid,
 			postData : dojo.toJson(customerData),
 			handleAs: "json",
 			headers: { "Content-Type": "application/json"},

@@ -18,7 +18,7 @@ function login(login, password) {
 	var input = {
 		method : 'POST',
 		returnedContentType : 'text/plain',
-		path : 'acmeair-webapp/rest/api/login',
+		path : 'acmeair-webapp/customers/rest/api/login',
 		parameters : {
 			"login":login,
 			"password":password
@@ -32,7 +32,7 @@ function logout(login) {
 	var input = {
 		method : 'GET',
 		returnedContentType : 'text/plain',
-		path : 'acmeair-webapp/rest/api/login/logout',
+		path : 'acmeair-webapp/customers/rest/api/login/logout',
 
 		parameters : {
 			"login":login
@@ -46,7 +46,7 @@ function queryFlights(fromAirport, toAirport, fromDate, returnDate, oneWay) {
 	var input = {
 		method : 'POST',
 		returnedContentType : 'json',
-		path : 'acmeair-webapp/rest/api/flights/queryflights',
+		path : 'acmeair-webapp/bookings/rest/api/flights/queryflights',
 
 		parameters : {
 			"fromAirport":fromAirport,
@@ -70,7 +70,7 @@ function bookFlights(
 	var input = {
 		method : 'POST',
 		returnedContentType : 'json',
-		path : 'acmeair-webapp/rest/api/bookings/bookflights',
+		path : 'acmeair-webapp/bookings/rest/api/bookings/bookflights',
 
 		parameters : {
 			"userid":userid,
@@ -89,7 +89,7 @@ function listBookings(userid) {
 	var input = {
 		method : 'GET',
 		returnedContentType : 'json',
-		path : 'acmeair-webapp/rest/api/bookings/byuser/'+userid,
+		path : 'acmeair-webapp/bookings/rest/api/bookings/byuser/'+userid,
 		parameters : {},
 	};	
 	return WL.Server.invokeHttp(input);
@@ -100,7 +100,7 @@ function viewProfile(userid) {
 	var input = {
 		method : 'GET',
 		returnedContentType : 'json',
-		path : 'acmeair-webapp/rest/api/customer/byid/' + userid,
+		path : 'acmeair-webapp/customers/rest/api/customer/byid/' + userid,
 		parameters : {},
 	};
 	return WL.Server.invokeHttp(input);
@@ -136,7 +136,7 @@ function updateProfile(
 	var input = {
 		method : 'POST',
 		returnedContentType : 'application/json; charset=UTF-8',
-		path : 'acmeair-webapp/rest/api/customer/byid/' + username,
+		path : 'acmeair-webapp/customers/rest/api/customer/byid/' + username,
 
 		body:{
 			content:customerJson,
@@ -151,7 +151,7 @@ function cancelBooking(userid, number) {
 	var input = {
 		method : 'POST',
 		returnedContentType : 'text/plain',
-		path : 'acmeair-webapp/rest/api/bookings/cancelbooking',
+		path : 'acmeair-webapp/bookings/rest/api/bookings/cancelbooking',
 
 		parameters : {
 			"userid":userid,

@@ -31,7 +31,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 import static org.springframework.http.HttpHeaders.COOKIE;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.http.HttpMethod.GET;
@@ -42,7 +42,7 @@ import static org.springframework.http.HttpStatus.OK;
 @RunWith(SpringRunner.class)
 @SpringBootTest(
         classes = AcmAirApplication.class,
-        webEnvironment = RANDOM_PORT,
+        webEnvironment = DEFINED_PORT,
         properties = {
                 "mongo.host=localhost"
         })
@@ -105,10 +105,10 @@ public class AcmAirApplicationIT {
 
     @Test
     public void countsNumberOfConsumers() {
-        HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = headerWithCookieOfLoginSession();
 
         ResponseEntity<Long> consumerCount = restTemplate.exchange(
-                "/rest/info/config/countCustomers",
+                "/customers/rest/info/config/countCustomers",
                 GET,
                 new HttpEntity<>(headers),
                 Long.class
@@ -123,7 +123,7 @@ public class AcmAirApplicationIT {
         HttpHeaders headers = new HttpHeaders();
         
         ResponseEntity<BookingInfo> bookingInfoResponseEntity = restTemplate.exchange(
-                "/rest/api/bookings/bybookingnumber/{userid}/{number}",
+                "/bookings/rest/api/bookings/bybookingnumber/{userid}/{number}",
                 GET,
                 new HttpEntity<String>(headers),
                 BookingInfo.class,
@@ -139,7 +139,7 @@ public class AcmAirApplicationIT {
         HttpHeaders headers = headerWithCookieOfLoginSession();
 
         ResponseEntity<BookingInfo> bookingInfoResponseEntity = restTemplate.exchange(
-                "/rest/api/bookings/bybookingnumber/{userid}/{number}",
+                "/bookings/rest/api/bookings/bybookingnumber/{userid}/{number}",
                 GET,
                 new HttpEntity<String>(headers),
                 BookingInfo.class,
@@ -170,7 +170,7 @@ public class AcmAirApplicationIT {
         map.add("oneWayFlight", String.valueOf(oneWay));
 
         ResponseEntity<BookingReceiptInfo> bookingInfoResponseEntity = restTemplate.exchange(
-                "/rest/api/bookings/bookflights",
+                "/bookings/rest/api/bookings/bookflights",
                 POST,
                 new HttpEntity<>(map, headers),
                 BookingReceiptInfo.class
@@ -187,16 +187,11 @@ public class AcmAirApplicationIT {
 
     private HttpHeaders headerWithCookieOfLoginSession() {
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(
-                "/rest/api/login",
+                "/customers/rest/api/login",
                 loginRequest(customerId, password),
                 String.class
         );
 
-        responseEntity = restTemplate.postForEntity(
-                responseEntity.getHeaders().getLocation(),
-                loginRequest(customerId, password),
-                String.class
-        );
         assertThat(responseEntity.getStatusCode(), is(OK));
 
         List<String> cookies = responseEntity.getHeaders().get(SET_COOKIE);

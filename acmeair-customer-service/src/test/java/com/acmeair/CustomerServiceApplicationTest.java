@@ -23,6 +23,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -47,6 +48,7 @@ import static org.springframework.http.HttpStatus.OK;
                 "mongo.host=localhost",
                 "mongo.port=27017"
         })
+@ActiveProfiles("test")
 public class CustomerServiceApplicationTest {
     private static final MongodStarter starter = MongodStarter.getDefaultInstance();
     private static MongodExecutable mongodExecutable;
@@ -76,6 +78,7 @@ public class CustomerServiceApplicationTest {
 
     @AfterClass
     public static void tearDownClass() throws Exception {
+        mongoClient.close();
         mongodProcess.stop();
         mongodExecutable.stop();
     }

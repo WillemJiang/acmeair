@@ -58,7 +58,7 @@ function login() {
 			login: userString,
 			password: document.getElementById('password').value
 		},
-		url: 'rest/api/login',
+		url: 'customers/rest/api/login',
 		load: function(response, ioArgs) {
 			hideLoginWaitDialog();
 			if (response != 'logged in') {
@@ -87,7 +87,7 @@ function logout() {
 		content : {
 			login: loggedinuser
 		},
-		url: 'rest/api/login/logout',
+		url: 'customers/rest/api/login/logout',
 		load: function(response, ioArgs) {
 			if (response != 'logged out') {
 				// TODO: why isn't error function being called in this case

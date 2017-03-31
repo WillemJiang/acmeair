@@ -5,10 +5,12 @@
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
 
+<!--
   <filter>
     <filter-name>CookieFilter</filter-name>
     <filter-class>com.acmeair.web.RESTCookieSessionFilter</filter-class>
   </filter>
+-->
   <filter-mapping>
     <filter-name>CookieFilter</filter-name>
     <url-pattern>/rest/api/*</url-pattern>
