@@ -23,10 +23,13 @@ import com.acmeair.entities.Customer;
 import com.acmeair.entities.CustomerAddress;
 import com.acmeair.service.*;
 import com.acmeair.web.dto.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Path("/api/customer")
 public class CustomerREST {
+	private static final Logger logger = LoggerFactory.getLogger(CustomerREST.class);
 
 	@Autowired
 	private CustomerService customerService;
@@ -36,7 +39,7 @@ public class CustomerREST {
 
 
 	private boolean validate(String customerid)	{
-		String loginUser = (String) request.getAttribute("acmeair.login_user");
+		String loginUser = request.getHeader("acmeair.login_user");
 		return customerid.equals(loginUser);
 	}
 	@GET
@@ -44,8 +47,10 @@ public class CustomerREST {
 	@Produces("application/json")
 	public Response getCustomer(@CookieParam("sessionid") String sessionid, @PathParam("custid") String customerid) {
 		try {
+			logger.info("Received request to get customer by id {} with session {}", customerid, sessionid);
 			// make sure the user isn't trying to update a customer other than the one currently logged in
 			if (!validate(customerid)) {
+				logger.info("Customer id mismatched, requested = {}, logged = {}", customerid, request.getAttribute("acmeair.login_user"));
 				return Response.status(Response.Status.FORBIDDEN).build();
 
 			}

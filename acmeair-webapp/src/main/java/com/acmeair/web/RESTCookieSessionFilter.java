@@ -25,8 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,9 +43,9 @@ public class RESTCookieSessionFilter extends ZuulFilter {
     private LoginService loginService;
 
 
-	private void doFilter(ServletRequest req, ServletResponse resp) throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest)req;
-		HttpServletResponse response = (HttpServletResponse)resp;
+	private void doFilter(RequestContext context) throws IOException, ServletException {
+		HttpServletRequest request = context.getRequest();
+		HttpServletResponse response = context.getResponse();
 		
 		String path = request.getContextPath() + request.getServletPath();
 		if (request.getPathInfo() != null) {
@@ -81,7 +79,7 @@ public class RESTCookieSessionFilter extends ZuulFilter {
 			// Need the URLDecoder so that I can get @ not %40
 			CustomerSession cs = getCustomerSession(sessionId);
             if (cs != null) {
-				request.setAttribute(LOGIN_USER, cs.getCustomerid());
+				context.addZuulRequestHeader(LOGIN_USER, cs.getCustomerid());
 				return;
 			}
 			else {
@@ -120,7 +118,7 @@ public class RESTCookieSessionFilter extends ZuulFilter {
 	public Object run() {
 		RequestContext context = RequestContext.getCurrentContext();
 		try {
-			doFilter(context.getRequest(), context.getResponse());
+			doFilter(context);
 			return null;
 		} catch (IOException | ServletException e) {
 			throw new IllegalStateException(e);
