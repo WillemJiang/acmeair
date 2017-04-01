@@ -50,7 +50,7 @@ public class CustomerREST {
 			logger.info("Received request to get customer by id {} with session {}", customerid, sessionid);
 			// make sure the user isn't trying to update a customer other than the one currently logged in
 			if (!validate(customerid)) {
-				logger.info("Customer id mismatched, requested = {}, logged = {}", customerid, request.getAttribute("acmeair.login_user"));
+				logger.info("Customer id mismatched, requested = {}, logged = {}", customerid, request.getHeader("acmeair.login_user"));
 				return Response.status(Response.Status.FORBIDDEN).build();
 
 			}

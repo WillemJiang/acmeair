@@ -51,7 +51,8 @@ public class LoginREST {
 			logger.info("Validated user [{}] successfully", login);
 			CustomerSession session = customerService.createSession(login);
 			// TODO:  Need to fix the security issues here - they are pretty gross likely
-			NewCookie sessCookie = new NewCookie(SESSIONID_COOKIE_NAME, session.getId());
+			NewCookie sessCookie = new NewCookie(SESSIONID_COOKIE_NAME, session.getId(), "/", null, null, NewCookie.DEFAULT_MAX_AGE, false);
+			logger.info("Generated cookie {} for user {}", session.getId(), login);
 			// TODO: The mobile client app requires JSON in the response. 
 			// To support the mobile client app, choose one of the following designs:
 			// - Change this method to return JSON, and change the web app javascript to handle a JSON response.

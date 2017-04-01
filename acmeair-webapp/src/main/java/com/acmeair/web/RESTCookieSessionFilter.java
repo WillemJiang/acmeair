@@ -29,6 +29,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
 @Component
 public class RESTCookieSessionFilter extends ZuulFilter {
@@ -46,7 +47,7 @@ public class RESTCookieSessionFilter extends ZuulFilter {
 	private void doFilter(RequestContext context) throws IOException, ServletException {
 		HttpServletRequest request = context.getRequest();
 		HttpServletResponse response = context.getResponse();
-		
+
 		String path = request.getContextPath() + request.getServletPath();
 		if (request.getPathInfo() != null) {
 			path = path + request.getPathInfo();
@@ -118,6 +119,10 @@ public class RESTCookieSessionFilter extends ZuulFilter {
 	public Object run() {
 		RequestContext context = RequestContext.getCurrentContext();
 		try {
+			if (context.getRequest().getCookies() != null) {
+				Arrays.stream(context.getRequest().getCookies())
+                      .forEach(cookie -> logger.debug("pre {}={}", cookie.getName(), cookie.getValue()));
+			}
 			doFilter(context);
 			return null;
 		} catch (IOException | ServletException e) {
