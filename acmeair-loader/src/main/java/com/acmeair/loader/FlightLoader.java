@@ -93,6 +93,7 @@ public class FlightLoader {
 				    c.set(Calendar.SECOND, 0);
 				    c.set(Calendar.MILLISECOND, 0);
 					c.add(Calendar.DATE, daysFromNow);
+					c.setTimeZone(TimeZone.getTimeZone("GMT"));
 					Date departureTime = c.getTime();
 					Date arrivalTime = getArrivalTime(departureTime, miles);
 					flightService.createNewFlight(flightId, departureTime, arrivalTime, new BigDecimal(500), new BigDecimal(200), 10, 200, "B747");
