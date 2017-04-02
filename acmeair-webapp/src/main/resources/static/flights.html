@@ -56,8 +56,8 @@
 			content : {
 				fromAirport: fromAirport,
 				toAirport: toAirport,
-				fromDate: fromDate,
-				returnDate: returnDate,
+				fromDate: fromDate.toString().replace(/\sGMT\+\d{4}/,''),
+				returnDate: returnDate.toString().replace(/\sGMT\+\d{4}/,''),
 				oneWay: oneWayChecked
 			},
 			url: 'bookings/rest/api/flights/queryflights',
