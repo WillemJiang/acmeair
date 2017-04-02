@@ -150,11 +150,10 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-dependencies</artifactId>
-        <version>Camden.SR6</version>
-        <type>pom</type>
-        <scope>import</scope>
+        <groupId>com.github.seanyinx</groupId>
+        <artifactId>unit-scaffolding</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
