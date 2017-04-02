@@ -98,6 +98,42 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.18.1</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>acmeair-customer-service:${project.version}</name>
+                            <alias>customer-service</alias>
+                            <build>
+                                <from>java:8</from>
+                                <ports>
+                                    <port>8082</port>
+                                </ports>
+                                <assembly>
+                                    <mode>tar</mode>
+                                    <descriptor>${project.basedir}/src/assembly/customer-service.xml</descriptor>
+                                </assembly>
+                                <entryPoint>
+                                    <shell>java -Dserver.port=8082 -jar /maven/acmeair/acmeair-customer-service-exec.jar
+                                    </shell>
+                                </entryPoint>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>build</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

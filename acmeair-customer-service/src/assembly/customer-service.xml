@@ -6,7 +6,7 @@
     </formats>
     <fileSets>
         <fileSet>
-            <directory>${project.basedir}/../acmeair-customer-service/target/acmeair</directory>
+            <directory>${project.basedir}/target/acmeair</directory>
             <outputDirectory>acmeair</outputDirectory>
             <fileMode>0644</fileMode>
             <directoryMode>0755</directoryMode>
