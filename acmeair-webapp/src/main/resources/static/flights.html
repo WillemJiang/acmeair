@@ -51,13 +51,15 @@
 		var toAirport = dijit.byId('toAirport').get('value');
 		var fromDate = dijit.byId('fromDate').get('value');
 		var returnDate = dijit.byId('toDate').get('value');
+		var fromDateFormatted = dojo.date.locale.format(new Date(fromDate), {selector: 'date', datePattern: 'EEE MMM d HH:mm:ss yyyy'});
+		var returnDateFormatted = dojo.date.locale.format(new Date(returnDate), {selector: 'date', datePattern: 'EEE MMM d HH:mm:ss yyyy'});
 		var oneWayChecked = dijit.byId('oneWayCheck').checked;
 		dojo.xhrPost({
 			content : {
 				fromAirport: fromAirport,
 				toAirport: toAirport,
-				fromDate: fromDate.toString().replace(/\sGMT\+\d{4}/,''),
-				returnDate: returnDate.toString().replace(/\sGMT\+\d{4}/,''),
+				fromDate: fromDateFormatted.toString(),
+				returnDate: returnDateFormatted.toString(),
 				oneWay: oneWayChecked
 			},
 			url: 'bookings/rest/api/flights/queryflights',
