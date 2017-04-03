@@ -67,17 +67,7 @@ class CustomerServiceImpl extends CustomerService {
 		Customer customer = q.get();					
 		return customer;
 	}
-	
-	@Override
-	public Customer getCustomerByUsername(String username) {
-		Query<CustomerImpl> q = datastore.find(CustomerImpl.class).field("_id").equal(username);
-		Customer customer = q.get();
-		if (customer != null) {
-			customer.setPassword(null);
-		}			
-		return customer;
-	}
-	
+
 	@Override
 	protected CustomerSession getSession(String sessionid){
 		Query<CustomerSessionImpl> q = datastore.find(CustomerSessionImpl.class).field("_id").equal(sessionid);		

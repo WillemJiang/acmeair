@@ -6,6 +6,9 @@ import br.com.six2six.fixturefactory.loader.TemplateLoader;
 import com.acmeair.entities.Customer;
 import com.acmeair.morphia.entities.CustomerAddressImpl;
 import com.acmeair.morphia.entities.CustomerImpl;
+import com.acmeair.morphia.entities.CustomerSessionImpl;
+
+import java.text.SimpleDateFormat;
 
 import static com.seanyinx.github.unit.scaffolding.Randomness.nextId;
 import static com.seanyinx.github.unit.scaffolding.Randomness.uniquify;
@@ -31,6 +34,20 @@ public class CustomerTemplateLoader implements TemplateLoader {
             add("address", one(CustomerAddressImpl.class, "valid"));
             add("phoneNumber", random(String.class, uniquify("086"), uniquify("065")));
             add("phoneNumberType", random(Customer.PhoneType.class));
+        }});
+
+        Fixture.of(CustomerSessionImpl.class).addTemplate("base", new Rule() {{
+            add("_id", uniquify("session-id"));
+            add("customerid", uniquify("customer-id"));
+            add("lastAccessedTime", instant("now"));
+        }});
+
+        Fixture.of(CustomerSessionImpl.class).addTemplate("valid").inherits("base", new Rule() {{
+            add("timeoutTime", afterDate("2099-01-01", new SimpleDateFormat("yyyy-MM-dd")));
+        }});
+
+        Fixture.of(CustomerSessionImpl.class).addTemplate("expired").inherits("base", new Rule() {{
+            add("timeoutTime", beforeDate("2009-01-01", new SimpleDateFormat("yyyy-MM-dd")));
         }});
     }
 }

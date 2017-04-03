@@ -51,7 +51,7 @@ public abstract class CustomerService {
 		}
 		return c;
 	}
-	
+
 	public boolean validateCustomer(String username, String password) {
 		boolean validatedCustomer = false;
 		Customer customerToValidate = getCustomer(username);
@@ -64,7 +64,7 @@ public abstract class CustomerService {
 	public Customer getCustomerByUsernameAndPassword(String username,
 			String password) {
 		Customer c = getCustomer(username);
-		if (!c.getPassword().equals(password)) {
+		if (c != null && !c.getPassword().equals(password)) {
 			return null;
 		}
 		// Should we also set the password to null?
