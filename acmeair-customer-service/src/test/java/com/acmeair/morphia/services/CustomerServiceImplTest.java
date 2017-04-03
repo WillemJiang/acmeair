@@ -1,38 +1,35 @@
 package com.acmeair.morphia.services;
 
+import br.com.six2six.fixturefactory.Fixture;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import com.acmeair.entities.Customer;
+import com.acmeair.entities.CustomerAddress;
 import com.acmeair.morphia.entities.CustomerAddressImpl;
+import com.acmeair.morphia.entities.CustomerImpl;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.query.FieldEnd;
+import org.mongodb.morphia.query.Query;
 
-import static com.acmeair.entities.Customer.MemberShipStatus.NONE;
-import static com.acmeair.entities.Customer.PhoneType.UNKNOWN;
-import static io.seanyinx.github.unit.scaffolding.Randomness.nextInt;
-import static io.seanyinx.github.unit.scaffolding.Randomness.uniquify;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerServiceImplTest {
+    private final Query           query    = Mockito.mock(Query.class);
+    private final FieldEnd<Query> fieldEnd = Mockito.mock(FieldEnd.class);
 
-    private final String              username        = uniquify("username");
-    private final String              password        = uniquify("password");
-    private final int                 totalMiles      = nextInt();
-    private final int                 milesYtd        = nextInt();
-    private final String              phoneNumber     = uniquify("0");
-    private final CustomerAddressImpl address         = new CustomerAddressImpl(
-            uniquify("broad way"),
-            "",
-            "new york city",
-            "NY",
-            "USA",
-            uniquify("0")
-    );
+    private CustomerAddress address;
+    private Customer        customer;
 
     @InjectMocks
     private final CustomerServiceImpl customerService = new CustomerServiceImpl();
@@ -40,28 +37,57 @@ public class CustomerServiceImplTest {
     @Mock
     private Datastore datastore;
 
+    @Before
+    public void setUp() {
+        FixtureFactoryLoader.loadTemplates("com.acmeair.customer.templates");
+
+        when(datastore.find(CustomerImpl.class)).thenReturn(query);
+        when(query.field("_id")).thenReturn(fieldEnd);
+
+        customer = Fixture.from(CustomerImpl.class).gimme("valid");
+        address = Fixture.from(CustomerAddressImpl.class).gimme("valid");
+    }
+
     @Test
     public void savesCustomerIntoDatabase() {
         Customer customer = customerService.createCustomer(
-                username,
-                password,
-                NONE,
-                totalMiles,
-                milesYtd,
-                phoneNumber,
-                UNKNOWN,
-                address
+                this.customer.getCustomerId(),
+                this.customer.getPassword(),
+                this.customer.getStatus(),
+                this.customer.getTotal_miles(),
+                this.customer.getMiles_ytd(),
+                this.customer.getPhoneNumber(),
+                this.customer.getPhoneNumberType(),
+                this.customer.getAddress()
         );
 
-        assertThat(customer.getUsername(), is(username));
-        assertThat(customer.getPassword(), is(password));
-        assertThat(customer.getStatus(), is(NONE));
-        assertThat(customer.getTotal_miles(), is(totalMiles));
-        assertThat(customer.getMiles_ytd(), is(milesYtd));
-        assertThat(customer.getPhoneNumber(), is(phoneNumber));
-        assertThat(customer.getPhoneNumberType(), is(UNKNOWN));
-        assertThat(customer.getAddress(), is(address));
+        assertThat(customer, is(this.customer));
 
         verify(datastore).save(customer);
+    }
+
+    @Test
+    public void createsCustomerAddress() {
+        CustomerAddress address = customerService.createAddress(
+                this.address.getStreetAddress1(),
+                this.address.getStreetAddress2(),
+                this.address.getCity(),
+                this.address.getStateProvince(),
+                this.address.getCountry(),
+                this.address.getPostalCode()
+        );
+
+        assertThat(address, is(this.address));
+    }
+
+    @Test
+    public void clearsPasswordOfRetrievedUser() {
+        when(fieldEnd.equal(this.customer.getUsername())).thenReturn(query);
+        when(query.get()).thenReturn(customer);
+
+        Customer customer = customerService.getCustomerByUsername(this.customer.getUsername());
+
+        assertThat(customer, is(this.customer));
+        assertThat(customer.getPassword(), is(nullValue()));
     }
 }

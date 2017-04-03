@@ -83,6 +83,10 @@
             <groupId>com.github.seanyinx</groupId>
             <artifactId>unit-scaffolding</artifactId>
         </dependency>
+        <dependency>
+            <groupId>br.com.six2six</groupId>
+            <artifactId>fixture-factory</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
