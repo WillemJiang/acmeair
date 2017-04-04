@@ -52,7 +52,7 @@ public class FlightsREST {
 		
 		TripLegInfo toInfo = new TripLegInfo();
 		List<Flight> toFlights = flightService.getFlightByAirportsAndDepartureDate(fromAirport, toAirport, fromDate);
-		toInfo.setFlightsOptions(toFlights);
+		toInfo.addFlightsOptions(toFlights);
 		legs.add(toInfo);
 		toInfo.setCurrentPage(0);
 		toInfo.setHasMoreOptions(false);
@@ -62,7 +62,7 @@ public class FlightsREST {
 		if (!oneWay) {
 			TripLegInfo retInfo = new TripLegInfo();
 			List<Flight> retFlights = flightService.getFlightByAirportsAndDepartureDate(toAirport, fromAirport, returnDate);
-			retInfo.setFlightsOptions(retFlights);
+			retInfo.addFlightsOptions(retFlights);
 			legs.add(retInfo);
 			retInfo.setCurrentPage(0);
 			retInfo.setHasMoreOptions(false);
@@ -94,7 +94,7 @@ public class FlightsREST {
 		
 		TripLegInfo toInfo = new TripLegInfo();
 		List<Flight> toFlights = flightService.getFlightByAirports(fromAirport, toAirport);
-		toInfo.setFlightsOptions(toFlights);
+		toInfo.addFlightsOptions(toFlights);
 		legs.add(toInfo);
 		toInfo.setCurrentPage(0);
 		toInfo.setHasMoreOptions(false);
@@ -104,7 +104,7 @@ public class FlightsREST {
 		if (!oneWay) {
 			TripLegInfo retInfo = new TripLegInfo();
 			List<Flight> retFlights = flightService.getFlightByAirports(toAirport, fromAirport);
-			retInfo.setFlightsOptions(retFlights);
+			retInfo.addFlightsOptions(retFlights);
 			legs.add(retInfo);
 			retInfo.setCurrentPage(0);
 			retInfo.setHasMoreOptions(false);

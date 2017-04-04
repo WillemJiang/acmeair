@@ -22,6 +22,7 @@ import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -32,6 +33,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 @Component
+@Profile({"!dev"})
 public class RESTCookieSessionFilter extends ZuulFilter {
 	private static final Logger logger = LoggerFactory.getLogger(RESTCookieSessionFilter.class);
 	

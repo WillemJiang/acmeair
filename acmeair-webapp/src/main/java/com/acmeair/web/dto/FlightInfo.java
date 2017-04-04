@@ -2,6 +2,7 @@ package com.acmeair.web.dto;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -113,5 +114,40 @@ public class FlightInfo {
 	}
 	public FlightPKInfo getPkey(){
 		return pkey;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		FlightInfo that = (FlightInfo) o;
+		return numFirstClassSeats == that.numFirstClassSeats &&
+				numEconomyClassSeats == that.numEconomyClassSeats &&
+				Objects.equals(_id, that._id) &&
+				Objects.equals(flightSegmentId, that.flightSegmentId) &&
+				Objects.equals(scheduledDepartureTime, that.scheduledDepartureTime) &&
+				Objects.equals(scheduledArrivalTime, that.scheduledArrivalTime) &&
+				Objects.equals(firstClassBaseCost, that.firstClassBaseCost) &&
+				Objects.equals(economyClassBaseCost, that.economyClassBaseCost) &&
+				Objects.equals(airplaneTypeId, that.airplaneTypeId) &&
+				Objects.equals(flightSegment, that.flightSegment) &&
+				Objects.equals(pkey, that.pkey);
+	}
+
+	@Override
+	public String toString() {
+		return "FlightInfo{" +
+				"_id='" + _id + '\'' +
+				", flightSegmentId='" + flightSegmentId + '\'' +
+				", scheduledDepartureTime=" + scheduledDepartureTime +
+				", scheduledArrivalTime=" + scheduledArrivalTime +
+				", firstClassBaseCost=" + firstClassBaseCost +
+				", economyClassBaseCost=" + economyClassBaseCost +
+				", numFirstClassSeats=" + numFirstClassSeats +
+				", numEconomyClassSeats=" + numEconomyClassSeats +
+				", airplaneTypeId='" + airplaneTypeId + '\'' +
+				", flightSegment=" + flightSegment +
+				", pkey=" + pkey +
+				'}';
 	}
 }

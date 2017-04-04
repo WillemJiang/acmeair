@@ -1,6 +1,9 @@
 package com.acmeair.web.dto;
 
 import com.acmeair.entities.FlightSegment;
+
+import java.util.Objects;
+
 public class FlightSegmentInfo {
 
 	private String _id;
@@ -41,5 +44,26 @@ public class FlightSegmentInfo {
 	}
 	public void setMiles(int miles) {
 		this.miles = miles;
-	}	
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		FlightSegmentInfo that = (FlightSegmentInfo) o;
+		return miles == that.miles &&
+				Objects.equals(_id, that._id) &&
+				Objects.equals(originPort, that.originPort) &&
+				Objects.equals(destPort, that.destPort);
+	}
+
+	@Override
+	public String toString() {
+		return "FlightSegmentInfo{" +
+				"_id='" + _id + '\'' +
+				", originPort='" + originPort + '\'' +
+				", destPort='" + destPort + '\'' +
+				", miles=" + miles +
+				'}';
+	}
 }

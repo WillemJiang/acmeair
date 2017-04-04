@@ -73,13 +73,15 @@ public class TripLegInfo {
 		return flightsOptions;
 	}
 
-	public void setFlightsOptions(List<Flight> flightsOptions) {
+	public void addFlightsOptions(List<Flight> flightsOptions) {
 		List<FlightInfo> flightInfoOptions = new ArrayList<FlightInfo>();
 		for(Flight info : flightsOptions){
 			flightInfoOptions.add(new FlightInfo(info));
 		}
+		setFlightOptions(flightInfoOptions);
+	}
+
+	public void setFlightOptions(List<FlightInfo> flightInfoOptions) {
 		this.flightsOptions = flightInfoOptions;
 	}
-	
-
 }
