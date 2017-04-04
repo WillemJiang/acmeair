@@ -41,12 +41,12 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-        classes = AcmAirApplication.class,
+        classes = AcmeAirApplication.class,
         webEnvironment = DEFINED_PORT,
         properties = {
                 "mongo.host=localhost"
         })
-public class AcmAirApplicationIT {
+public class AcmeAirApplicationIT {
     private MongoClient      mongoClient;
 
     private final String  toFlightId     = "toFlightId";

@@ -11,11 +11,11 @@ import javax.servlet.ServletContext;
 
 @SpringBootApplication
 @EnableZuulProxy
-public class AcmAirApplication extends SpringBootServletInitializer {
+public class AcmeAirApplication extends SpringBootServletInitializer {
     
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         
-        return builder.sources(AcmAirApplication.class);
+        return builder.sources(AcmeAirApplication.class);
     }
     
     @Override
@@ -24,6 +24,6 @@ public class AcmAirApplication extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(AcmAirApplication.class, args);
+        SpringApplication.run(AcmeAirApplication.class, args);
     }
 }
