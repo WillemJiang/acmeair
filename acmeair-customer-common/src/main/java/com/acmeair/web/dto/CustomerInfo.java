@@ -16,6 +16,7 @@
 package com.acmeair.web.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -183,9 +184,9 @@ public class CustomerInfo implements Serializable{
 				return false;
 		} else if (!phoneNumber.equals(other.phoneNumber))
 			return false;
-		if (phoneNumberType != other.phoneNumberType)
+		if (!Objects.equals(phoneNumberType, other.phoneNumberType))
 			return false;
-		if (status != other.status)
+		if (!Objects.equals(status, other.status))
 			return false;
 		if (total_miles != other.total_miles)
 			return false;

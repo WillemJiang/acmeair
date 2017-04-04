@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Path("/api/customer")
 public class CustomerREST {
 	private static final Logger logger = LoggerFactory.getLogger(CustomerREST.class);
+	static final String LOGIN_USER = "acmeair.login_user";
 
 	@Autowired
 	private CustomerService customerService;
@@ -39,12 +40,12 @@ public class CustomerREST {
 
 
 	private boolean validate(String customerid)	{
-		String loginUser = request.getHeader("acmeair.login_user");
+		String loginUser = request.getHeader(LOGIN_USER);
 		return customerid.equals(loginUser);
 	}
 	@GET
 	@Path("/byid/{custid}")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCustomer(@CookieParam("sessionid") String sessionid, @PathParam("custid") String customerid) {
 		try {
 			logger.info("Received request to get customer by id {} with session {}", customerid, sessionid);
@@ -66,7 +67,7 @@ public class CustomerREST {
 
 	@GET
 	@Path("/{custid}")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCustomer(@PathParam("custid") String customerid) {
 		try {
 			Customer customer = customerService.getCustomerByUsername(customerid);
@@ -81,7 +82,7 @@ public class CustomerREST {
 
 	@POST
 	@Path("/byid/{custid}")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public /* Customer */ Response putCustomer(@CookieParam("sessionid") String sessionid, CustomerInfo customer) {
 		if (!validate(customer.getUsername())) {
 			return Response.status(Response.Status.FORBIDDEN).build();
