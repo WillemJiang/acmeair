@@ -5,6 +5,7 @@ import com.acmeair.entities.Flight;
 import com.acmeair.morphia.MorphiaConstants;
 import com.acmeair.morphia.entities.BookingImpl;
 import com.acmeair.service.BookingService;
+import com.acmeair.service.UserService;
 import com.acmeair.service.DataService;
 import com.acmeair.service.FlightService;
 import com.acmeair.service.KeyGenerator;
@@ -37,26 +38,17 @@ public class BookingServiceImpl implements BookingService, MorphiaConstants {
 
 	@Autowired
 	private FlightService flightService;
-
-	@Value("${customer.service.address}")
-	private String customerServiceAddress;
-
-	private final RestTemplate restTemplate = new RestTemplate();
+	
+	@Autowired
+	private UserService userService;
 
 	public String bookFlight(String customerId, String flightId) {
 		try{
 			Flight f = flightService.getFlightByFlightId(flightId, null);
-			ResponseEntity<CustomerInfo> resp = restTemplate.getForEntity(
-					customerServiceAddress + "/rest/api/customer/{custid}",
-					CustomerInfo.class,
-					customerId
-			);
-
-			if (resp.getStatusCode() != HttpStatus.OK) {
-				throw new NoSuchElementException("No such customer with id " + customerId);
-			}
-
-			Booking newBooking = new BookingImpl(keyGenerator.generate().toString(), new Date(), resp.getBody(), f);
+			
+			CustomerInfo customerInfo = userService.getCustomerInfo(customerId);
+			
+			Booking newBooking = new BookingImpl(keyGenerator.generate().toString(), new Date(), customerInfo, f);
 
 			datastore.save(newBooking);
 			return newBooking.getBookingId();
@@ -64,7 +56,7 @@ public class BookingServiceImpl implements BookingService, MorphiaConstants {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
 	@Override
 	public String bookFlight(String customerId, String flightSegmentId, String flightId) {
 		return bookFlight(customerId, flightId);	

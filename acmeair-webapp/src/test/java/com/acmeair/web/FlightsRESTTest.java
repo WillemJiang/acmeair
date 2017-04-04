@@ -5,7 +5,7 @@ import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import com.acmeair.FlightRestTestApplication;
 import com.acmeair.entities.Flight;
 import com.acmeair.morphia.entities.FlightImpl;
-import com.acmeair.service.CustomerService;
+import com.acmeair.service.UserService;
 import com.acmeair.service.FlightService;
 import com.acmeair.web.dto.FlightInfo;
 import com.acmeair.web.dto.TripFlightOptions;
@@ -42,9 +42,9 @@ import static org.mockito.Mockito.when;
 public class FlightsRESTTest {
 
     @MockBean
-    private CustomerService customerService;
+    private UserService   customerService;
     @MockBean
-    private Datastore datastore;
+    private Datastore     datastore;
     @MockBean
     private FlightService flightService;
 

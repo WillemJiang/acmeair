@@ -81,10 +81,12 @@
         <dependency>
             <groupId>com.github.seanyinx</groupId>
             <artifactId>unit-scaffolding</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>br.com.six2six</groupId>
             <artifactId>fixture-factory</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

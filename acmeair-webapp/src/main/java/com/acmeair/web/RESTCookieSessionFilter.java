@@ -16,7 +16,8 @@
 package com.acmeair.web;
 
 import com.acmeair.entities.CustomerSession;
-import com.acmeair.service.LoginService;
+import com.acmeair.hystrix.LoginCommand;
+import com.acmeair.hystrix.UserCommand;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
@@ -43,7 +44,7 @@ public class RESTCookieSessionFilter extends ZuulFilter {
 	private static final String LOADDB_PATH = "/rest/api/loaddb";
 
     @Autowired
-    private LoginService loginService;
+    private UserCommand userCommand;
 
 
 	private void doFilter(RequestContext context) throws IOException, ServletException {
@@ -96,7 +97,7 @@ public class RESTCookieSessionFilter extends ZuulFilter {
 	}
 
 	private CustomerSession getCustomerSession(String sessionId) {
-		return loginService.validateCustomerSession(sessionId);
+		return userCommand.validateCustomerSession(sessionId);
 	}
 
 	@Override

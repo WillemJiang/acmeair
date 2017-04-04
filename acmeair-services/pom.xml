@@ -63,5 +63,9 @@
                 </exclusion>
             </exclusions>
         </dependency>
+      <dependency>
+        <groupId>acmeair</groupId>
+        <artifactId>acmeair-customer-common</artifactId>
+      </dependency>
     </dependencies>
 </project>

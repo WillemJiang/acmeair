@@ -6,7 +6,7 @@ import com.acmeair.FlightRestTestApplication;
 import com.acmeair.entities.Booking;
 import com.acmeair.morphia.entities.BookingImpl;
 import com.acmeair.service.BookingService;
-import com.acmeair.service.CustomerService;
+import com.acmeair.service.UserService;
 import com.acmeair.service.FlightService;
 import com.acmeair.web.dto.BookingInfo;
 import com.acmeair.web.dto.BookingReceiptInfo;
@@ -38,11 +38,11 @@ import static org.mockito.Mockito.when;
 @ActiveProfiles({"test", "dev"})
 public class BookingsRESTTest {
     @MockBean
-    private CustomerService customerService;
+    private UserService    customerService;
     @MockBean
-    private Datastore datastore;
+    private Datastore      datastore;
     @MockBean
-    private FlightService flightService;
+    private FlightService  flightService;
     @MockBean
     private BookingService bookingService;
 
