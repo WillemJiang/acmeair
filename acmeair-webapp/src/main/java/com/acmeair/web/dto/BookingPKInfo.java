@@ -1,7 +1,7 @@
 package com.acmeair.web.dto;
 
 import javax.xml.bind.annotation.XmlElement;
-
+import java.util.Objects;
 
 
 public class BookingPKInfo {
@@ -37,5 +37,22 @@ public class BookingPKInfo {
 
 	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		BookingPKInfo that = (BookingPKInfo) o;
+		return Objects.equals(id, that.id) &&
+				Objects.equals(customerId, that.customerId);
+	}
+
+	@Override
+	public String toString() {
+		return "BookingPKInfo{" +
+				"id='" + id + '\'' +
+				", customerId='" + customerId + '\'' +
+				'}';
 	}
 }

@@ -1,6 +1,7 @@
 package com.acmeair.web.dto;
 
 import java.util.Date;
+import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -68,5 +69,27 @@ public class BookingInfo {
 	public BookingPKInfo getPkey(){
 		return pkey;
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		BookingInfo that = (BookingInfo) o;
+		return Objects.equals(bookingId, that.bookingId) &&
+				Objects.equals(flightId, that.flightId) &&
+				Objects.equals(customerId, that.customerId) &&
+				Objects.equals(dateOfBooking, that.dateOfBooking) &&
+				Objects.equals(pkey, that.pkey);
+	}
+
+	@Override
+	public String toString() {
+		return "BookingInfo{" +
+				"bookingId='" + bookingId + '\'' +
+				", flightId='" + flightId + '\'' +
+				", customerId='" + customerId + '\'' +
+				", dateOfBooking=" + dateOfBooking +
+				", pkey=" + pkey +
+				'}';
+	}
 }

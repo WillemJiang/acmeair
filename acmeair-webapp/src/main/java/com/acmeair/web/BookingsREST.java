@@ -37,7 +37,6 @@ public class BookingsREST {
 	@Consumes({"application/x-www-form-urlencoded"})
 	@Path("/bookflights")
 	@Produces("application/json")
-//	@RequestMapping(method = RequestMethod.GET, value = "/{id}", produces = "application/json")
 	public /*BookingInfo*/ Response bookFlights(
 			@FormParam("userid") String userid,
 			@FormParam("toFlightId") String toFlightId,
@@ -69,7 +68,6 @@ public class BookingsREST {
 	@GET
 	@Path("/bybookingnumber/{userid}/{number}")
 	@Produces("application/json")
-//	@RequestMapping(method = RequestMethod.GET, value = "/{id}", produces = "application/json")
 	public BookingInfo getBookingByNumber(
 			@PathParam("number") String number,
 			@PathParam("userid") String userid) {
