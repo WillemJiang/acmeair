@@ -109,16 +109,12 @@ public class FlightServiceImpl extends FlightService implements  MorphiaConstant
 			q2 = datastore.find(FlightImpl.class).disableValidation().field("flightSegmentId").equal(segment.getFlightName());
 		}
 		List<FlightImpl> flightImpls = q2.asList();
-		List<Flight> flights;
+		List<Flight> flights = new ArrayList<>();
 		if (flightImpls != null) {
-			flights =  new ArrayList<Flight>(); 
 			for (Flight flight : flightImpls) {
 				flight.setFlightSegment(segment);
 				flights.add(flight);
 			}
-		}
-		else {
-			flights = new ArrayList<Flight>(); // put an empty list into the cache in the cache in the case where no matching flights
 		}
 		return flights;
 	}
