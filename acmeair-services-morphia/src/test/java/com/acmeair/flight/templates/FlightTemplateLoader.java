@@ -3,13 +3,11 @@ package com.acmeair.flight.templates;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
-import com.acmeair.entities.Customer;
-import com.acmeair.entities.FlightSegment;
-import com.acmeair.morphia.entities.*;
+import com.acmeair.morphia.entities.FlightImpl;
+import com.acmeair.morphia.entities.FlightSegmentImpl;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static com.seanyinx.github.unit.scaffolding.Randomness.nextId;
 import static com.seanyinx.github.unit.scaffolding.Randomness.uniquify;

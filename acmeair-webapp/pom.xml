@@ -72,6 +72,11 @@
         </dependency>
         <dependency>
             <groupId>acmeair</groupId>
+            <artifactId>acmeair-services-morphia</artifactId>
+            <type>test-jar</type>
+        </dependency>
+        <dependency>
+            <groupId>acmeair</groupId>
             <artifactId>acmeair-common</artifactId>
         </dependency>
         <dependency>
