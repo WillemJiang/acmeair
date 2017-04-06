@@ -67,20 +67,24 @@ public class CustomerServiceApplicationTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        mongodExecutable = starter.prepare(new MongodConfigBuilder()
-                                                   .version(Version.Main.PRODUCTION)
-                                                   .net(new Net("localhost", 27017, false))
-                                                   .build());
-
-        mongodProcess = mongodExecutable.start();
+        // We don't start the mongoDB, if the system property mongodb.start is false.
+        if (Boolean.valueOf(System.getProperty("mongod.start", "true"))) {
+            mongodExecutable = starter.prepare(new MongodConfigBuilder().version(Version.Main.PRODUCTION).net(new Net("localhost", 27017, false)).build());
+        
+            mongodProcess = mongodExecutable.start();
+        }   
         mongoClient = new MongoClient("localhost", 27017);
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
         mongoClient.close();
-        mongodProcess.stop();
-        mongodExecutable.stop();
+        if (mongodProcess != null) {
+            mongodProcess.stop();
+        }
+        if (mongodExecutable != null) {
+            mongodExecutable.stop();
+        }
     }
 
     @Before
