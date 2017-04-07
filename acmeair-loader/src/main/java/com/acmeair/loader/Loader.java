@@ -15,6 +15,8 @@
 *******************************************************************************/
 package com.acmeair.loader;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,13 +24,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 @Component
 public class Loader {
 	public static String REPOSITORY_LOOKUP_KEY = "com.acmeair.repository.type";
 
-	private static Logger logger = Logger.getLogger(Loader.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(Loader.class.getName());
     
     @Autowired
 	private FlightLoader flightLoader;
@@ -88,7 +89,7 @@ public class Loader {
 			length = (stop - start)/1000.0;
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Failed to load flights or customers", e);
 		}		
 		return "Loaded flights and "  +  numCustomers + " customers in " + length + " seconds";
 	}

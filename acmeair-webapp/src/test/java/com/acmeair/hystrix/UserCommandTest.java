@@ -52,8 +52,8 @@ public class UserCommandTest {
         headers.put("Content-Type", "application/json");
 
         return pactDslWithProvider
-                .given("All users named Michael are available")
-                .uponReceiving("a request for all users")
+                .given("Customer Sean is registered")
+                .uponReceiving("a request for Sean")
                 .path("/rest/api/customer/" + customerInfo.getUsername())
                 .method("GET")
                 .willRespondWith()
