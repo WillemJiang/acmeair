@@ -7,4 +7,7 @@ services:
 
 script:
   - mvn package jacoco:report coveralls:report
-  - mvn clean verify -Ddocker.showLogs
+  - mvn clean install
+
+after_success:
+  - mvn clean verify -Ddocker.showLogs -Pdocker
