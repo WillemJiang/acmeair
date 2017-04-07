@@ -23,9 +23,13 @@ import java.util.NoSuchElementException;
 public class UserCommand implements UserService {
     
     private RestTemplate restTemplate = new RestTemplate();
-    @Value("${customer.service.address}")
-    private String customerServiceAddress;
-    
+
+    private final String customerServiceAddress;
+
+    public UserCommand(@Value("${customer.service.address}") String customerServiceAddress) {
+        this.customerServiceAddress = customerServiceAddress;
+    }
+
     @HystrixCommand
     public CustomerInfo getCustomerInfo(String customerId) {
         ResponseEntity<CustomerInfo> resp = restTemplate.getForEntity(customerServiceAddress + "/rest/api/customer/{custid}", CustomerInfo.class, customerId);
