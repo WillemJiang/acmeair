@@ -23,8 +23,17 @@
     <module>acmeair-services</module>
     <module>acmeair-services-morphia</module>
     <module>acmeair-webapp</module>
-    <module>integration-tests</module>
   </modules>
+
+  <profiles>
+    <profile>
+      <id>docker</id>
+      <modules>
+        <module>integration-tests</module>
+      </modules>
+    </profile>
+    
+  </profiles>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
