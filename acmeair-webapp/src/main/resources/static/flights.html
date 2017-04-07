@@ -51,8 +51,8 @@
 		var toAirport = dijit.byId('toAirport').get('value');
 		var fromDate = dijit.byId('fromDate').get('value');
 		var returnDate = dijit.byId('toDate').get('value');
-		var fromDateFormatted = dojo.date.locale.format(new Date(fromDate), {selector: 'date', datePattern: 'EEE MMM d HH:mm:ss yyyy'});
-		var returnDateFormatted = dojo.date.locale.format(new Date(returnDate), {selector: 'date', datePattern: 'EEE MMM d HH:mm:ss yyyy'});
+		var fromDateFormatted = dojo.date.locale.format(new Date(fromDate), {selector: 'date', datePattern: 'EEE MMM d HH:mm:ss yyyy', locale: 'en'});
+		var returnDateFormatted = dojo.date.locale.format(new Date(returnDate), {selector: 'date', datePattern: 'EEE MMM d HH:mm:ss yyyy', locale: 'en'});
 		var oneWayChecked = dijit.byId('oneWayCheck').checked;
 		dojo.xhrPost({
 			content : {
