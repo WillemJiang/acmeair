@@ -20,7 +20,8 @@ import java.util.Date;
 
 public interface CustomerSession {
 
-	
+	String SESSIONID_COOKIE_NAME = "sessionid";
+
 	String getId();
 
 

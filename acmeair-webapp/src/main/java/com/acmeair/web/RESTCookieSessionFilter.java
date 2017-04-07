@@ -65,7 +65,7 @@ public class RESTCookieSessionFilter extends ZuulFilter {
 		Cookie sessionCookie = null;
 		if (cookies != null) {
 			for (Cookie c : cookies) {
-				if (c.getName().equals(LoginREST.SESSIONID_COOKIE_NAME)) {
+				if (c.getName().equals(CustomerSession.SESSIONID_COOKIE_NAME)) {
 					sessionCookie = c;
 				}
 				if (sessionCookie!=null)

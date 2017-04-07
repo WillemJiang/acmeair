@@ -20,16 +20,17 @@ import javax.ws.rs.core.*;
 
 import com.acmeair.entities.CustomerSession;
 import com.acmeair.service.*;
+import com.acmeair.web.dto.CustomerSessionInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static com.acmeair.entities.CustomerSession.SESSIONID_COOKIE_NAME;
 
 
 @Path("/api/login")
 public class LoginREST {
 	public static final Logger logger = LoggerFactory.getLogger("LoginREST");
-
-	public static String SESSIONID_COOKIE_NAME = "sessionid";
 
 	@Autowired
 	private CustomerService customerService;
@@ -95,7 +96,7 @@ public class LoginREST {
 	@Consumes({"application/x-www-form-urlencoded"})
 	@Produces(MediaType.APPLICATION_JSON)
 	public /* Customer */ Response validateCustomer(@FormParam("sessionId") String sessionId) {
-		return Response.ok(customerService.validateSession(sessionId), MediaType.APPLICATION_JSON).build();
+		return Response.ok(new CustomerSessionInfo(customerService.validateSession(sessionId)), MediaType.APPLICATION_JSON).build();
 	}
 
 }

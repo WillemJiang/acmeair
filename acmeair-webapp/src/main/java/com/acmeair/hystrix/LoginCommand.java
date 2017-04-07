@@ -1,7 +1,7 @@
 package com.acmeair.hystrix;
 
 import com.acmeair.entities.CustomerSession;
-import com.acmeair.morphia.entities.CustomerSessionImpl;
+import com.acmeair.web.dto.CustomerSessionInfo;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -22,10 +22,10 @@ public class LoginCommand {
     
     @HystrixCommand
     public CustomerSession validateCustomerSession(String sessionId) {
-        ResponseEntity<CustomerSessionImpl> responseEntity = restTemplate.postForEntity(
+        ResponseEntity<CustomerSessionInfo> responseEntity = restTemplate.postForEntity(
                 customerServiceAddress + "/rest/api/login/validate",
                 validationRequest(sessionId),
-                CustomerSessionImpl.class
+                CustomerSessionInfo.class
         );
         return responseEntity.getBody();
     }
