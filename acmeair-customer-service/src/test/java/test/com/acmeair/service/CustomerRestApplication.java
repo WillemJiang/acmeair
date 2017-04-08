@@ -1,8 +1,9 @@
-package test.com.acmeair;
+package test.com.acmeair.service;
 
-import com.acmeair.loader.CustomerLoaderREST;
 import com.acmeair.service.CustomerService;
 import com.acmeair.service.KeyGenerator;
+import com.acmeair.web.CustomerREST;
+import com.acmeair.web.LoginREST;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletProperties;
 import org.mockito.Mockito;
@@ -16,13 +17,13 @@ import javax.ws.rs.ApplicationPath;
 
 
 @SpringBootApplication
-public class CustomerLoaderApplication extends SpringBootServletInitializer {
+public class CustomerRestApplication extends SpringBootServletInitializer {
 
     private final KeyGenerator    keyGenerator    = Mockito.mock(KeyGenerator.class);
     private final CustomerService customerService = Mockito.mock(CustomerService.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(CustomerLoaderApplication.class, args);
+        SpringApplication.run(CustomerRestApplication.class, args);
     }
 
     @Bean
@@ -37,9 +38,9 @@ public class CustomerLoaderApplication extends SpringBootServletInitializer {
 
     @Configuration
     @ApplicationPath("/rest")
-    public static class CustomerLoaderApp extends ResourceConfig {
-        public CustomerLoaderApp() {
-            registerClasses(CustomerLoaderREST.class);
+    public static class CustomerRestApp extends ResourceConfig {
+        public CustomerRestApp() {
+            registerClasses(CustomerREST.class, LoginREST.class);
             property(ServletProperties.FILTER_FORWARD_ON_404, true);
         }
     }

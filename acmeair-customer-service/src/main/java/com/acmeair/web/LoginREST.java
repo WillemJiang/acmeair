@@ -96,7 +96,12 @@ public class LoginREST {
 	@Consumes({"application/x-www-form-urlencoded"})
 	@Produces(MediaType.APPLICATION_JSON)
 	public /* Customer */ Response validateCustomer(@FormParam("sessionId") String sessionId) {
-		return Response.ok(new CustomerSessionInfo(customerService.validateSession(sessionId)), MediaType.APPLICATION_JSON).build();
+		CustomerSession customerSession = customerService.validateSession(sessionId);
+		CustomerSessionInfo sessionInfo = null;
+		if (customerSession != null) {
+			sessionInfo = new CustomerSessionInfo(customerSession);
+		}
+		return Response.ok(sessionInfo, MediaType.APPLICATION_JSON).build();
 	}
 
 }

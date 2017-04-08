@@ -3,6 +3,7 @@ package com.acmeair.web.dto;
 import com.acmeair.entities.CustomerSession;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class CustomerSessionInfo implements CustomerSession {
     private String id;
@@ -63,5 +64,26 @@ public class CustomerSessionInfo implements CustomerSession {
 
     public void setTimeoutTime(Date timeoutTime) {
         this.timeoutTime = timeoutTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomerSessionInfo that = (CustomerSessionInfo) o;
+        return Objects.equals(id, that.id) &&
+               Objects.equals(customerid, that.customerid) &&
+               Objects.equals(lastAccessedTime, that.lastAccessedTime) &&
+               Objects.equals(timeoutTime, that.timeoutTime);
+    }
+
+    @Override
+    public String toString() {
+        return "CustomerSessionInfo{" +
+               "id='" + id + '\'' +
+               ", customerid='" + customerid + '\'' +
+               ", lastAccessedTime=" + lastAccessedTime +
+               ", timeoutTime=" + timeoutTime +
+               '}';
     }
 }

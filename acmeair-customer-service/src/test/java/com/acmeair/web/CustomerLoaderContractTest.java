@@ -12,7 +12,7 @@ import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import com.acmeair.entities.CustomerAddress;
 import com.acmeair.morphia.entities.CustomerAddressImpl;
 import com.acmeair.service.CustomerService;
-import test.com.acmeair.CustomerLoaderApplication;
+import test.com.acmeair.loader.CustomerLoaderApplication;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -39,7 +39,7 @@ public class CustomerLoaderContractTest {
     private final RuntimeException exception = new RuntimeException("oops");
 
     @BeforeClass
-    public static void startBookService() {
+    public static void startCustomerService() {
         customerApplicationContext = SpringApplication.run(CustomerLoaderApplication.class, "--server.port=8081");
         customerService = customerApplicationContext.getBean(CustomerService.class);
 
@@ -47,7 +47,7 @@ public class CustomerLoaderContractTest {
     }
 
     @AfterClass
-    public static void closeBookService() {
+    public static void closeCustomerService() {
         customerApplicationContext.close();
     }
 

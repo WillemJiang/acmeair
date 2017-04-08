@@ -16,7 +16,6 @@
 package com.acmeair.web;
 
 import com.acmeair.entities.CustomerSession;
-import com.acmeair.hystrix.LoginCommand;
 import com.acmeair.hystrix.UserCommand;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;

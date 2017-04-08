@@ -19,10 +19,10 @@
     <module>acmeair-common</module>
     <module>acmeair-loader</module>
     <module>acmeair-customer-common</module>
-    <module>acmeair-customer-service</module>
     <module>acmeair-services</module>
     <module>acmeair-services-morphia</module>
     <module>acmeair-webapp</module>
+    <module>acmeair-customer-service</module>
     <module>integration-tests</module>
   </modules>
 
