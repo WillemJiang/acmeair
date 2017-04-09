@@ -146,8 +146,8 @@
                 <version>2.19.1</version>
                 <configuration>
                     <systemPropertyVariables>
-                        <mongo.host>localhost</mongo.host>
-                        <mongo.port>${mongo.port}</mongo.port>
+                        <spring.data.mongodb.host>localhost</spring.data.mongodb.host>
+                        <spring.data.mongodb.port>${mongo.port}</spring.data.mongodb.port>
                         <customer.service.address>http://localhost:${customer.service.port}</customer.service.address>
                         <zuul.routes.customers.url>http://localhost:${customer.service.port}</zuul.routes.customers.url>
                     </systemPropertyVariables>

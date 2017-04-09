@@ -2,12 +2,6 @@ package com.acmeair;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
-import de.flapdoodle.embed.mongo.MongodExecutable;
-import de.flapdoodle.embed.mongo.MongodProcess;
-import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
-import de.flapdoodle.embed.mongo.config.Net;
-import de.flapdoodle.embed.mongo.distribution.Version;
 import org.bson.Document;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -23,7 +17,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -48,11 +41,7 @@ import static org.springframework.http.HttpStatus.OK;
                 "spring.data.mongodb.host=localhost",
                 "spring.data.mongodb.port=27017"
         })
-@ActiveProfiles("test")
 public class CustomerServiceApplicationTest {
-    private static final MongodStarter starter = MongodStarter.getDefaultInstance();
-    private static MongodExecutable mongodExecutable;
-    private static MongodProcess    mongodProcess;
     private static MongoClient      mongoClient;
 
     private final String      customerId = "mike";
@@ -67,24 +56,12 @@ public class CustomerServiceApplicationTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        // We don't start the mongoDB, if the system property mongodb.start is false.
-        if (Boolean.valueOf(System.getProperty("mongod.start", "true"))) {
-            mongodExecutable = starter.prepare(new MongodConfigBuilder().version(Version.Main.PRODUCTION).net(new Net("localhost", 27017, false)).build());
-
-            mongodProcess = mongodExecutable.start();
-        }
         mongoClient = new MongoClient("localhost", 27017);
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
         mongoClient.close();
-        if (mongodProcess != null) {
-            mongodProcess.stop();
-        }
-        if (mongodExecutable != null) {
-            mongodExecutable.stop();
-        }
     }
 
     @Before

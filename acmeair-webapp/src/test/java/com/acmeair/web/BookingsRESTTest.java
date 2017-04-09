@@ -6,19 +6,23 @@ import com.acmeair.FlightRestTestApplication;
 import com.acmeair.entities.Booking;
 import com.acmeair.morphia.entities.BookingImpl;
 import com.acmeair.service.BookingService;
-import com.acmeair.service.UserService;
 import com.acmeair.service.FlightService;
+import com.acmeair.service.UserService;
 import com.acmeair.web.dto.BookingInfo;
 import com.acmeair.web.dto.BookingReceiptInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mongodb.morphia.Datastore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
@@ -39,8 +43,6 @@ import static org.mockito.Mockito.when;
 public class BookingsRESTTest {
     @MockBean
     private UserService    customerService;
-    @MockBean
-    private Datastore      datastore;
     @MockBean
     private FlightService  flightService;
     @MockBean

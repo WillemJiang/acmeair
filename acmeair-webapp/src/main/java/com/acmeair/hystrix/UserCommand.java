@@ -65,7 +65,7 @@ public class UserCommand implements UserService {
     private HttpEntity<MultiValueMap<String, String>> validationRequest(String sessionId) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        
+
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("sessionId", sessionId);
         

@@ -6,6 +6,7 @@ import com.acmeair.entities.Booking;
 import com.acmeair.entities.Flight;
 import com.acmeair.morphia.entities.BookingImpl;
 import com.acmeair.morphia.entities.FlightImpl;
+import com.acmeair.morphia.repositories.BookingRepository;
 import com.acmeair.service.FlightService;
 import com.acmeair.service.KeyGenerator;
 import com.acmeair.service.UserService;
@@ -15,11 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.query.FieldEnd;
-import org.mongodb.morphia.query.Query;
 
 import java.util.List;
 
@@ -28,16 +25,11 @@ import static java.util.Collections.singletonList;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BookingServiceImplTest {
-    private final Query           query    = Mockito.mock(Query.class);
-    private final FieldEnd<Query> fieldEnd = Mockito.mock(FieldEnd.class);
-
     @Mock
     private UserService userService;
 
@@ -45,7 +37,7 @@ public class BookingServiceImplTest {
     private FlightService flightService;
 
     @Mock
-    private Datastore datastore;
+    private BookingRepository bookingRepository;
 
     @Mock
     private KeyGenerator keyGenerator;
@@ -53,9 +45,9 @@ public class BookingServiceImplTest {
     @InjectMocks
     private BookingServiceImpl bookingService;
 
-    private Booking      booking;
+    private BookingImpl  booking;
     private CustomerInfo customer;
-    private Flight flight;
+    private Flight       flight;
 
     @Before
     public void setUp() throws Exception {
@@ -67,17 +59,13 @@ public class BookingServiceImplTest {
         customer = new CustomerInfo(booking.getCustomerId(), null, null, 0, 0, null, null, null);
 
         when(keyGenerator.generate()).thenReturn(booking.getBookingId());
-        when(datastore.find(any())).thenReturn(query);
-        when(query.field(anyString())).thenReturn(fieldEnd);
-        when(query.disableValidation()).thenReturn(query);
-        when(fieldEnd.equal(any())).thenReturn(query);
     }
 
     @Test
     public void deletesBookingWhenCancelled() {
         bookingService.cancelBooking(booking.getCustomerId(), booking.getBookingId());
 
-        verify(datastore).delete(BookingImpl.class, booking.getBookingId());
+        verify(bookingRepository).delete(booking.getBookingId());
     }
 
     @Test
@@ -96,7 +84,7 @@ public class BookingServiceImplTest {
 
     @Test
     public void getsBookingOfSpecifiedUser() {
-        when(query.asList()).thenReturn(singletonList(booking));
+        when(bookingRepository.findByCustomerId(booking.getCustomerId())).thenReturn(singletonList(booking));
 
         List<Booking> bookings = bookingService.getBookingsByUser(booking.getCustomerId());
 

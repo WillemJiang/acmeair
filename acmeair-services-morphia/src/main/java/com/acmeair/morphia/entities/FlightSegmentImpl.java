@@ -15,17 +15,18 @@
 *******************************************************************************/
 package com.acmeair.morphia.entities;
 
+import com.acmeair.entities.FlightSegment;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.io.Serializable;
 
-import org.mongodb.morphia.annotations.Entity;
-
-import com.acmeair.entities.FlightSegment;
-
-@Entity(value="flightSegment")
+@Document(collection="flightSegment")
 public class FlightSegmentImpl implements FlightSegment, Serializable{
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
 	private String _id;
 	private String originPort;
 	private String destPort;

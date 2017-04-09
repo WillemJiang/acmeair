@@ -18,13 +18,13 @@ package com.acmeair.morphia.entities;
 import com.acmeair.entities.Booking;
 import com.acmeair.entities.Flight;
 import com.acmeair.web.dto.CustomerInfo;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity(value="booking")
+@Document(collection = "booking")
 public class BookingImpl implements Booking, Serializable{
 	
 	private static final long serialVersionUID = 1L;

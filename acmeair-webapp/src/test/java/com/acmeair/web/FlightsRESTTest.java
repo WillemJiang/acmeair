@@ -5,20 +5,24 @@ import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import com.acmeair.FlightRestTestApplication;
 import com.acmeair.entities.Flight;
 import com.acmeair.morphia.entities.FlightImpl;
-import com.acmeair.service.UserService;
 import com.acmeair.service.FlightService;
+import com.acmeair.service.UserService;
 import com.acmeair.web.dto.FlightInfo;
 import com.acmeair.web.dto.TripFlightOptions;
 import com.acmeair.web.dto.TripLegInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mongodb.morphia.Datastore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
@@ -43,8 +47,6 @@ public class FlightsRESTTest {
 
     @MockBean
     private UserService   customerService;
-    @MockBean
-    private Datastore     datastore;
     @MockBean
     private FlightService flightService;
 

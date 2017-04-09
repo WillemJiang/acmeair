@@ -15,17 +15,16 @@
 *******************************************************************************/
 package com.acmeair.morphia.entities;
 
+import com.acmeair.entities.Flight;
+import com.acmeair.entities.FlightSegment;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
-
-import com.acmeair.entities.Flight;
-import com.acmeair.entities.FlightSegment;
-
-@Entity(value="flight")
+@Document(collection = "flight")
 public class FlightImpl implements Flight, Serializable{
 
 	private static final long serialVersionUID = 1L;
