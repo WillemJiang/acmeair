@@ -40,7 +40,7 @@ public class CustomerLoaderContractTest {
 
     @BeforeClass
     public static void startCustomerService() {
-        customerApplicationContext = SpringApplication.run(CustomerLoaderApplication.class, "--server.port=8081");
+        customerApplicationContext = SpringApplication.run(CustomerLoaderApplication.class, "--server.port=8081", "--spring.profiles.active=test");
         customerService = customerApplicationContext.getBean(CustomerService.class);
 
         FixtureFactoryLoader.loadTemplates("com.acmeair.customer.templates");

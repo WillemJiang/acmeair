@@ -67,7 +67,7 @@ public class CustomerServiceContractTest {
 
     @BeforeClass
     public static void startCustomerService() {
-        customerApplicationContext = SpringApplication.run(CustomerRestApplication.class, "--server.port=8081");
+        customerApplicationContext = SpringApplication.run(CustomerRestApplication.class, "--server.port=8081", "--spring.profiles.active=test");
         customerService = customerApplicationContext.getBean(CustomerService.class);
     }
 

@@ -45,8 +45,8 @@ import static org.springframework.http.HttpStatus.OK;
         classes = CustomerServiceApplication.class,
         webEnvironment = RANDOM_PORT,
         properties = {
-                "mongo.host=localhost",
-                "mongo.port=27017"
+                "spring.data.mongodb.host=localhost",
+                "spring.data.mongodb.port=27017"
         })
 @ActiveProfiles("test")
 public class CustomerServiceApplicationTest {
@@ -58,7 +58,7 @@ public class CustomerServiceApplicationTest {
     private final String      customerId = "mike";
     private final String      password   = "password";
 
-    @Value("${mongo.database}")
+    @Value("${spring.data.mongodb.database}")
     private String databaseName;
 
     @Autowired
@@ -70,9 +70,9 @@ public class CustomerServiceApplicationTest {
         // We don't start the mongoDB, if the system property mongodb.start is false.
         if (Boolean.valueOf(System.getProperty("mongod.start", "true"))) {
             mongodExecutable = starter.prepare(new MongodConfigBuilder().version(Version.Main.PRODUCTION).net(new Net("localhost", 27017, false)).build());
-        
+
             mongodProcess = mongodExecutable.start();
-        }   
+        }
         mongoClient = new MongoClient("localhost", 27017);
     }
 

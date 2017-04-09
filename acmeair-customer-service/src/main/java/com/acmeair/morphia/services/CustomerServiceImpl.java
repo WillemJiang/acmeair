@@ -8,32 +8,34 @@ import com.acmeair.entities.CustomerSession;
 import com.acmeair.morphia.entities.CustomerAddressImpl;
 import com.acmeair.morphia.entities.CustomerImpl;
 import com.acmeair.morphia.entities.CustomerSessionImpl;
+import com.acmeair.morphia.repositories.CustomerRepository;
+import com.acmeair.morphia.repositories.CustomerSessionRepository;
 import com.acmeair.service.CustomerService;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 @Service
-//@DataService(name=MorphiaConstants.KEY,description=MorphiaConstants.KEY_DESCRIPTION)
 class CustomerServiceImpl extends CustomerService {
 		
 //	private final static Logger logger = Logger.getLogger(CustomerService.class.getName()); 
 
 	@Autowired
-	protected Datastore datastore;
+	private CustomerRepository customerRepository;
+
+	@Autowired
+	private CustomerSessionRepository sessionRepository;
 
 
 	@Override
 	public Long count() {
-		return datastore.find(CustomerImpl.class).countAll();
+		return customerRepository.count();
 	}
 	
 	@Override
 	public Long countSessions() {
-		return datastore.find(CustomerSessionImpl.class).countAll();
+		return sessionRepository.count();
 	}
 	
 	@Override
@@ -42,8 +44,8 @@ class CustomerServiceImpl extends CustomerService {
 			String phoneNumber, PhoneType phoneNumberType,
 			CustomerAddress address) {
 	
-		Customer customer = new CustomerImpl(username, password, status, total_miles, miles_ytd, address, phoneNumber, phoneNumberType);
-		datastore.save(customer);
+		CustomerImpl customer = new CustomerImpl(username, password, status, total_miles, miles_ytd, address, phoneNumber, phoneNumberType);
+		customerRepository.save(customer);
 		return customer;
 	}
 	
@@ -57,39 +59,35 @@ class CustomerServiceImpl extends CustomerService {
 
 	@Override
 	public Customer updateCustomer(Customer customer) {
-		datastore.save(customer);
+		customerRepository.save((CustomerImpl) customer);
 		return customer;
 	}
 
 	@Override
 	protected Customer getCustomer(String username) {
-		Query<CustomerImpl> q = datastore.find(CustomerImpl.class).field("_id").equal(username);
-		Customer customer = q.get();					
-		return customer;
+		return customerRepository.findOne(username);
 	}
 
 	@Override
 	protected CustomerSession getSession(String sessionid){
-		Query<CustomerSessionImpl> q = datastore.find(CustomerSessionImpl.class).field("_id").equal(sessionid);		
-		return q.get();
+		return sessionRepository.findOne(sessionid);
 	}
 	
 	@Override
 	protected void removeSession(CustomerSession session){		
-		datastore.delete(session);	
+		sessionRepository.delete(session.getId());
 	}
 	
 	@Override
 	protected  CustomerSession createSession(String sessionId, String customerId, Date creation, Date expiration) {
-		CustomerSession cSession = new CustomerSessionImpl(sessionId, customerId, creation, expiration);
-		datastore.save(cSession);
+		CustomerSessionImpl cSession = new CustomerSessionImpl(sessionId, customerId, creation, expiration);
+		sessionRepository.save(cSession);
 		return cSession;
 	}
 
 	@Override
 	public void invalidateSession(String sessionid) {		
-		Query<CustomerSessionImpl> q = datastore.find(CustomerSessionImpl.class).field("_id").equal(sessionid);
-		datastore.delete(q);
+		sessionRepository.delete(sessionid);
 	}
 
 }

@@ -15,18 +15,19 @@
 *******************************************************************************/
 package com.acmeair.morphia.entities;
 
-import java.io.Serializable;
-
-import org.mongodb.morphia.annotations.Entity;
-
 import com.acmeair.entities.Customer;
 import com.acmeair.entities.CustomerAddress;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity(value="customer")
+import java.io.Serializable;
+
+@Document(collection="customer")
 public class CustomerImpl implements Customer, Serializable{
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
 	private String _id;
 	private String password;
 	private MemberShipStatus status;

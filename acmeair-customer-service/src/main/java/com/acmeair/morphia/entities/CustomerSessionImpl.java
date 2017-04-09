@@ -16,14 +16,13 @@
 package com.acmeair.morphia.entities;
 
 
+import com.acmeair.entities.CustomerSession;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.io.Serializable;
 import java.util.Date;
 
-import org.mongodb.morphia.annotations.Entity;
-
-import com.acmeair.entities.CustomerSession;
-
-@Entity(value="customerSession")
+@Document(collection="customerSession")
 public class CustomerSessionImpl implements CustomerSession, Serializable {
 
 

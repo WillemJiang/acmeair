@@ -8,17 +8,15 @@ import com.acmeair.entities.CustomerSession;
 import com.acmeair.morphia.entities.CustomerAddressImpl;
 import com.acmeair.morphia.entities.CustomerImpl;
 import com.acmeair.morphia.entities.CustomerSessionImpl;
+import com.acmeair.morphia.repositories.CustomerRepository;
+import com.acmeair.morphia.repositories.CustomerSessionRepository;
 import com.acmeair.service.KeyGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.query.FieldEnd;
-import org.mongodb.morphia.query.Query;
 
 import java.util.Date;
 
@@ -26,24 +24,22 @@ import static com.seanyinx.github.unit.scaffolding.Randomness.uniquify;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerServiceImplTest {
-    private final Query           query    = Mockito.mock(Query.class);
-    private final FieldEnd<Query> fieldEnd = Mockito.mock(FieldEnd.class);
-
-    private CustomerAddress address;
-    private Customer        customer;
-    private CustomerSession customerSession;
+    private CustomerAddress     address;
+    private CustomerImpl        customer;
+    private CustomerSessionImpl customerSession;
 
     @InjectMocks
     private final CustomerServiceImpl customerService = new CustomerServiceImpl();
 
     @Mock
-    private Datastore datastore;
+    private CustomerRepository        customerRepository;
+    @Mock
+    private CustomerSessionRepository sessionRepository;
 
     @Mock
     private KeyGenerator keyGenerator;
@@ -55,9 +51,6 @@ public class CustomerServiceImplTest {
         FixtureFactoryLoader.loadTemplates("com.acmeair.customer.templates");
 
         when(keyGenerator.generate()).thenReturn(sessionId);
-        when(datastore.find(any())).thenReturn(query);
-        when(query.field("_id")).thenReturn(fieldEnd);
-        when(fieldEnd.equal(any())).thenReturn(query);
 
         customer = Fixture.from(CustomerImpl.class).gimme("valid");
         address = Fixture.from(CustomerAddressImpl.class).gimme("valid");
@@ -79,7 +72,7 @@ public class CustomerServiceImplTest {
 
         assertThat(customer, is(this.customer));
 
-        verify(datastore).save(customer);
+        verify(customerRepository).save((CustomerImpl) customer);
     }
 
     @Test
@@ -98,7 +91,7 @@ public class CustomerServiceImplTest {
 
     @Test
     public void clearsPasswordOfRetrievedUser() {
-        when(query.get()).thenReturn(customer);
+        when(customerRepository.findOne(customer.getCustomerId())).thenReturn(customer);
 
         Customer customer = customerService.getCustomerByUsername(this.customer.getUsername());
 
@@ -108,7 +101,7 @@ public class CustomerServiceImplTest {
 
     @Test
     public void getsCustomerIfUsernameAndPasswordMatches() {
-        when(query.get()).thenReturn(this.customer);
+        when(customerRepository.findOne(customer.getCustomerId())).thenReturn(this.customer);
 
         Customer c = customerService.getCustomerByUsernameAndPassword(customer.getUsername(), customer.getPassword());
 
@@ -117,7 +110,7 @@ public class CustomerServiceImplTest {
 
     @Test
     public void getsNullIfUsernameAndPasswordDoesNotMatch() {
-        when(query.get()).thenReturn(this.customer);
+        when(customerRepository.findOne(customer.getCustomerId())).thenReturn(this.customer);
 
         Customer c = customerService.getCustomerByUsernameAndPassword(customer.getUsername(), uniquify("wrong password"));
 
@@ -133,7 +126,7 @@ public class CustomerServiceImplTest {
 
     @Test
     public void validCustomerIfUsernameAndPasswordMatches() {
-        when(query.get()).thenReturn(this.customer);
+        when(customerRepository.findOne(customer.getCustomerId())).thenReturn(this.customer);
 
         boolean isValid = customerService.validateCustomer(customer.getUsername(), customer.getPassword());
 
@@ -142,7 +135,7 @@ public class CustomerServiceImplTest {
 
     @Test
     public void inValidCustomerIfUsernameAndPasswordDoesNotMatch() {
-        when(query.get()).thenReturn(this.customer);
+        when(customerRepository.findOne(customer.getCustomerId())).thenReturn(this.customer);
 
         boolean isValid = customerService.validateCustomer(customer.getUsername(), uniquify("wrong password"));
 
@@ -165,19 +158,19 @@ public class CustomerServiceImplTest {
         assertThat(session.getId(), is(sessionId));
         assertThat(session.getCustomerid(), is(customer.getCustomerId()));
         assertThat(session.getTimeoutTime().after(now), is(true));
-        verify(datastore).save(session);
+        verify(sessionRepository).save((CustomerSessionImpl) session);
     }
 
     @Test
     public void deletesSessionFromDatabaseWhenInvalidated() {
         customerService.invalidateSession(sessionId);
 
-        verify(datastore).delete(query);
+        verify(sessionRepository).delete(sessionId);
     }
 
     @Test
     public void validSessionIfExistingInDatabaseAndNotExpired() {
-        when(query.get()).thenReturn(customerSession);
+        when(sessionRepository.findOne(customerSession.getId())).thenReturn(customerSession);
 
         CustomerSession session = customerService.validateSession(customerSession.getId());
 
@@ -186,7 +179,7 @@ public class CustomerServiceImplTest {
 
     @Test
     public void nullSessionIfExistingInDatabaseAndButExpired() {
-        when(query.get()).thenReturn(Fixture.from(CustomerSessionImpl.class).gimme("expired"));
+        when(sessionRepository.findOne(customerSession.getId())).thenReturn(Fixture.from(CustomerSessionImpl.class).gimme("expired"));
 
         CustomerSession session = customerService.validateSession(customerSession.getId());
 
