@@ -2,10 +2,15 @@ package com.acmeair.hystrix;
 
 import com.acmeair.entities.CustomerSession;
 import com.acmeair.service.UserService;
+import com.acmeair.web.RESTCookieSessionFilter;
 import com.acmeair.web.dto.CustomerInfo;
 import com.acmeair.web.dto.CustomerSessionInfo;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,12 +29,24 @@ import java.util.NoSuchElementException;
 
 @Service
 public class UserCommand implements UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserCommand.class);
     
     private RestTemplate restTemplate = new RestTemplate();
-
-    private final String customerServiceAddress;
-
-    public UserCommand(@Value("${customer.service.address}") String customerServiceAddress) {
+    
+    @Autowired
+    private LoadBalancerClient loadBalancer;
+    
+    @Value("${customer.service.name:customerServiceApp}")
+    private String customerServiceName;
+    
+    private String customerServiceAddress;
+    
+    public UserCommand() {
+        // Just add this method of Spring to use
+    }
+    
+    // This construction method is used for testing
+    protected UserCommand(String customerServiceAddress) {
         this.customerServiceAddress = customerServiceAddress;
         restTemplate.setErrorHandler(new ResponseErrorHandler() {
             @Override
@@ -45,17 +62,27 @@ public class UserCommand implements UserService {
 
     @HystrixCommand
     public CustomerInfo getCustomerInfo(String customerId) {
-        ResponseEntity<CustomerInfo> resp = restTemplate.getForEntity(customerServiceAddress + "/rest/api/customer/{custid}", CustomerInfo.class, customerId);
+        ResponseEntity<CustomerInfo> resp = restTemplate.getForEntity(getCustomerServiceAddress() + "/rest/api/customer/{custid}", CustomerInfo.class, customerId);
         if (resp.getStatusCode() != HttpStatus.OK) {
             throw new NoSuchElementException("No such customer with id " + customerId);
         }
         return resp.getBody();
     }
     
+    private String getCustomerServiceAddress() {
+        if (loadBalancer != null) {
+            String address = loadBalancer.choose(customerServiceName).getUri().toString();
+            logger.info("Just get the address {0} from loadBalancer.", address);
+            return address;
+        } else {
+            return customerServiceAddress;
+        }
+    }
+    
     @HystrixCommand
     public CustomerSession validateCustomerSession(String sessionId) {
         ResponseEntity<CustomerSessionInfo> responseEntity = restTemplate.postForEntity(
-                customerServiceAddress + "/rest/api/login/validate",
+                getCustomerServiceAddress() + "/rest/api/login/validate",
                 validationRequest(sessionId),
                 CustomerSessionInfo.class
         );
