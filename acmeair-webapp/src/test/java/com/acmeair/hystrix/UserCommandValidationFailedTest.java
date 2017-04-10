@@ -24,7 +24,7 @@ public class UserCommandValidationFailedTest {
     @Rule
     public final PactProviderRule providerRule = new PactProviderRule("CustomerService", this);
 
-    private final UserService userService = new UserCommand(providerRule.getConfig().url());
+    private final UserService userService = new TestUserCommand(providerRule.getConfig().url());
     private final String sessionId = "session-mike-123";
 
     @Pact(consumer = "UserService")

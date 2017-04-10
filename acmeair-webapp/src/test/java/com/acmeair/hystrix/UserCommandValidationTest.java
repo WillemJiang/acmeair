@@ -39,7 +39,7 @@ public class UserCommandValidationTest {
             dateOf("2017-04-08"),
             dateOf("2027-04-07")
     );
-    private final UserService userService = new UserCommand(providerRule.getConfig().url());
+    private final UserService userService = new TestUserCommand(providerRule.getConfig().url());
 
     @Pact(consumer = "UserService")
     public PactFragment createFragment(PactDslWithProvider pactDslWithProvider) throws JsonProcessingException {
