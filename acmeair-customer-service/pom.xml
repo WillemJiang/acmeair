@@ -13,6 +13,10 @@
     <version>2.0.0-SNAPSHOT</version>
     <dependencies>
         <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jersey</artifactId>
             <scope>compile</scope>
@@ -30,7 +34,6 @@
         <dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -138,8 +141,7 @@
                                             <descriptor>${project.basedir}/src/assembly/customer-service.xml</descriptor>
                                         </assembly>
                                         <entryPoint>
-                                            <shell>java -Dserver.port=8082 -jar /maven/acmeair/acmeair-customer-service-exec.jar
-                                            </shell>
+                                            <shell>/maven/acmeair/start.sh</shell>
                                         </entryPoint>
                                     </build>
                                 </image>
@@ -155,6 +157,27 @@
                             </execution>
                         </executions>
                     </plugin>
+<!--
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>wagon-maven-plugin</artifactId>
+                        <version>1.0</version>
+                        <executions>
+                            <execution>
+                                <id>download-mongodb</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>download-single</goal>
+                                </goals>
+                                <configuration>
+                                    <url>https://fastdl.mongodb.org</url>
+                                    <fromFile>linux/mongodb-linux-x86_64-3.2.2.tgz</fromFile>
+                                    <toDir>${project.build.directory}/mongodb</toDir>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+-->
                 </plugins>
             </build>
         </profile>

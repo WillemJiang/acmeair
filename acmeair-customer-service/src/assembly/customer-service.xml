@@ -9,7 +9,15 @@
             <directory>${project.basedir}/target/acmeair</directory>
             <outputDirectory>acmeair</outputDirectory>
             <fileMode>0644</fileMode>
-            <directoryMode>0755</directoryMode>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/mongodb</directory>
+            <outputDirectory>mongodb</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/src/main/scripts</directory>
+            <outputDirectory>acmeair</outputDirectory>
+            <fileMode>0744</fileMode>
         </fileSet>
     </fileSets>
 </assembly>

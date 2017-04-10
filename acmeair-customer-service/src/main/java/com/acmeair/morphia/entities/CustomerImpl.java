@@ -20,9 +20,11 @@ import com.acmeair.entities.CustomerAddress;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
 import java.io.Serializable;
 
 @Document(collection="customer")
+@Entity(name = "customer")
 public class CustomerImpl implements Customer, Serializable{
 
 	private static final long serialVersionUID = 1L;

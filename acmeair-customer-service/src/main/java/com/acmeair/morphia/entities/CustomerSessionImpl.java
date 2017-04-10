@@ -17,17 +17,21 @@ package com.acmeair.morphia.entities;
 
 
 import com.acmeair.entities.CustomerSession;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.Date;
 
 @Document(collection="customerSession")
+@Entity(name = "customerSession")
 public class CustomerSessionImpl implements CustomerSession, Serializable {
 
 
 	private static final long serialVersionUID = 1L;
 
+    @Id
 	private String _id;
 	private String customerid;
 	private Date lastAccessedTime;
