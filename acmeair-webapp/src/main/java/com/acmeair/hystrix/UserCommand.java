@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ import java.util.NoSuchElementException;
 public class UserCommand implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserCommand.class);
     
-    private RestTemplate restTemplate = new RestTemplate();
+    protected RestTemplate restTemplate = new RestTemplate();
     
     @Autowired
     private LoadBalancerClient loadBalancer;
@@ -39,27 +40,6 @@ public class UserCommand implements UserService {
     @Value("${customer.service.name:customerServiceApp}")
     private String customerServiceName;
     
-    private String customerServiceAddress;
-    
-    public UserCommand() {
-        // Just add this method of Spring to use
-    }
-    
-    // This construction method is used for testing
-    protected UserCommand(String customerServiceAddress) {
-        this.customerServiceAddress = customerServiceAddress;
-        restTemplate.setErrorHandler(new ResponseErrorHandler() {
-            @Override
-            public boolean hasError(ClientHttpResponse clientHttpResponse) throws IOException {
-                return false;
-            }
-
-            @Override
-            public void handleError(ClientHttpResponse clientHttpResponse) throws IOException {
-            }
-        });
-    }
-
     @HystrixCommand
     public CustomerInfo getCustomerInfo(String customerId) {
         ResponseEntity<CustomerInfo> resp = restTemplate.getForEntity(getCustomerServiceAddress() + "/rest/api/customer/{custid}", CustomerInfo.class, customerId);
@@ -69,14 +49,10 @@ public class UserCommand implements UserService {
         return resp.getBody();
     }
     
-    private String getCustomerServiceAddress() {
-        if (loadBalancer != null) {
-            String address = loadBalancer.choose(customerServiceName).getUri().toString();
-            logger.info("Just get the address {0} from loadBalancer.", address);
-            return address;
-        } else {
-            return customerServiceAddress;
-        }
+    protected String getCustomerServiceAddress() {
+        String address = loadBalancer.choose(customerServiceName).getUri().toString();
+        logger.info("Just get the address {0} from LoadBalancer.", address);
+        return address;
     }
     
     @HystrixCommand

@@ -44,7 +44,7 @@ public class UserCommandTest {
             Customer.PhoneType.MOBILE.name()
     );
 
-    private final UserService userService = new UserCommand(providerRule.getConfig().url());
+    private final UserService userService = new TestUserCommand(providerRule.getConfig().url());
 
     @Pact(consumer = "UserService")
     public PactFragment createFragment(PactDslWithProvider pactDslWithProvider) throws JsonProcessingException {

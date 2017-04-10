@@ -20,7 +20,7 @@ public class UserCommandFetchingCustomerFailedTest {
     @Rule
     public final PactProviderRule providerRule = new PactProviderRule("CustomerService", this);
 
-    private final UserService userService = new UserCommand(providerRule.getConfig().url());
+    private final UserService userService = new TestUserCommand(providerRule.getConfig().url());
 
     @Pact(consumer = "UserService")
     public PactFragment createFragment(PactDslWithProvider pactDslWithProvider) {
