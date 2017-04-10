@@ -69,6 +69,11 @@
         </dependency>
         <dependency>
             <groupId>acmeair</groupId>
+            <artifactId>acmeair-services-morphia</artifactId>
+            <type>test-jar</type>
+        </dependency>
+        <dependency>
+            <groupId>acmeair</groupId>
             <artifactId>acmeair-common</artifactId>
         </dependency>
         <dependency>
@@ -78,6 +83,14 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-zuul</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.seanyinx</groupId>
+            <artifactId>unit-scaffolding</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>br.com.six2six</groupId>
+            <artifactId>fixture-factory</artifactId>
         </dependency>
     </dependencies>
 

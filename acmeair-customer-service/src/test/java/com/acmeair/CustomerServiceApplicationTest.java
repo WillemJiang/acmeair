@@ -1,16 +1,13 @@
 package com.acmeair;
 
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
-import org.junit.After;
-import org.junit.AfterClass;
+import br.com.six2six.fixturefactory.Fixture;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
+import com.acmeair.morphia.entities.CustomerImpl;
+import com.acmeair.morphia.repositories.CustomerRepository;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
@@ -21,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.HashMap;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -42,41 +38,21 @@ import static org.springframework.http.HttpStatus.OK;
                 "spring.data.mongodb.port=27017"
         })
 public class CustomerServiceApplicationTest {
-    private static MongoClient      mongoClient;
-
-    private final String      customerId = "mike";
-    private final String      password   = "password";
-
-    @Value("${spring.data.mongodb.database}")
-    private String databaseName;
-
     @Autowired
     private TestRestTemplate restTemplate;
-    private MongoDatabase    database;
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        mongoClient = new MongoClient("localhost", 27017);
-    }
+    @Autowired
+    private CustomerRepository customerRepository;
 
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-        mongoClient.close();
-    }
+    private CustomerImpl customer;
 
     @Before
     public void setUp() {
-        database = mongoClient.getDatabase(databaseName);
+        FixtureFactoryLoader.loadTemplates("com.acmeair.customer.templates");
 
-        addDocumentToCollection("customer", new HashMap<String, Object>() {{
-            put("_id", customerId);
-            put("password", password);
-        }});
-    }
+        customer = Fixture.from(CustomerImpl.class).gimme("valid");
 
-    @After
-    public void tearDown() throws Exception {
-        database.drop();
+        customerRepository.save(customer);
     }
 
     @Test
@@ -97,7 +73,7 @@ public class CustomerServiceApplicationTest {
     private HttpHeaders headerWithCookieOfLoginSession() {
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(
                 "/rest/api/login",
-                loginRequest(customerId, password),
+                loginRequest(customer.getCustomerId(), customer.getPassword()),
                 String.class
         );
 
@@ -120,10 +96,5 @@ public class CustomerServiceApplicationTest {
         map.add("password", password);
 
         return new HttpEntity<>(map, headers);
-    }
-
-    private void addDocumentToCollection(String collectionName, HashMap<String, Object> map) {
-        database.createCollection(collectionName);
-        database.getCollection(collectionName).insertOne(new Document(map));
     }
 }

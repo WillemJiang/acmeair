@@ -1,18 +1,18 @@
 package com.acmeair;
 
+import br.com.six2six.fixturefactory.Fixture;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import com.acmeair.loader.CustomerLoader;
 import com.acmeair.morphia.entities.BookingImpl;
+import com.acmeair.morphia.entities.FlightImpl;
+import com.acmeair.morphia.repositories.BookingRepository;
+import com.acmeair.morphia.repositories.FlightRepository;
 import com.acmeair.web.dto.BookingInfo;
 import com.acmeair.web.dto.BookingReceiptInfo;
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
@@ -23,11 +23,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -47,60 +46,38 @@ import static org.springframework.http.HttpStatus.OK;
                 "spring.data.mongodb.host=localhost"
         })
 public class AcmeAirApplicationIT {
-    private MongoClient      mongoClient;
-
-    private final String  toFlightId     = "toFlightId";
-    private final String  toFlightSegId  = "toFlightSegId";
-    private final String  retFlightId    = "retFlightId";
-    private final String  retFlightSegId = "retFlightSegId";
     private final boolean oneWay         = false;
 
     private final String      customerId = "uid0@email.com";
     private final String      password   = "password";
     private final BookingImpl booking    = new BookingImpl("1", new Date(), customerId, "SIN-2131");
 
-    @Value("${spring.data.mongodb.database}")
-    private String databaseName;
-
-    @Value("${spring.data.mongodb.port}")
-    private int mongoDbPort;
-
     @Autowired
     private CustomerLoader customerLoader;
 
     @Autowired
     private TestRestTemplate restTemplate;
-    private MongoDatabase    database;
+
+    @Autowired
+    private FlightRepository flightRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    private FlightImpl toFlight;
+    private FlightImpl retFlight;
 
     @Before
     public void setUp() {
-        mongoClient = new MongoClient("localhost", mongoDbPort);
-        database = mongoClient.getDatabase(databaseName);
+        FixtureFactoryLoader.loadTemplates("com.acmeair.flight.templates");
 
-        addDocumentToCollection("booking", new HashMap<String, Object>() {{
-            put("_id", booking.getBookingId());
-            put("flightId", booking.getFlightId());
-            put("customerId", booking.getCustomerId());
-            put("dateOfBooking", booking.getDateOfBooking());
-        }});
+        toFlight = Fixture.from(FlightImpl.class).gimme("valid");
+        retFlight = Fixture.from(FlightImpl.class).gimme("valid");
 
         customerLoader.loadCustomers(1);
 
-        addDocumentToCollection(
-                "flight",
-                new HashMap<String, Object>() {{
-                    put("_id", toFlightId);
-                }},
-                new HashMap<String, Object>() {{
-                    put("_id", retFlightId);
-                }}
-        );
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        database.drop();
-        mongoClient.close();
+        bookingRepository.save(booking);
+        flightRepository.save(asList(toFlight, retFlight));
     }
 
     @Test
@@ -163,10 +140,10 @@ public class AcmeAirApplicationIT {
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("userid", customerId);
-        map.add("toFlightId", toFlightId);
-        map.add("toFlightSegId", toFlightSegId);
-        map.add("retFlightId", retFlightId);
-        map.add("retFlightSegId", retFlightSegId);
+        map.add("toFlightId", toFlight.getFlightId());
+        map.add("toFlightSegId", toFlight.getFlightSegmentId());
+        map.add("retFlightId", retFlight.getFlightId());
+        map.add("retFlightSegId", retFlight.getFlightSegmentId());
         map.add("oneWayFlight", String.valueOf(oneWay));
 
         ResponseEntity<BookingReceiptInfo> bookingInfoResponseEntity = restTemplate.exchange(
@@ -211,11 +188,5 @@ public class AcmeAirApplicationIT {
         map.add("password", password);
 
         return new HttpEntity<>(map, headers);
-    }
-
-    @SafeVarargs
-    private final void addDocumentToCollection(String collectionName, HashMap<String, Object>... maps) {
-        database.createCollection(collectionName);
-        Arrays.stream(maps).forEach(map -> database.getCollection(collectionName).insertOne(new Document(map)));
     }
 }
