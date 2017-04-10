@@ -17,6 +17,7 @@ package com.acmeair.morphia.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,6 +26,7 @@ import com.acmeair.entities.CustomerAddress;
 
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 @XmlRootElement
+@Embeddable
 public class CustomerAddressImpl implements CustomerAddress, Serializable{
 	
 	private static final long serialVersionUID = 1L;

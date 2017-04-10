@@ -17,24 +17,30 @@ package com.acmeair.morphia.entities;
 
 import com.acmeair.entities.Customer;
 import com.acmeair.entities.CustomerAddress;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 @Document(collection="customer")
+@Entity(name = "customer")
 public class CustomerImpl implements Customer, Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name = "id")
 	private String _id;
 	private String password;
 	private MemberShipStatus status;
 	private int total_miles;
 	private int miles_ytd;
 
-	private CustomerAddress address;
+	@Embedded
+	private CustomerAddressImpl address;
 	private String phoneNumber;
 	private PhoneType phoneNumberType;
 	
@@ -47,7 +53,7 @@ public class CustomerImpl implements Customer, Serializable{
 		this.status = status;
 		this.total_miles = total_miles;
 		this.miles_ytd = miles_ytd;
-		this.address = address;
+		this.address = (CustomerAddressImpl) address;
 		this.phoneNumber = phoneNumber;
 		this.phoneNumberType = phoneNumberType;
 	}
@@ -117,7 +123,7 @@ public class CustomerImpl implements Customer, Serializable{
 	}
 
 	public void setAddress(CustomerAddress address) {
-		this.address = address;
+		this.address = (CustomerAddressImpl) address;
 	}
 
 	@Override

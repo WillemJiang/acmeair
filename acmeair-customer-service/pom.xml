@@ -13,6 +13,18 @@
     <version>2.0.0-SNAPSHOT</version>
     <dependencies>
         <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jersey</artifactId>
             <scope>compile</scope>
@@ -138,7 +150,7 @@
                                             <descriptor>${project.basedir}/src/assembly/customer-service.xml</descriptor>
                                         </assembly>
                                         <entryPoint>
-                                            <shell>java -Dserver.port=8082 -jar /maven/acmeair/acmeair-customer-service-exec.jar
+                                            <shell>java -Dspring.profiles.active=jpa -Dserver.port=8082 -jar /maven/acmeair/acmeair-customer-service-exec.jar
                                             </shell>
                                         </entryPoint>
                                     </build>
