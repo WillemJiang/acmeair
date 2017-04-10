@@ -46,6 +46,7 @@
     }
     
     var basePath =  "rest/info/";
+    var customerPath = "customers/"
     
     function getDataServiceInformation() {
     	var grid, store, dataStore;
@@ -137,7 +138,7 @@
     	var airportCodeMapping, booking, customer, customerSession, flight, flightSegment;
 
     	dojo.xhrGet({
-			url: basePath.concat("config/countCustomers"),
+			url: customerPath.concat(basePath.concat("config/countCustomers")),
 			handleAs: "json",
 			load: function(response, ioArgs) {	
 		    	//alert("Response: " + response);
@@ -149,7 +150,7 @@
     	});
     		
     	dojo.xhrGet({
-			url: basePath.concat("config/countSessions"),
+			url: customerPath.concat(basePath.concat("config/countSessions")),
 			handleAs: "json",
 			load: function(response, ioArgs) {			    	
 		    	document.getElementById('sessionData').innerHTML=response;
