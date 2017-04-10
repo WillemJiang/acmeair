@@ -17,21 +17,28 @@ package com.acmeair.morphia.entities;
 
 import com.acmeair.entities.Flight;
 import com.acmeair.entities.FlightSegment;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Document(collection = "flight")
+@Entity(name = "flight")
 public class FlightImpl implements Flight, Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
+	@Column(name = "id")
 	private String _id;
-	
+
 	private String flightSegmentId;
 		
 	private Date scheduledDepartureTime;
@@ -41,7 +48,9 @@ public class FlightImpl implements Flight, Serializable{
 	private int numFirstClassSeats;
 	private int numEconomyClassSeats;
 	private String airplaneTypeId;
-	
+
+	@ManyToOne(targetEntity = FlightSegmentImpl.class, cascade = CascadeType.ALL)
+	@JoinColumn(name = "fk_flight_segment_id")
 	private FlightSegment flightSegment;
 	
 	public FlightImpl() {
@@ -156,6 +165,7 @@ public class FlightImpl implements Flight, Serializable{
 
 	public void setFlightSegment(FlightSegment flightSegment) {
 		this.flightSegment = flightSegment;
+		this.flightSegmentId = flightSegment.getFlightName();
 	}
 
 	@Override

@@ -13,13 +13,15 @@ import com.acmeair.web.dto.CustomerSessionInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -45,7 +47,6 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.hamcrest.core.Is.is;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpHeaders.COOKIE;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
@@ -55,17 +56,11 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(
-        classes = AcmeAirApplication.class,
-        webEnvironment = DEFINED_PORT,
-        properties = {
-                "spring.data.mongodb.host=localhost",
-                "spring.data.mongodb.port=27017",
-                "spring.data.mongodb.database=acmeair"
-        })
-public class AcmeAirApplicationTest {
+public class AcmeAirApplicationTestBase {
     @ClassRule
     public static final WireMockRule wireMockRule = new WireMockRule(8082);
+
+    private static ConfigurableApplicationContext applicationContext;
 
     private final ObjectMapper objectMapper   = new ObjectMapper();
     private final String       cookie         = SESSIONID_COOKIE_NAME + "=" + uniquify("session-id");
@@ -92,8 +87,16 @@ public class AcmeAirApplicationTest {
     @Autowired
     private BookingRepository bookingRepository;
 
+    @Autowired
+    private ConfigurableApplicationContext context;
+
     private FlightImpl toFlight;
     private FlightImpl retFlight;
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+        applicationContext.close();
+    }
 
     @Before
     public void setUp() throws JsonProcessingException {
@@ -127,6 +130,14 @@ public class AcmeAirApplicationTest {
 
         bookingRepository.save(booking);
         flightRepository.save(asList(toFlight, retFlight));
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        bookingRepository.delete(booking);
+        flightRepository.delete(toFlight);
+        flightRepository.delete(retFlight);
+        applicationContext = context;
     }
 
     @Test

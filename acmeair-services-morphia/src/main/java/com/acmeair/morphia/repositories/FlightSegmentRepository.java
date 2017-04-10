@@ -1,8 +1,8 @@
 package com.acmeair.morphia.repositories;
 
 import com.acmeair.morphia.entities.FlightSegmentImpl;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface FlightSegmentRepository extends MongoRepository<FlightSegmentImpl, String> {
+public interface FlightSegmentRepository extends CrudRepository<FlightSegmentImpl, String> {
     FlightSegmentImpl findByOriginPortAndDestPort(String originPort, String destPort);
 }

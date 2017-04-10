@@ -18,18 +18,23 @@ package com.acmeair.morphia.entities;
 import com.acmeair.entities.Booking;
 import com.acmeair.entities.Flight;
 import com.acmeair.web.dto.CustomerInfo;
-import org.springframework.data.annotation.Id;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Document(collection = "booking")
+@Entity(name = "booking")
 public class BookingImpl implements Booking, Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
+	@Column(name = "id")
 	private String _id;	
 	private String flightId;
 	private String customerId;

@@ -1,7 +1,7 @@
 package com.acmeair.morphia.repositories;
 
 import com.acmeair.morphia.entities.AirportCodeMappingImpl;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface AirportRepository extends MongoRepository<AirportCodeMappingImpl, String> {
+public interface AirportRepository extends CrudRepository<AirportCodeMappingImpl, String> {
 }

@@ -16,17 +16,22 @@
 package com.acmeair.morphia.entities;
 
 import com.acmeair.entities.AirportCodeMapping;
-import org.springframework.data.annotation.Id;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
 import java.io.Serializable;
 
 @Document(collection="airportCodeMapping")
+@Entity(name = "airportCodeMapping")
 public class AirportCodeMappingImpl implements AirportCodeMapping, Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name = "id")
 	private String _id;
 	private String airportName;
 	

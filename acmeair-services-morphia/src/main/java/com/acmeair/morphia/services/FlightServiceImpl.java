@@ -18,14 +18,12 @@ package com.acmeair.morphia.services;
 import com.acmeair.entities.AirportCodeMapping;
 import com.acmeair.entities.Flight;
 import com.acmeair.entities.FlightSegment;
-import com.acmeair.morphia.MorphiaConstants;
 import com.acmeair.morphia.entities.AirportCodeMappingImpl;
 import com.acmeair.morphia.entities.FlightImpl;
 import com.acmeair.morphia.entities.FlightSegmentImpl;
 import com.acmeair.morphia.repositories.AirportRepository;
 import com.acmeair.morphia.repositories.FlightRepository;
 import com.acmeair.morphia.repositories.FlightSegmentRepository;
-import com.acmeair.service.DataService;
 import com.acmeair.service.FlightService;
 import com.acmeair.service.KeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +36,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-@DataService(name=MorphiaConstants.KEY,description=MorphiaConstants.KEY_DESCRIPTION)
-public class FlightServiceImpl extends FlightService implements  MorphiaConstants {
+public class FlightServiceImpl extends FlightService {
 
 	//private final static Logger logger = Logger.getLogger(FlightService.class.getName()); 
 

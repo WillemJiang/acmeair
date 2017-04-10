@@ -4,11 +4,14 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import com.acmeair.morphia.entities.CustomerImpl;
 import com.acmeair.morphia.repositories.CustomerRepository;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -29,13 +32,23 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RunWith(SpringRunner.class)
 public class CustomerServiceApplicationTestBase {
+    private static ConfigurableApplicationContext applicationContext;
+
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private ConfigurableApplicationContext context;
+
     private CustomerImpl customer;
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+        applicationContext.close();
+    }
 
     @Before
     public void setUp() {
@@ -44,6 +57,11 @@ public class CustomerServiceApplicationTestBase {
         customer = Fixture.from(CustomerImpl.class).gimme("valid");
 
         customerRepository.save(customer);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        applicationContext = context;
     }
 
     @Test

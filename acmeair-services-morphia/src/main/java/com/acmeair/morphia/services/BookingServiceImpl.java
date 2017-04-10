@@ -2,11 +2,9 @@ package com.acmeair.morphia.services;
 
 import com.acmeair.entities.Booking;
 import com.acmeair.entities.Flight;
-import com.acmeair.morphia.MorphiaConstants;
 import com.acmeair.morphia.entities.BookingImpl;
 import com.acmeair.morphia.repositories.BookingRepository;
 import com.acmeair.service.BookingService;
-import com.acmeair.service.DataService;
 import com.acmeair.service.FlightService;
 import com.acmeair.service.KeyGenerator;
 import com.acmeair.service.UserService;
@@ -19,8 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-@DataService(name=MorphiaConstants.KEY,description=MorphiaConstants.KEY_DESCRIPTION)
-public class BookingServiceImpl implements BookingService, MorphiaConstants {
+public class BookingServiceImpl implements BookingService {
 
 	//private final static Logger logger = Logger.getLogger(BookingService.class.getName()); 
 
