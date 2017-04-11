@@ -15,7 +15,7 @@ public class RemoteCustomerLoaderTest {
     @Rule
     public final PactProviderRule providerRule = new PactProviderRule("CustomerService", this);
 
-    private final RemoteCustomerLoader customerLoader = new RemoteCustomerLoader(providerRule.getConfig().url());
+    private final RemoteCustomerLoader customerLoader = new UnitTestRemoteCustomerLoader(providerRule.getConfig().url());
 
     @Pact(consumer = "RemoteCustomerLoader")
     public PactFragment createFragment(PactDslWithProvider pactDslWithProvider) throws JsonProcessingException {

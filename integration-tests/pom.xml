@@ -18,6 +18,11 @@
         </dependency>
         <dependency>
             <groupId>acmeair</groupId>
+            <artifactId>acmeair-loader</artifactId>
+            <type>test-jar</type>
+        </dependency>
+        <dependency>
+            <groupId>acmeair</groupId>
             <artifactId>acmeair-customer-common</artifactId>
         </dependency>
         <dependency>
@@ -85,6 +90,11 @@
             <artifactId>acmeair-webapp</artifactId>
         </dependency>
         <dependency>
+            <groupId>acmeair</groupId>
+            <artifactId>acmeair-webapp</artifactId>
+            <type>test-jar</type>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-zuul</artifactId>
         </dependency>
@@ -145,7 +155,7 @@
                                     <time>100000</time>
                                 </wait>
                                 <ports>
-                                    <port>customer.service.port:8082</port>
+                                    <port>8082:8082</port>
                                 </ports>
                                 <dependsOn>
                                     <dependsOn>acmeair-mongo</dependsOn>
@@ -180,8 +190,7 @@
                     <systemPropertyVariables>
                         <spring.data.mongodb.host>localhost</spring.data.mongodb.host>
                         <spring.data.mongodb.port>${mongo.port}</spring.data.mongodb.port>
-                        <customer.service.address>http://localhost:${customer.service.port}</customer.service.address>
-                        <zuul.routes.customers.url>http://localhost:${customer.service.port}</zuul.routes.customers.url>
+                        <spring.cloud.consul.host>localhost</spring.cloud.consul.host>
                         <spring.cloud.consul.port>${consul.port}</spring.cloud.consul.port>
                     </systemPropertyVariables>
                     <argLine>${jacoco.failsafe.argLine}</argLine>
