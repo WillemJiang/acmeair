@@ -3,9 +3,9 @@ spring:
     name: customerServiceApp
   cloud:
     consul:
-      host: 192.168.3.9
+      host: consul.acmeair.com
       port: 8500
       discovery:
-        ipAddress: 192.168.3.9
+#        ipAddress: 127.0.0.1
         preferIpAddress: true
 

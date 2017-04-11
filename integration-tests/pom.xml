@@ -119,8 +119,8 @@
                                 </ports>
                             </run>
                         </image>
-                        <!--image>
-                            <name>progrium/consul</name>
+                        <image>
+                            <name>consul</name>
                             <alias>acmeair-consul</alias>
                             <run>
                                 <wait>
@@ -131,13 +131,14 @@
                                     <port>consul.port:8500</port>
                                 </ports>
                             </run>
-                        </image-->
+                        </image>
                         <image>
                             <name>acmeair-customer-service:${project.version}</name>
                             <alias>customer-service</alias>
                             <run>
                                 <links>
                                     <link>acmeair-mongo:mongo.acmeair.com</link>
+                                    <link>acmeair-consul:consul.acmeair.com</link>
                                 </links>
                                 <wait>
                                     <log>Tomcat started on port</log>
@@ -148,6 +149,7 @@
                                 </ports>
                                 <dependsOn>
                                     <dependsOn>acmeair-mongo</dependsOn>
+                                    <dependsOn>acmeair-consul</dependsOn>
                                 </dependsOn>
                             </run>
                         </image>
@@ -179,8 +181,8 @@
                         <spring.data.mongodb.host>localhost</spring.data.mongodb.host>
                         <spring.data.mongodb.port>${mongo.port}</spring.data.mongodb.port>
                         <customer.service.address>http://localhost:${customer.service.port}</customer.service.address>
-                        <consul.port>8500</consul.port>
                         <zuul.routes.customers.url>http://localhost:${customer.service.port}</zuul.routes.customers.url>
+                        <spring.cloud.consul.port>${consul.port}</spring.cloud.consul.port>
                     </systemPropertyVariables>
                     <argLine>${jacoco.failsafe.argLine}</argLine>
                 </configuration>

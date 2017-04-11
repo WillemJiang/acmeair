@@ -5,7 +5,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-@ActiveProfiles("mongodb")
+@ActiveProfiles({"mongodb", "test"})
 @SpringBootTest(
         classes = CustomerServiceApplication.class,
         webEnvironment = RANDOM_PORT,

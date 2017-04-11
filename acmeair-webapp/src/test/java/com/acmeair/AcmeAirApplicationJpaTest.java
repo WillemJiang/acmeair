@@ -8,6 +8,6 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(
         classes = AcmeAirApplication.class,
         webEnvironment = DEFINED_PORT)
-@ActiveProfiles("jpa")
+@ActiveProfiles({"jpa", "test"})
 public class AcmeAirApplicationJpaTest extends AcmeAirApplicationTestBase {
 }

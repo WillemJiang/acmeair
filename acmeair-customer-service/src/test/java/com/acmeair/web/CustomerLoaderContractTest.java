@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 @RunWith(PactRunner.class)
 @PactFolder("../acmeair-loader/target/pacts")
 @Provider("CustomerService")
-@ActiveProfiles("test")
+@ActiveProfiles({"test", "dev"})
 public class CustomerLoaderContractTest {
     private static CustomerService customerService;
     private static ConfigurableApplicationContext customerApplicationContext;

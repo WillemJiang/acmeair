@@ -14,6 +14,6 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
                 "spring.data.mongodb.host=localhost",
                 "spring.data.mongodb.port=27017"
         })
-@ActiveProfiles("mongodb")
+@ActiveProfiles({"mongodb", "test"})
 public class AcmeAirApplicationMongodbTest extends AcmeAirApplicationTestBase {
 }
