@@ -21,6 +21,10 @@
             <artifactId>acmeair-customer-common</artifactId>
         </dependency>
         <dependency>
+            <groupId>acmeair</groupId>
+            <artifactId>acmeair-customer-service</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jersey</artifactId>
             <exclusions>
@@ -164,6 +168,7 @@
                         <customer.service.address>http://localhost:${customer.service.port}</customer.service.address>
                         <zuul.routes.customers.url>http://localhost:${customer.service.port}</zuul.routes.customers.url>
                     </systemPropertyVariables>
+                    <argLine>${jacoco.failsafe.argLine}</argLine>
                 </configuration>
                 <executions>
                     <execution>
@@ -176,5 +181,29 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>jacoco</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>report-aggregate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

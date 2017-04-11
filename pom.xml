@@ -32,7 +32,18 @@
         <module>integration-tests</module>
       </modules>
     </profile>
-    
+    <profile>
+          <id>jacoco</id>
+          <build>
+              <plugins>
+                  <plugin>
+                      <groupId>org.jacoco</groupId>
+                      <artifactId>jacoco-maven-plugin</artifactId>
+                  </plugin>
+              </plugins>
+          </build>
+
+      </profile>
   </profiles>
 
   <properties>
@@ -255,7 +266,7 @@
               </goals>
               <configuration>
                 <destFile>${project.build.directory}/jacoco-it.exec</destFile>
-                <propertyName>failsafeArgLine</propertyName>
+                <propertyName>jacoco.failsafe.argLine</propertyName>
               </configuration>
             </execution>
             <execution>
