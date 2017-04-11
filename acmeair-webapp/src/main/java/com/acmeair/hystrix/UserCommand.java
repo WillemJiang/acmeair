@@ -31,15 +31,28 @@ import java.util.NoSuchElementException;
 @Service
 public class UserCommand implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserCommand.class);
-    
-    protected RestTemplate restTemplate = new RestTemplate();
+
+    private RestTemplate restTemplate = new RestTemplate();
     
     @Autowired
     private LoadBalancerClient loadBalancer;
     
     @Value("${customer.service.name:customerServiceApp}")
     private String customerServiceName;
-    
+
+    UserCommand() {
+        restTemplate.setErrorHandler(new ResponseErrorHandler() {
+            @Override
+            public boolean hasError(ClientHttpResponse clientHttpResponse) throws IOException {
+                return false;
+            }
+
+            @Override
+            public void handleError(ClientHttpResponse clientHttpResponse) throws IOException {
+            }
+        });
+    }
+
     @HystrixCommand
     public CustomerInfo getCustomerInfo(String customerId) {
         ResponseEntity<CustomerInfo> resp = restTemplate.getForEntity(getCustomerServiceAddress() + "/rest/api/customer/{custid}", CustomerInfo.class, customerId);
@@ -51,7 +64,7 @@ public class UserCommand implements UserService {
     
     protected String getCustomerServiceAddress() {
         String address = loadBalancer.choose(customerServiceName).getUri().toString();
-        logger.info("Just get the address {0} from LoadBalancer.", address);
+        logger.info("Just get the address {} from LoadBalancer.", address);
         return address;
     }
     

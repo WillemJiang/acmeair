@@ -46,7 +46,7 @@ import static org.springframework.http.HttpStatus.OK;
         properties = {
                 "spring.data.mongodb.host=localhost"
         })
-@ActiveProfiles("mongodb")
+@ActiveProfiles({"mongodb", "sit"})
 public class AcmeAirApplicationIT {
     private final boolean oneWay         = false;
 
