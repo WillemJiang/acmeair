@@ -257,6 +257,9 @@
             <excludes>
               <exclude>com/acmeair/morphia/entities/*</exclude>
               <exclude>com/acmeair/web/dto/*</exclude>
+              <exclude>com/acmeair/loader/FlightLoader.class</exclude>
+              <exclude>com/acmeair/loader/Loader.class</exclude>
+              <exclude>com/acmeair/config/LoaderREST.class</exclude>
             </excludes>
           </configuration>
           <executions>
