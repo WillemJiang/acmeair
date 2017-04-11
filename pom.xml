@@ -253,6 +253,12 @@
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
           <version>0.7.8</version>
+          <configuration>
+            <excludes>
+              <exclude>com/acmeair/morphia/entities/*</exclude>
+              <exclude>com/acmeair/web/dto/*</exclude>
+            </excludes>
+          </configuration>
           <executions>
             <execution>
               <id>default-prepare-agent</id>
