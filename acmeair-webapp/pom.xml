@@ -96,6 +96,16 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.jersey</groupId>
+                    <artifactId>jersey-client</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jersey.contribs</groupId>
+                    <artifactId>jersey-apache-client4</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
           <groupId>org.springframework.boot</groupId>
@@ -178,7 +188,7 @@
                                             <descriptor>${project.basedir}/src/assembly/webapp.xml</descriptor>
                                         </assembly>
                                         <entryPoint>
-                                            <shell>java -Dserver.port=8080 -jar /maven/acmeair/acmeair-webapp-exec.jar
+                                            <shell>java -Dspring.profiles.active=mongodb,consul -Dserver.port=8080 -jar /maven/acmeair/acmeair-webapp-exec.jar
                                             </shell>
                                         </entryPoint>
                                     </build>

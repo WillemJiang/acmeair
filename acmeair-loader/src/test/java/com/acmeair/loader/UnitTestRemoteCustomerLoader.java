@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Primary
 @Component
-@Profile("test")
+@Profile({"test", "sit"})
 class UnitTestRemoteCustomerLoader extends RemoteCustomerLoader {
 
     private final String remoteUrl;

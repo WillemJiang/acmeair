@@ -7,23 +7,30 @@ import com.acmeair.morphia.entities.BookingImpl;
 import com.acmeair.morphia.entities.FlightImpl;
 import com.acmeair.morphia.repositories.BookingRepository;
 import com.acmeair.morphia.repositories.FlightRepository;
+import com.acmeair.service.KeyGenerator;
+import com.acmeair.service.UserService;
 import com.acmeair.web.dto.BookingInfo;
 import com.acmeair.web.dto.BookingReceiptInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.ResponseErrorHandler;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +38,7 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.HttpHeaders.COOKIE;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.http.HttpMethod.GET;
@@ -41,12 +48,12 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-        classes = AcmeAirApplication.class,
-        webEnvironment = DEFINED_PORT,
+        classes = AcmeAirSitApplication.class,
+        webEnvironment = RANDOM_PORT,
         properties = {
                 "spring.data.mongodb.host=localhost"
         })
-@ActiveProfiles({"mongodb", "sit"})
+@ActiveProfiles({"sit"})
 public class AcmeAirApplicationIT {
     private final boolean oneWay         = false;
 
@@ -54,11 +61,15 @@ public class AcmeAirApplicationIT {
     private final String      password   = "password";
     private final BookingImpl booking    = new BookingImpl("1", new Date(), customerId, "SIN-2131");
 
+    @MockBean
+    private KeyGenerator keyGenerator;
+    @MockBean
+    private UserService userService;
+
     @Autowired
     private CustomerLoader customerLoader;
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    private final RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
     private FlightRepository flightRepository;
@@ -66,11 +77,25 @@ public class AcmeAirApplicationIT {
     @Autowired
     private BookingRepository bookingRepository;
 
+    @Value("${gateway.address}")
+    private String gatewayUrl;
+
     private FlightImpl toFlight;
     private FlightImpl retFlight;
 
     @Before
     public void setUp() {
+        restTemplate.setErrorHandler(new ResponseErrorHandler() {
+            @Override
+            public boolean hasError(ClientHttpResponse clientHttpResponse) throws IOException {
+                return false;
+            }
+
+            @Override
+            public void handleError(ClientHttpResponse clientHttpResponse) throws IOException {
+            }
+        });
+
         FixtureFactoryLoader.loadTemplates("com.acmeair.flight.templates");
 
         toFlight = Fixture.from(FlightImpl.class).gimme("valid");
@@ -87,7 +112,7 @@ public class AcmeAirApplicationIT {
         HttpHeaders headers = headerWithCookieOfLoginSession();
 
         ResponseEntity<Long> consumerCount = restTemplate.exchange(
-                "/customers/rest/info/config/countCustomers",
+                gatewayUrl + "/customers/rest/info/config/countCustomers",
                 GET,
                 new HttpEntity<>(headers),
                 Long.class
@@ -102,7 +127,7 @@ public class AcmeAirApplicationIT {
         HttpHeaders headers = new HttpHeaders();
         
         ResponseEntity<BookingInfo> bookingInfoResponseEntity = restTemplate.exchange(
-                "/bookings/rest/api/bookings/bybookingnumber/{userid}/{number}",
+                gatewayUrl + "/bookings/rest/api/bookings/bybookingnumber/{userid}/{number}",
                 GET,
                 new HttpEntity<String>(headers),
                 BookingInfo.class,
@@ -118,7 +143,7 @@ public class AcmeAirApplicationIT {
         HttpHeaders headers = headerWithCookieOfLoginSession();
 
         ResponseEntity<BookingInfo> bookingInfoResponseEntity = restTemplate.exchange(
-                "/bookings/rest/api/bookings/bybookingnumber/{userid}/{number}",
+                gatewayUrl + "/bookings/rest/api/bookings/bybookingnumber/{userid}/{number}",
                 GET,
                 new HttpEntity<String>(headers),
                 BookingInfo.class,
@@ -149,7 +174,7 @@ public class AcmeAirApplicationIT {
         map.add("oneWayFlight", String.valueOf(oneWay));
 
         ResponseEntity<BookingReceiptInfo> bookingInfoResponseEntity = restTemplate.exchange(
-                "/bookings/rest/api/bookings/bookflights",
+                gatewayUrl + "/bookings/rest/api/bookings/bookflights",
                 POST,
                 new HttpEntity<>(map, headers),
                 BookingReceiptInfo.class
@@ -166,7 +191,7 @@ public class AcmeAirApplicationIT {
 
     private HttpHeaders headerWithCookieOfLoginSession() {
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(
-                "/customers/rest/api/login",
+                gatewayUrl + "/customers/rest/api/login",
                 loginRequest(customerId, password),
                 String.class
         );
