@@ -1,8 +1,8 @@
 package com.acmeair.hystrix;
 
 import com.acmeair.entities.CustomerSession;
+import com.acmeair.service.AuthenticationService;
 import com.acmeair.service.UserService;
-import com.acmeair.web.RESTCookieSessionFilter;
 import com.acmeair.web.dto.CustomerInfo;
 import com.acmeair.web.dto.CustomerSessionInfo;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,18 +28,18 @@ import java.util.NoSuchElementException;
 
 
 @Service
-public class UserCommand implements UserService {
-    private static final Logger logger = LoggerFactory.getLogger(UserCommand.class);
+public class AuthenticationCommand implements AuthenticationService {
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationCommand.class);
 
     private RestTemplate restTemplate = new RestTemplate();
-    
+
     @Autowired
     private LoadBalancerClient loadBalancer;
-    
+
     @Value("${customer.service.name:customerServiceApp}")
     private String customerServiceName;
 
-    UserCommand() {
+    AuthenticationCommand() {
         restTemplate.setErrorHandler(new ResponseErrorHandler() {
             @Override
             public boolean hasError(ClientHttpResponse clientHttpResponse) throws IOException {
@@ -52,21 +51,6 @@ public class UserCommand implements UserService {
             }
         });
     }
-
-    @HystrixCommand
-    public CustomerInfo getCustomerInfo(String customerId) {
-        ResponseEntity<CustomerInfo> resp = restTemplate.getForEntity(getCustomerServiceAddress() + "/rest/api/customer/{custid}", CustomerInfo.class, customerId);
-        if (resp.getStatusCode() != HttpStatus.OK) {
-            throw new NoSuchElementException("No such customer with id " + customerId);
-        }
-        return resp.getBody();
-    }
-    
-    protected String getCustomerServiceAddress() {
-        String address = loadBalancer.choose(customerServiceName).getUri().toString();
-        logger.info("Just get the address {} from LoadBalancer.", address);
-        return address;
-    }
     
     @HystrixCommand
     public CustomerSession validateCustomerSession(String sessionId) {
@@ -77,7 +61,13 @@ public class UserCommand implements UserService {
         );
         return responseEntity.getBody();
     }
-    
+
+    protected String getCustomerServiceAddress() {
+        String address = loadBalancer.choose(customerServiceName).getUri().toString();
+        logger.info("Just get the address {} from LoadBalancer.", address);
+        return address;
+    }
+
     private HttpEntity<MultiValueMap<String, String>> validationRequest(String sessionId) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

@@ -6,7 +6,7 @@ import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.model.PactFragment;
 import com.acmeair.entities.CustomerSession;
-import com.acmeair.service.UserService;
+import com.acmeair.service.AuthenticationService;
 import com.acmeair.web.dto.CustomerSessionInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +25,7 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class UserCommandValidationTest {
+public class AuthenticationCommandValidationTest {
     @Rule
     public final PactProviderRule providerRule = new PactProviderRule("CustomerService", this);
 
@@ -33,15 +33,15 @@ public class UserCommandValidationTest {
 
     private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    private final CustomerSessionInfo customerSessionInfo = new CustomerSessionInfo(
+    private final CustomerSessionInfo   customerSessionInfo = new CustomerSessionInfo(
             "session-id-434200",
             "sean-123",
             dateOf("2017-04-08"),
             dateOf("2027-04-07")
     );
-    private final UserService userService = new TestUserCommand(providerRule.getConfig().url());
+    private final AuthenticationService userService = new TestAuthenticationCommand(providerRule.getConfig().url());
 
-    @Pact(consumer = "UserService")
+    @Pact(consumer = "AuthenticationService")
     public PactFragment createFragment(PactDslWithProvider pactDslWithProvider) throws JsonProcessingException {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", MediaType.APPLICATION_FORM_URLENCODED);

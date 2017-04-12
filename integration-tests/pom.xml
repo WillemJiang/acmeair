@@ -91,12 +91,15 @@
         </dependency>
         <dependency>
             <groupId>acmeair</groupId>
-            <artifactId>acmeair-webapp</artifactId>
-            <type>test-jar</type>
+            <artifactId>acmeair-booking-service</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-zuul</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.seanyinx</groupId>
@@ -147,7 +150,6 @@
                             <alias>customer-service</alias>
                             <run>
                                 <links>
-                                    <link>acmeair-mongo:mongo.acmeair.com</link>
                                     <link>acmeair-consul:consul.acmeair.com</link>
                                 </links>
                                 <wait>
@@ -156,6 +158,26 @@
                                 </wait>
                                 <ports>
                                     <port>customer.service.port:8082</port>
+                                </ports>
+                                <dependsOn>
+                                    <dependsOn>acmeair-consul</dependsOn>
+                                </dependsOn>
+                            </run>
+                        </image>
+                        <image>
+                            <name>acmeair-booking-service:${project.version}</name>
+                            <alias>booking-service</alias>
+                            <run>
+                                <links>
+                                    <link>acmeair-mongo:mongo.acmeair.com</link>
+                                    <link>acmeair-consul:consul.acmeair.com</link>
+                                </links>
+                                <wait>
+                                    <log>Tomcat started on port</log>
+                                    <time>100000</time>
+                                </wait>
+                                <ports>
+                                    <port>booking.service.port:8082</port>
                                 </ports>
                                 <dependsOn>
                                     <dependsOn>acmeair-mongo</dependsOn>
@@ -168,7 +190,6 @@
                             <alias>gateway</alias>
                             <run>
                                 <links>
-                                    <link>acmeair-mongo:mongo.acmeair.com</link>
                                     <link>acmeair-consul:consul.acmeair.com</link>
                                 </links>
                                 <wait>
@@ -179,7 +200,6 @@
                                     <port>gateway.port:8080</port>
                                 </ports>
                                 <dependsOn>
-                                    <dependsOn>acmeair-mongo</dependsOn>
                                     <dependsOn>acmeair-consul</dependsOn>
                                 </dependsOn>
                             </run>

@@ -31,7 +31,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Date;
-import java.util.List;
 
 import static com.acmeair.entities.CustomerSession.SESSIONID_COOKIE_NAME;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -45,14 +44,11 @@ import static java.util.Collections.singletonList;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.HttpHeaders.COOKIE;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;
 
 @RunWith(SpringRunner.class)
@@ -141,27 +137,11 @@ public class AcmeAirApplicationTestBase {
     }
 
     @Test
-    public void checkBookingWithoutLoggedIn() {
-        HttpHeaders headers = new HttpHeaders();
-
-        ResponseEntity<BookingInfo> bookingInfoResponseEntity = restTemplate.exchange(
-                "/bookings/rest/api/bookings/bybookingnumber/{userid}/{number}",
-                GET,
-                new HttpEntity<String>(headers),
-                BookingInfo.class,
-                booking.getCustomerId(),
-                booking.getBookingId()
-        );
-        // Just make sure we need to login first
-        assertThat(bookingInfoResponseEntity.getStatusCode(), is(FORBIDDEN));
-    }
-
-    @Test
     public void canRetrievedBookingInfoByNumberWhenLoggedIn() {
-        HttpHeaders headers = headerWithCookieOfLoginSession();
+        HttpHeaders headers = headers();
 
         ResponseEntity<BookingInfo> bookingInfoResponseEntity = restTemplate.exchange(
-                "/bookings/rest/api/bookings/bybookingnumber/{userid}/{number}",
+                "/rest/api/bookings/bybookingnumber/{userid}/{number}",
                 GET,
                 new HttpEntity<String>(headers),
                 BookingInfo.class,
@@ -180,7 +160,7 @@ public class AcmeAirApplicationTestBase {
 
     @Test
     public void canBookFlightsWhenLoggedIn() {
-        HttpHeaders headers = headerWithCookieOfLoginSession();
+        HttpHeaders headers = headers();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -192,7 +172,7 @@ public class AcmeAirApplicationTestBase {
         map.add("oneWayFlight", String.valueOf(oneWay));
 
         ResponseEntity<BookingReceiptInfo> bookingInfoResponseEntity = restTemplate.exchange(
-                "/bookings/rest/api/bookings/bookflights",
+                "/rest/api/bookings/bookflights",
                 POST,
                 new HttpEntity<>(map, headers),
                 BookingReceiptInfo.class
@@ -207,32 +187,9 @@ public class AcmeAirApplicationTestBase {
         assertThat(bookingInfo.getReturnBookingId(), is(notNullValue()));
     }
 
-    private HttpHeaders headerWithCookieOfLoginSession() {
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(
-                "/customers/rest/api/login",
-                loginRequest(customerId, password),
-                String.class
-        );
-
-        assertThat(responseEntity.getStatusCode(), is(OK));
-
-        List<String> cookies = responseEntity.getHeaders().get(SET_COOKIE);
-        assertThat(cookies, contains(cookie));
-
+    private HttpHeaders headers() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set(COOKIE, String.join(";", cookies));
         headers.setAccept(singletonList(MediaType.APPLICATION_JSON));
         return headers;
-    }
-
-    private HttpEntity<MultiValueMap<String, String>> loginRequest(String login, String password) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("login", login);
-        map.add("password", password);
-
-        return new HttpEntity<>(map, headers);
     }
 }

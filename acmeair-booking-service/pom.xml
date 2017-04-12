@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>acmeair</groupId>
         <artifactId>acmeair-parent</artifactId>
+        <groupId>acmeair</groupId>
         <version>2.0.0-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>acmeair-webapp</artifactId>
+
+    <artifactId>acmeair-booking-service</artifactId>
     <version>2.0.0-SNAPSHOT</version>
-    
 
     <dependencies>
+        <dependency>
+            <groupId>acmeair</groupId>
+            <artifactId>acmeair-loader</artifactId>
+        </dependency>
         <dependency>
             <groupId>acmeair</groupId>
             <artifactId>acmeair-customer-common</artifactId>
@@ -64,21 +66,16 @@
         </dependency>
         <dependency>
             <groupId>acmeair</groupId>
-            <artifactId>acmeair-common</artifactId>
+            <artifactId>acmeair-services-morphia</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zuul</artifactId>
-            <exclusions>
-              <exclusion>
-                <groupId>com.sun.jersey</groupId>
-                <artifactId>jersey-client</artifactId>
-              </exclusion>
-              <exclusion>
-                <groupId>com.sun.jersey</groupId>
-                <artifactId>jersey-apache-client4</artifactId>
-              </exclusion>
-            </exclusions>
+            <groupId>acmeair</groupId>
+            <artifactId>acmeair-services-morphia</artifactId>
+            <type>test-jar</type>
+        </dependency>
+        <dependency>
+            <groupId>acmeair</groupId>
+            <artifactId>acmeair-common</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -95,8 +92,8 @@
             </exclusions>
         </dependency>
         <dependency>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.seanyinx</groupId>
@@ -134,6 +131,10 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <executions>
@@ -142,15 +143,19 @@
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
-                            <finalName>acmeair-webapp</finalName>
+                            <finalName>acmeair-booking-service</finalName>
                             <outputDirectory>${project.build.directory}/acmeair</outputDirectory>
                             <classifier>exec</classifier>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
+
     <profiles>
         <profile>
             <id>docker</id>
@@ -163,8 +168,8 @@
                         <configuration>
                             <images>
                                 <image>
-                                    <name>acmeair-webapp:${project.version}</name>
-                                    <alias>webapp</alias>
+                                    <name>acmeair-booking-service:${project.version}</name>
+                                    <alias>booking-service</alias>
                                     <build>
                                         <from>java:8</from>
                                         <ports>
@@ -172,10 +177,10 @@
                                         </ports>
                                         <assembly>
                                             <mode>tar</mode>
-                                            <descriptor>${project.basedir}/src/assembly/webapp.xml</descriptor>
+                                            <descriptor>${project.basedir}/src/assembly/booking-service.xml</descriptor>
                                         </assembly>
                                         <entryPoint>
-                                            <shell>java -Dspring.profiles.active=mongodb,consul -Dserver.port=8080 -jar /maven/acmeair/acmeair-webapp-exec.jar
+                                            <shell>java -Dspring.profiles.active=mongodb -Dserver.port=8080 -jar /maven/acmeair/acmeair-booking-service-exec.jar
                                             </shell>
                                         </entryPoint>
                                     </build>
@@ -196,5 +201,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>

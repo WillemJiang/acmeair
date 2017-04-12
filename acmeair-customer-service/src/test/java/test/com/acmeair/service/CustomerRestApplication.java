@@ -1,5 +1,6 @@
 package test.com.acmeair.service;
 
+import com.acmeair.loader.CustomerLoaderREST;
 import com.acmeair.service.CustomerService;
 import com.acmeair.service.KeyGenerator;
 import com.acmeair.web.CustomerREST;
@@ -40,7 +41,7 @@ public class CustomerRestApplication extends SpringBootServletInitializer {
     @ApplicationPath("/rest")
     public static class CustomerRestApp extends ResourceConfig {
         public CustomerRestApp() {
-            registerClasses(CustomerREST.class, LoginREST.class);
+            registerClasses(CustomerREST.class, LoginREST.class, CustomerLoaderREST.class);
             property(ServletProperties.FILTER_FORWARD_ON_404, true);
         }
     }

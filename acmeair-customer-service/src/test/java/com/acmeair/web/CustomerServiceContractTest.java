@@ -7,7 +7,10 @@ import au.com.dius.pact.provider.junit.loader.PactFolder;
 import au.com.dius.pact.provider.junit.target.HttpTarget;
 import au.com.dius.pact.provider.junit.target.Target;
 import au.com.dius.pact.provider.junit.target.TestTarget;
+import br.com.six2six.fixturefactory.Fixture;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import com.acmeair.entities.Customer;
+import com.acmeair.entities.CustomerAddress;
 import com.acmeair.morphia.entities.CustomerAddressImpl;
 import com.acmeair.morphia.entities.CustomerImpl;
 import com.acmeair.service.CustomerService;
@@ -25,11 +28,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 @RunWith(PactRunner.class)
-@PactFolder("../acmeair-webapp/target/pacts")
+@PactFolder("../target/pacts")
 @Provider("CustomerService")
 public class CustomerServiceContractTest {
     private static CustomerService customerService;
@@ -39,6 +43,8 @@ public class CustomerServiceContractTest {
     public final Target target = new HttpTarget(8081);
 
     private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    private final RuntimeException exception = new RuntimeException("oops");
 
     private final Customer            customer            = new CustomerImpl(
             "sean-123",
@@ -69,6 +75,8 @@ public class CustomerServiceContractTest {
     public static void startCustomerService() {
         customerApplicationContext = SpringApplication.run(CustomerRestApplication.class, "--server.port=8081", "--spring.profiles.active=test");
         customerService = customerApplicationContext.getBean(CustomerService.class);
+
+        FixtureFactoryLoader.loadTemplates("com.acmeair.customer.templates");
     }
 
     @AfterClass
@@ -100,5 +108,29 @@ public class CustomerServiceContractTest {
             throw new IllegalArgumentException("Wrong date format. Expected is yyyy-MM-dd", e);
         }
     }
+    @State("Remote customer loader is available")
+    public void customerLoaderIsAvailable() {
+        CustomerAddress address = Fixture.from(CustomerAddressImpl.class).gimme("valid");
 
+        when(customerService.createAddress(
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString()
+        )).thenReturn(address);
+    }
+
+    @State("Remote customer loader is not available")
+    public void customerLoaderIsNotAvailable() {
+        when(customerService.createAddress(
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString()
+        )).thenThrow(exception);
+    }
 }
