@@ -21,10 +21,10 @@ Source:
 
 * Development Environment
   
-  * Install Maven to build the code.
-  * We use Docker to run the integration test.
-  * Consul for service discovery. 
-  * MongoDB for Data Service (it is optional.)
+  * Install [Maven](https://maven.apache.org/) to build the code.
+  * We use [Docker](https://www.docker.com/) to run the integration test.
+  * We use [Consul](https://www.consul.io) as service discovery registry. 
+  * We use [MongoDB](https://www.mongodb.com/) as Data Service (it is optional.)
    
 * Instructions for build the code base
 
@@ -49,19 +49,19 @@ Source:
                     +--> acmeair-customer-service
                     
   
-  Acmeair Application also need to use the service discovery server (consul) to find out the services which it dependents. 
+  Acmeair Application also need to use the service discovery server [consul](https://www.consul.io/) to find out the services which it dependents. 
   acmeair-booking-service and acmeair-customer-service can use the outside mongoDB service or use the in memory DB by using active profile.
   
 
-  Running Consul with docker
+  1.Running Consul with docker
   
       docker run -p 8500:8500 consul
       
-  Running MongoDb With docker (optional)
+  2.Running MongoDb With docker (optional)
      
       docker run -p 27017:27017 mongo
       
-  Staring acmeair-customer-service 
+  3.Staring acmeair-customer-service 
      
       #Running the customer service with in memory db
       java -jar -Dspring.profiles.active=jpa -Dserver.port=8082 -jar acmeaire-customer-service/target/acmeair/acmeair-customer-service-exec.jar
@@ -70,7 +70,7 @@ Source:
       java -jar -Dspring.profiles.active=mongodb -Dspring.data.mongodb.host=localhost -Dserver.port=8082 -jar acmeaire-customer-service/target/acmeair/acmeair-customer-service-exec.jar
               
         
-  Staring acmeair-booking-service 
+  4.Staring acmeair-booking-service 
    
       #Running the booking service with in memory db
       java -jar -Dspring.profiles.active=jpa -Dserver.port=8081 -jar acmeaire-booking-service/target/acmeair/acmeair-booking-service-exec.jar
@@ -79,10 +79,10 @@ Source:
       java -jar -Dspring.profiles.active=mongodb -Dspring.data.mongodb.host=localhost -Dserver.port=8081 -jar acmeaire-booking-service/target/acmeair/acmeair-booking-service-exec.jar
              
       
-  Starting acmeair-webapp
+  5.Starting acmeair-webapp
       
       java -jar -Dserver.port=8080 -jar /maven/acmeair/acmeair-customer-service-exec.jar
        
-  Access the acmeair-webapp from browser with below address
+  6.Access the acmeair-webapp from browser with below address
   
       http://localhost:8080/rest/index.html
