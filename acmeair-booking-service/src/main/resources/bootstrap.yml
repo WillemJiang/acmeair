@@ -1,11 +1,3 @@
 spring:
   application:
     name: bookingServiceApp
-  cloud:
-    consul:
-      host: consul.acmeair.com
-      port: 8500
-      discovery:
-#        ipAddress: 127.0.0.1
-        preferIpAddress: true
-

@@ -24,13 +24,17 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 import com.acmeair.entities.Flight;
 import com.acmeair.service.FlightService;
 import com.acmeair.web.dto.TripFlightOptions;
 import com.acmeair.web.dto.TripLegInfo;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Path("/api/flights")
+@Api(value = "Flight Service ", produces = MediaType.APPLICATION_JSON)
 public class FlightsREST {
 	@Autowired
 	private FlightService flightService;

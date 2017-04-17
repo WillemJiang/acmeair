@@ -25,18 +25,20 @@ import com.acmeair.entities.Booking;
 import com.acmeair.service.BookingService;
 import com.acmeair.web.dto.BookingInfo;
 import com.acmeair.web.dto.BookingReceiptInfo;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Path("/api/bookings")
+@Api(value = "Booking Service ", produces = MediaType.APPLICATION_JSON)
 public class BookingsREST {
 
 	@Autowired
 	private BookingService bs;
 	
 	@POST
-	@Consumes({"application/x-www-form-urlencoded"})
+	@Consumes({MediaType.APPLICATION_FORM_URLENCODED})
 	@Path("/bookflights")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public /*BookingInfo*/ Response bookFlights(
 			@FormParam("userid") String userid,
 			@FormParam("toFlightId") String toFlightId,
@@ -67,7 +69,7 @@ public class BookingsREST {
 	
 	@GET
 	@Path("/bybookingnumber/{userid}/{number}")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public BookingInfo getBookingByNumber(
 			@PathParam("number") String number,
 			@PathParam("userid") String userid) {
@@ -87,7 +89,7 @@ public class BookingsREST {
 	
 	@GET
 	@Path("/byuser/{user}")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public List<BookingInfo> getBookingsByUser(@PathParam("user") String user) {
 		try {
 			List<Booking> list =  bs.getBookingsByUser(user);
@@ -106,7 +108,7 @@ public class BookingsREST {
 	@POST
 	@Consumes({"application/x-www-form-urlencoded"})
 	@Path("/cancelbooking")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response cancelBookingsByNumber(
 			@FormParam("number") String number,
 			@FormParam("userid") String userid) {

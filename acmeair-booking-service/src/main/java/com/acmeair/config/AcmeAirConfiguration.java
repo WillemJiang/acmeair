@@ -6,13 +6,19 @@ import java.util.logging.Logger;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.acmeair.service.BookingService;
 import com.acmeair.service.FlightService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Path("/info/config")
+@Api(value = "Booking Service Configuration Information Service", produces = MediaType.APPLICATION_JSON)
 public class AcmeAirConfiguration {
 
 	Logger logger = Logger.getLogger(AcmeAirConfiguration.class.getName());
@@ -31,8 +37,8 @@ public class AcmeAirConfiguration {
 
 	@GET
 	@Path("/dataServices")
-	@Produces("application/json")
-	public ArrayList<ServiceData> getDataServiceInfo() {
+	@Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<ServiceData> getDataServiceInfo() {
     	// We don't use the ServiceLocator to lookup the DataService
 		ArrayList<ServiceData> list = new ArrayList();
 		return list;
@@ -41,7 +47,7 @@ public class AcmeAirConfiguration {
 	
 	@GET
 	@Path("/activeDataService")
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response getActiveDataServiceInfo() {
 		try {		
 			logger.fine("Get active Data Service info");
