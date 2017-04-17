@@ -8,32 +8,80 @@ There are two implementations of the application tier. Each application implemen
 
 Source:
 
-- **acmeair-common**: The Java entities used throughout the application
-- **acmeair-customer-common**: The common files of customer service
-- **acmeair-customer-service**: The micro service of customer service 
-- **acmeair-loader**:  A tool to load the Java implementation data store
-- **acmeair-services**:  The Java data services interface definitions
-- **acmeair-service-morphia**:  A mongodb data service implementation
-- **acmeair-webapp**:  The Web 2.0 application and associated Java REST services which access the customer service for login 
+- **acmeair-common**: The Java entities used throughout the application.
+- **acmeair-customer-common**: The common files of customer service which could be used by other module who want to use customer service.
+- **acmeair-customer-service**: The micro service of customer service. 
+- **acmeair-loader**:  A tool to load the Java implementation data store.
+- **acmeair-services**:  The Java data services interface definitions.
+- **acmeair-service-morphia**:  A mongodb data service implementation.
+- **acmeair-booking-service**: The micro service of booking service.
+- **acmeair-webapp**:  The Web 2.0 application frontend which accesses the customer service for login and booking service for booking flight. 
 
 ## How to get started
 
-* Instructions for [setting up and building the codebase](Documentation/Build_Instructions.md)
-* Deploying the sample application to [Websphere Liberty](Documentation/Liberty_Instructions.md)
-* Extending Acme Air by [adding additional data services.](Documentation/Extending_AcmeAir_Services.md)
+* Development Environment
+  
+  * Install Maven to build the code.
+  * We use Docker to run the integration test.
+  * Consul for service discovery. 
+  * MongoDB for Data Service (it is optional.)
+   
+* Instructions for build the code base
 
-## Ask Questions
 
-Questions about the Acme Air Open Source Project can be directed to our Google Groups.
+  You can build the code by using mvn command from the root without using docker
+      
+      mvn clean install
 
-* Acme Air Users: [https://groups.google.com/forum/?fromgroups#!forum/acmeair-users](https://groups.google.com/forum/?fromgroups#!forum/acmeair-users)
+  If you want to build the docker image and run the integration tests with docker, you can use the Profile of Docker just like this 
+  
+      mvn clean install -Pdocker
+      
+* Running Application
 
-## Submit a bug report
+  The Acmeair Application have three separated services process: acmeair-customer-service, acmeair-booking-service and acmeair-webapp.
+  Here are the dependencies of these service:
+  
+      acmeair-web -----> acmeair-booking-service
+                    |               |
+                    |               |
+                    |               v
+                    +--> acmeair-customer-service
+                    
+  Acmeair Application also need to use the service discovery server (consul) to find out the services which it dependents. 
+  acmeair-booking-service and acmeair-customer-service can use the outside mongoDB service or use the in memory DB by using active profile.
+  
 
-We use github issues to report and handle bug reports.
-
-## OSS Contributions
-
-We accept contributions via pull requests.
-
-CLA agreements needed for us to accept pull requests soon can be found in the [CLAs directory](CLAs) of the repository.
+  1. Running Consul with docker
+  
+    docker run -p 8500:8500 consul
+      
+  2. Running MongoDb With docker (optional)
+     
+    docker run -p 27017:27017 mongo
+      
+  3. Staring acmeair-customer-service 
+     
+    # Running the customer service with in memory db
+    java -jar -Dspring.profiles.active=jpa -Dserver.port=8082 -jar acmeaire-customer-service/target/acmeair/acmeair-customer-service-exec.jar
+      
+    # Running the customer service with mongoDB service
+    java -jar -Dspring.profiles.active=mongodb -Dspring.data.mongodb.host=localhost -Dserver.port=8082 -jar acmeaire-customer-service/target/acmeair/acmeair-customer-service-exec.jar
+            
+        
+  4. Staring acmeair-booking-service 
+   
+    # Running the booking service with in memory db
+    java -jar -Dspring.profiles.active=jpa -Dserver.port=8081 -jar acmeaire-booking-service/target/acmeair/acmeair-booking-service-exec.jar
+      
+    # Running the booking service with mongoDB service
+    java -jar -Dspring.profiles.active=mongodb -Dspring.data.mongodb.host=localhost -Dserver.port=8081 -jar acmeaire-booking-service/target/acmeair/acmeair-booking-service-exec.jar
+           
+      
+  5. Starting acmeair-webapp
+      
+    java -jar -Dserver.port=8080 -jar /maven/acmeair/acmeair-customer-service-exec.jar
+       
+  6. Access the acmeair-webapp from browser with below address
+  
+    http://localhost:8080/rest/index.html
