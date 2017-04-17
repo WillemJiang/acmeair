@@ -72,6 +72,7 @@ public class LoginREST {
 	@Path("/logout")
 	@Produces("text/plain")
 	public Response logout(@QueryParam("login") String login, @CookieParam("sessionid") String sessionid) {
+        logger.info("Received logout request of username [{}]", login);
 		try {
 			customerService.invalidateSession(sessionid);
 			// The following call will trigger query against all partitions, disable for now
