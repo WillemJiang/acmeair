@@ -18,9 +18,13 @@ package com.acmeair.web;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
+import com.acmeair.entities.Customer;
 import com.acmeair.entities.CustomerSession;
 import com.acmeair.service.*;
 import com.acmeair.web.dto.CustomerSessionInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,7 @@ import static com.acmeair.entities.CustomerSession.SESSIONID_COOKIE_NAME;
 
 
 @Path("/api/login")
+@Api(value = "Customer Login Service", produces = MediaType.TEXT_PLAIN + "," + MediaType.APPLICATION_JSON)
 public class LoginREST {
 	public static final Logger logger = LoggerFactory.getLogger("LoginREST");
 
@@ -38,7 +43,10 @@ public class LoginREST {
 	
 	@POST
 	@Consumes({"application/x-www-form-urlencoded"})
-	@Produces("text/plain")
+	@Produces(MediaType.TEXT_PLAIN)
+	@ApiOperation(value = "Get the customer from customer id",
+				  notes = "This can only be done by the logged in user.",
+				  response = Customer.class)
 	public Response login(@FormParam("login") String login, @FormParam("password") String password) {
 		logger.info("Received login request of username [{}]", login);
 		try {
@@ -70,8 +78,13 @@ public class LoginREST {
 	
 	@GET
 	@Path("/logout")
-	@Produces("text/plain")
-	public Response logout(@QueryParam("login") String login, @CookieParam("sessionid") String sessionid) {
+	@Produces(MediaType.TEXT_PLAIN)
+	@ApiOperation(value = "Validate customer loggin status with session id.",
+				  notes = "This can only be done by the logged in user.",
+				  response = String.class)
+	// TODO: need to check out the cookie setting, it looks like we don't need the login parameter
+	public Response logout(@ApiParam(value = "The login user name", required = true) @QueryParam("login") String login,
+                                      @ApiParam(value = "Session id from the cookie", required = true) @CookieParam("sessionid") String sessionid) {
         logger.info("Received logout request of username [{}]", login);
 		try {
 			customerService.invalidateSession(sessionid);
@@ -96,7 +109,10 @@ public class LoginREST {
 	@Path("/validate")
 	@Consumes({"application/x-www-form-urlencoded"})
 	@Produces(MediaType.APPLICATION_JSON)
-	public /* Customer */ Response validateCustomer(@FormParam("sessionId") String sessionId) {
+	@ApiOperation(value = "Validate customer loggin status with session id.",
+				  notes = "This can only be done by the logged in user.",
+				  response = CustomerSessionInfo.class)
+	public Response validateCustomer(@ApiParam(value = "Session id from the cookie", required = true) @FormParam("sessionId") String sessionId) {
 		CustomerSession customerSession = customerService.validateSession(sessionId);
 		CustomerSessionInfo sessionInfo = null;
 		if (customerSession != null) {

@@ -23,11 +23,17 @@ import com.acmeair.entities.Customer;
 import com.acmeair.entities.CustomerAddress;
 import com.acmeair.service.*;
 import com.acmeair.web.dto.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Path("/api/customer")
+@Api(value = "Customer Information Query and Update Service", produces = MediaType.APPLICATION_JSON)
 public class CustomerREST {
 	private static final Logger logger = LoggerFactory.getLogger(CustomerREST.class);
 	static final String LOGIN_USER = "acmeair.login_user";
@@ -46,7 +52,11 @@ public class CustomerREST {
 	@GET
 	@Path("/byid/{custid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCustomer(@CookieParam("sessionid") String sessionid, @PathParam("custid") String customerid) {
+	@ApiOperation(value = "Get the customer from customer id when the customer is logged.",
+				  notes = "This can only be done by the logged in user.",
+				  response = Customer.class)
+	public Response getCustomer(@ApiParam(value = "Session id from the cookie", required = true) @CookieParam("sessionid") String sessionid,
+										   @ApiParam(value = "Customer id", required = true) @PathParam("custid") String customerid) {
 		try {
 			logger.info("Received request to get customer by id {} with session {}", customerid, sessionid);
 			// make sure the user isn't trying to update a customer other than the one currently logged in
@@ -64,26 +74,32 @@ public class CustomerREST {
 			return null;
 		}
 	}
-
-	@GET
-	@Path("/{custid}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCustomer(@PathParam("custid") String customerid) {
-		try {
-			Customer customer = customerService.getCustomerByUsername(customerid);
-			CustomerInfo customerDTO = new CustomerInfo(customer);
-			return Response.ok(customerDTO).build();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
+    
+    
+    @GET
+    @Path("/{custid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    // We should not expose this API to the public (It can be 
+    public Response getCustomer(@PathParam("custid") String customerid) {
+        try {
+            Customer customer = customerService.getCustomerByUsername(customerid);
+            CustomerInfo customerDTO = new CustomerInfo(customer);
+            return Response.ok(customerDTO).build();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
 	@POST
 	@Path("/byid/{custid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public /* Customer */ Response putCustomer(@CookieParam("sessionid") String sessionid, CustomerInfo customer) {
+	@ApiOperation(value = "Update the customer information",
+				  notes = "This can only be done by the logged in user.",
+				  response = Customer.class)
+	@ApiResponses(value = { @ApiResponse(code = 403, message = "Invalid user information") })
+	public Response putCustomer(@CookieParam("sessionid") String sessionid, CustomerInfo customer) {
 		if (!validate(customer.getUsername())) {
 			return Response.status(Response.Status.FORBIDDEN).build();
 		}

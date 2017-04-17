@@ -52,6 +52,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
     <pact.version>3.2.13</pact.version>
+    <swagger.version>1.5.9</swagger.version>
   </properties>
 
   <dependencyManagement>
@@ -60,6 +61,11 @@
         <groupId>org.hibernate.javax.persistence</groupId>
         <artifactId>hibernate-jpa-2.1-api</artifactId>
         <version>1.0.0.Final</version>
+      </dependency>
+      <dependency>
+        <groupId>io.swagger</groupId>
+        <artifactId>swagger-jersey2-jaxrs</artifactId>
+        <version>${swagger.version}</version>
       </dependency>
       <dependency>
         <groupId>acmeair</groupId>
