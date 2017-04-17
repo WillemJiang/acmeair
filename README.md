@@ -40,19 +40,21 @@ Source:
 * Running Application
 
   The Acmeair Application have three separated services process: acmeair-customer-service, acmeair-booking-service and acmeair-webapp.
+  Acmeair Application also need to use the Service Registry [consul](https://www.consul.io/) to find out the services which it dependents. 
+  acmeair-booking-service and acmeair-customer-service can use the outside mongoDB service or use the in memory DB by using active profile.
+    
   Here are the dependencies of these service:
   
-      acmeair-web -----> acmeair-booking-service
-                    |               |
-                    |               |
-                    |               v
-                    +--> acmeair-customer-service
+      acmeair-web -----> acmeair-booking-service (DB)  --------+
+           |        |               |                          |
+           |        |               |                          |
+           |        |               v                          |
+           |        +--> acmeair-customer-service (DB)-----+   |
+           |                                               |   |
+           |                                               V   V
+           +-------------------------------------------->Service Registry             
                     
   
-  Acmeair Application also need to use the service discovery server [consul](https://www.consul.io/) to find out the services which it dependents. 
-  acmeair-booking-service and acmeair-customer-service can use the outside mongoDB service or use the in memory DB by using active profile.
-  
-
   1.Running Consul with docker
   
       docker run -p 8500:8500 consul
