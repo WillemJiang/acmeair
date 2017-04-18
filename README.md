@@ -83,7 +83,7 @@ Source:
       
   5.Starting acmeair-webapp
       
-      java -Dserver.port=8080 -jar acmeair-webapp/target/acmeair/acmeair-webapp-exec.jar
+      java -Dserver.port=8080 -jar acmeair-webapp/target/acmeair/acmeair-webapp-exec.jar
        
   6.Access the acmeair-webapp from browser with below address
   
