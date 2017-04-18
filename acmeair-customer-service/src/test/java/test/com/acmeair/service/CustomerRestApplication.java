@@ -10,7 +10,6 @@ import org.glassfish.jersey.servlet.ServletProperties;
 import org.mockito.Mockito;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,7 +17,7 @@ import javax.ws.rs.ApplicationPath;
 
 
 @SpringBootApplication
-public class CustomerRestApplication extends SpringBootServletInitializer {
+public class CustomerRestApplication {
 
     private final KeyGenerator    keyGenerator    = Mockito.mock(KeyGenerator.class);
     private final CustomerService customerService = Mockito.mock(CustomerService.class);
