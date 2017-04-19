@@ -28,8 +28,11 @@ Source:
    
 * Instructions for build the code base
 
-
-  You can build the code by using mvn command from the root without using docker
+  You can build the code by using maven from the root without running the test
+        
+      mvn clean install -Dtest=false -DfailIfNoTests=false 
+  
+  You can build the code by using maven from the root without using docker
       
       mvn clean install
 
@@ -52,7 +55,7 @@ Source:
            |        +--> acmeair-customer-service (DB)-----+   |
            |                                               |   |
            |                                               V   V
-           +-------------------------------------------->Service Registry             
+           +-------------------------------------------->Service Registry (Consul)            
                     
   
   1.Running Consul with docker
