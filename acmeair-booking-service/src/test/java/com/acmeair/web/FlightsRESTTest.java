@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.contains;
@@ -53,7 +54,7 @@ public class FlightsRESTTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private final DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+    private final DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
     private final Calendar calendar = Calendar.getInstance();
 
     private Flight departFlight;
