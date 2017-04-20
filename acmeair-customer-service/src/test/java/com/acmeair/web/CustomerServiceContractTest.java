@@ -21,12 +21,14 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.test.context.ActiveProfiles;
 import test.com.acmeair.service.CustomerRestApplication;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.reset;
@@ -42,7 +44,7 @@ public class CustomerServiceContractTest {
     @TestTarget
     public final Target target = new HttpTarget(8081);
 
-    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
     private final RuntimeException exception = new RuntimeException("oops");
 
@@ -73,7 +75,7 @@ public class CustomerServiceContractTest {
 
     @BeforeClass
     public static void startCustomerService() {
-        customerApplicationContext = SpringApplication.run(CustomerRestApplication.class, "--server.port=8081", "--spring.profiles.active=test");
+        customerApplicationContext = SpringApplication.run(CustomerRestApplication.class, "--server.port=8081", "--spring.profiles.active=test,jpa");
         customerService = customerApplicationContext.getBean(CustomerService.class);
 
         FixtureFactoryLoader.loadTemplates("com.acmeair.customer.templates");
