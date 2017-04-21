@@ -5,14 +5,20 @@ service_description:
 cse:
   service:
     registry:
-      address: http://127.0.0.1:9980
-#      address: http://10.57.52.197:9980
+      address: http://10.57.52.197:9980
+#      address: http://127.0.0.1:9980
   rest:
-    address: 127.0.0.1:8081
-#    address: 10.61.14.138:8082
+    address: 10.61.14.138:8082
+#    address: 127.0.0.1:8081
   handler:
     chain:
       Provider:
         default: perf-stats
       Consumer:
         default: perf-stats,loadbalance
+        
+  references:
+    customerServiceApp:
+      version-rule: 0.0.1
+      transport: rest
+      

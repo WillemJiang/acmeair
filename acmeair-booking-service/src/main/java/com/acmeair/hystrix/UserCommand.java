@@ -37,7 +37,7 @@ public class UserCommand implements UserService {
 
     @HystrixCommand
     public CustomerInfo getCustomerInfo(String customerId) {
-        String url = String.format("cse://%s/rest/api/customer/{custid}", customerServiceName);
+        String url = String.format("cse://%s/api/customer/{custid}", customerServiceName);
         ResponseEntity<CustomerInfo> resp = restTemplate.getForEntity(url, CustomerInfo.class, customerId);
         if (resp.getStatusCode() != HttpStatus.OK) {
             throw new NoSuchElementException("No such customer with id " + customerId);

@@ -38,115 +38,115 @@ import java.util.List;
 @Service
 public class FlightServiceImpl extends FlightService {
 
-	//private final static Logger logger = Logger.getLogger(FlightService.class.getName()); 
+    //private final static Logger logger = Logger.getLogger(FlightService.class.getName()); 
 
-	@Autowired
-	private FlightRepository flightRepository;
+    @Autowired
+    private FlightRepository flightRepository;
 
-	@Autowired
-	private FlightSegmentRepository flightSegmentRepository;
+    @Autowired
+    private FlightSegmentRepository flightSegmentRepository;
 
-	@Autowired
-	private AirportRepository airportRepository;
+    @Autowired
+    private AirportRepository airportRepository;
 
-	@Inject
-	KeyGenerator keyGenerator;
+    @Inject
+    KeyGenerator keyGenerator;
 
+    @Override
+    public Long countFlights() {
+        return flightRepository.count();
+    }
 
-	@Override
-	public Long countFlights() {
-		return flightRepository.count();
-	}
-	
-	@Override
-	public Long countFlightSegments() {
-		return flightSegmentRepository.count();
-	}
-	
-	@Override
-	public Long countAirports() {
-		return airportRepository.count();
-	}
+    @Override
+    public Long countFlightSegments() {
+        return flightSegmentRepository.count();
+    }
 
-	protected Flight getFlight(String flightId, String segmentId) {
-		return flightRepository.findOne(flightId);
-	}
+    @Override
+    public Long countAirports() {
+        return airportRepository.count();
+    }
 
-	@Override
-	protected  FlightSegment getFlightSegment(String fromAirport, String toAirport){
-		FlightSegment segment = flightSegmentRepository.findByOriginPortAndDestPort(fromAirport, toAirport);
-		if (segment == null) {
-			segment = new FlightSegmentImpl(); // put a sentinel value of a non-populated flightsegment 
-		}
-		return segment;
-	}
-	
-	@Override
-	protected  List<Flight> getFlightBySegment(FlightSegment segment, Date deptDate){
-		List<FlightImpl> flightImpls;
-		if(deptDate != null) {
-			flightImpls = flightRepository.findByFlightSegmentIdAndScheduledDepartureTime(segment.getFlightName(), deptDate);
-		} else {
-			flightImpls = flightRepository.findByFlightSegmentId(segment.getFlightName());
-		}
-		List<Flight> flights = new ArrayList<>();
-		if (flightImpls != null) {
-			for (Flight flight : flightImpls) {
-				flight.setFlightSegment(segment);
-				flights.add(flight);
-			}
-		}
-		return flights;
-	}
-	
+    protected Flight getFlight(String flightId, String segmentId) {
+        return flightRepository.findOne(flightId);
+    }
 
-	@Override
-	public void storeAirportMapping(AirportCodeMapping mapping) {
-		try{
-			airportRepository.save((AirportCodeMappingImpl) mapping);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Override
+    protected FlightSegment getFlightSegment(String fromAirport, String toAirport) {
+        FlightSegment segment = flightSegmentRepository.findByOriginPortAndDestPort(fromAirport, toAirport);
+        if (segment == null) {
+            segment = new FlightSegmentImpl(); // put a sentinel value of a non-populated flightsegment 
+        }
+        return segment;
+    }
 
-	@Override 
-	public AirportCodeMapping createAirportCodeMapping(String airportCode, String airportName){
-		AirportCodeMapping acm = new AirportCodeMappingImpl(airportCode, airportName);
-		return acm;
-	}
-	
-	@Override
-	public Flight createNewFlight(String flightSegmentId,
-			Date scheduledDepartureTime, Date scheduledArrivalTime,
-			BigDecimal firstClassBaseCost, BigDecimal economyClassBaseCost,
-			int numFirstClassSeats, int numEconomyClassSeats,
-			String airplaneTypeId) {
-		String id = keyGenerator.generate().toString();
-		Flight flight = new FlightImpl(id, flightSegmentId,
-			scheduledDepartureTime, scheduledArrivalTime,
-			firstClassBaseCost, economyClassBaseCost,
-			numFirstClassSeats, numEconomyClassSeats,
-			airplaneTypeId);
-		try{
-			flightRepository.save((FlightImpl) flight);
-			return flight;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Override
+    protected List<Flight> getFlightBySegment(FlightSegment segment, Date deptDate) {
+        List<FlightImpl> flightImpls;
+        if (deptDate != null) {
+            flightImpls =
+                flightRepository.findByFlightSegmentIdAndScheduledDepartureTime(segment.getFlightName(), deptDate);
+        } else {
+            flightImpls = flightRepository.findByFlightSegmentId(segment.getFlightName());
+        }
+        List<Flight> flights = new ArrayList<>();
+        if (flightImpls != null) {
+            for (Flight flight : flightImpls) {
+                flight.setFlightSegment(segment);
+                flights.add(flight);
+            }
+        }
+        return flights;
+    }
 
-	@Override
-	public void storeFlightSegment(FlightSegment flightSeg) {
-		try{
-			flightSegmentRepository.save((FlightSegmentImpl) flightSeg);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
-	@Override 
-	public void storeFlightSegment(String flightName, String origPort, String destPort, int miles) {
-		FlightSegment flightSeg = new FlightSegmentImpl(flightName, origPort, destPort, miles);
-		storeFlightSegment(flightSeg);
-	}
+    @Override
+    public void storeAirportMapping(AirportCodeMapping mapping) {
+        try {
+            airportRepository.save((AirportCodeMappingImpl) mapping);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public AirportCodeMapping createAirportCodeMapping(String airportCode, String airportName) {
+        AirportCodeMapping acm = new AirportCodeMappingImpl(airportCode, airportName);
+        return acm;
+    }
+
+    @Override
+    public Flight createNewFlight(String flightSegmentId,
+            Date scheduledDepartureTime, Date scheduledArrivalTime,
+            BigDecimal firstClassBaseCost, BigDecimal economyClassBaseCost,
+            int numFirstClassSeats, int numEconomyClassSeats,
+            String airplaneTypeId) {
+        String id = keyGenerator.generate().toString();
+        Flight flight = new FlightImpl(id, flightSegmentId,
+                scheduledDepartureTime, scheduledArrivalTime,
+                firstClassBaseCost, economyClassBaseCost,
+                numFirstClassSeats, numEconomyClassSeats,
+                airplaneTypeId);
+        try {
+            flightRepository.save((FlightImpl) flight);
+            return flight;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void storeFlightSegment(FlightSegment flightSeg) {
+        try {
+            flightSegmentRepository.save((FlightSegmentImpl) flightSeg);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public FlightSegment storeFlightSegment(String flightName, String origPort, String destPort, int miles) {
+        FlightSegment flightSeg = new FlightSegmentImpl(flightName, origPort, destPort, miles);
+        storeFlightSegment(flightSeg);
+        return flightSeg;
+    }
 }

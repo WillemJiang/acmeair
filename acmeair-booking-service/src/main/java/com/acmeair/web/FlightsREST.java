@@ -28,6 +28,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.acmeair.entities.Flight;
+import com.acmeair.entities.FlightSegment;
 import com.acmeair.service.FlightService;
 import com.acmeair.web.dto.TripFlightOptions;
 import com.acmeair.web.dto.TripLegInfo;
@@ -124,6 +125,16 @@ public class FlightsREST {
         options.setTripFlights(legs);
 
         return options;
+    }
+
+    @POST
+    @Path("/createsegment")
+    @Consumes({"application/x-www-form-urlencoded"})
+    @Produces("application/json")
+    public FlightSegment createFlightSegment(@FormParam("flightName") String flightName,
+            @FormParam("origPort") String origPort, @FormParam("destPort") String destPort,
+            @FormParam("miles") int miles) {
+        return flightService.storeFlightSegment(flightName, origPort, destPort, miles);
     }
 
     @POST
