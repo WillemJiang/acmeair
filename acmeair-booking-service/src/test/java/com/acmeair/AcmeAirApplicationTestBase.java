@@ -58,24 +58,28 @@ public class AcmeAirApplicationTestBase {
 
     private static ConfigurableApplicationContext applicationContext;
 
-    private final ObjectMapper objectMapper   = new ObjectMapper();
-    private final String       cookie         = SESSIONID_COOKIE_NAME + "=" + uniquify("session-id");
-    private final boolean      oneWay         = false;
-    private final String       customerId     = "uid0@email.com";
-    private final String       password       = "password";
-    private final BookingImpl  booking        = new BookingImpl("1", new Date(), customerId, "SIN-2131");
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private final String cookie = SESSIONID_COOKIE_NAME + "=" + uniquify("session-id");
+
+    private final boolean oneWay = false;
+
+    private final String customerId = "uid0@email.com";
+
+    private final String password = "password";
+
+    private final BookingImpl booking = new BookingImpl("1", new Date(), customerId, "SIN-2131");
 
     private final CustomerSessionInfo customerSession = new CustomerSessionInfo(
             "session-id-434200",
             "sean-123",
             new Date(),
-            new Date()
-    );
+            new Date());
 
     private final CustomerInfo customerInfo = new CustomerInfo();
 
     @Autowired
-    private TestRestTemplate        restTemplate;
+    private TestRestTemplate restTemplate;
 
     @Autowired
     private FlightRepository flightRepository;
@@ -87,11 +91,14 @@ public class AcmeAirApplicationTestBase {
     private ConfigurableApplicationContext context;
 
     private FlightImpl toFlight;
+
     private FlightImpl retFlight;
 
     @AfterClass
     public static void tearDownClass() throws Exception {
-        applicationContext.close();
+        if (applicationContext != null) {
+            applicationContext.close();
+        }
     }
 
     @Before
@@ -104,25 +111,25 @@ public class AcmeAirApplicationTestBase {
         customerInfo.setUsername(customerId);
 
         stubFor(post(urlEqualTo("/rest/api/login"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(SC_OK)
-                                        .withHeader(SET_COOKIE, cookie)
-                                        .withBody("logged in")));
+                .willReturn(
+                        aResponse()
+                                .withStatus(SC_OK)
+                                .withHeader(SET_COOKIE, cookie)
+                                .withBody("logged in")));
 
         stubFor(post(urlEqualTo("/rest/api/login/validate"))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(SC_OK)
-                                        .withHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                                        .withBody(objectMapper.writeValueAsString(customerSession))));
+                .willReturn(
+                        aResponse()
+                                .withStatus(SC_OK)
+                                .withHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                                .withBody(objectMapper.writeValueAsString(customerSession))));
 
         stubFor(get(urlEqualTo("/rest/api/customer/" + customerId))
-                        .willReturn(
-                                aResponse()
-                                        .withStatus(SC_OK)
-                                        .withHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                                        .withBody(objectMapper.writeValueAsString(customerInfo))));
+                .willReturn(
+                        aResponse()
+                                .withStatus(SC_OK)
+                                .withHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                                .withBody(objectMapper.writeValueAsString(customerInfo))));
 
         bookingRepository.save(booking);
         flightRepository.save(asList(toFlight, retFlight));
@@ -146,8 +153,7 @@ public class AcmeAirApplicationTestBase {
                 new HttpEntity<String>(headers),
                 BookingInfo.class,
                 booking.getCustomerId(),
-                booking.getBookingId()
-        );
+                booking.getBookingId());
 
         assertThat(bookingInfoResponseEntity.getStatusCode(), is(OK));
 
@@ -175,8 +181,7 @@ public class AcmeAirApplicationTestBase {
                 "/rest/api/bookings/bookflights",
                 POST,
                 new HttpEntity<>(map, headers),
-                BookingReceiptInfo.class
-        );
+                BookingReceiptInfo.class);
 
         assertThat(bookingInfoResponseEntity.getStatusCode(), is(OK));
 

@@ -1,6 +1,5 @@
 package com.acmeair.hystrix;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -9,15 +8,21 @@ import org.springframework.stereotype.Service;
 @Service
 @Profile("test")
 class TestUserCommand extends UserCommand {
-    private final String customerServiceAddress;
-    
-    TestUserCommand(@Value("${customer.service.address}") String customerServiceAddress) {
+    private String customerServiceAddress;
+
+    public TestUserCommand() {
+    }
+
+    public TestUserCommand(String customerServiceAddress) {
         this.customerServiceAddress = customerServiceAddress;
     }
-    
+
+    protected void setCustomerServiceAddress(String customerServiceAddress) {
+        this.customerServiceAddress = customerServiceAddress;
+    }
+
     protected String getCustomerServiceAddress() {
         return customerServiceAddress;
     }
-    
-    
+
 }

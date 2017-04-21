@@ -2,12 +2,9 @@ package com.acmeair.hystrix;
 
 import com.acmeair.service.UserService;
 import com.acmeair.web.dto.CustomerInfo;
+import com.huawei.paas.cse.provider.springmvc.reference.RestTemplateBuilder;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
@@ -18,16 +15,10 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
-
 @Service
 public class UserCommand implements UserService {
-    private static final Logger logger = LoggerFactory.getLogger(UserCommand.class);
+    private RestTemplate restTemplate = RestTemplateBuilder.create();
 
-    private RestTemplate restTemplate = new RestTemplate();
-    
-    @Autowired
-    private LoadBalancerClient loadBalancer;
-    
     @Value("${customer.service.name:customerServiceApp}")
     private String customerServiceName;
 
@@ -46,16 +37,12 @@ public class UserCommand implements UserService {
 
     @HystrixCommand
     public CustomerInfo getCustomerInfo(String customerId) {
-        ResponseEntity<CustomerInfo> resp = restTemplate.getForEntity(getCustomerServiceAddress() + "/rest/api/customer/{custid}", CustomerInfo.class, customerId);
+        String url = String.format("cse://%s/rest/api/customer/{custid}", customerServiceName);
+        ResponseEntity<CustomerInfo> resp = restTemplate.getForEntity(url, CustomerInfo.class, customerId);
         if (resp.getStatusCode() != HttpStatus.OK) {
             throw new NoSuchElementException("No such customer with id " + customerId);
         }
         return resp.getBody();
     }
-    
-    protected String getCustomerServiceAddress() {
-        String address = loadBalancer.choose(customerServiceName).getUri().toString();
-        logger.info("Just get the address {} from LoadBalancer.", address);
-        return address;
-    }
+
 }

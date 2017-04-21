@@ -1,14 +1,5 @@
 server:
   port: ${appPort:8080}
-spring:
-  cloud:
-    consul:
-      host: consul.acmeair.com
-      port: 8500
-      discovery:
-#        ipAddress: 127.0.0.1
-        preferIpAddress: true
-
 
 # Spring MVC dispatcher servlet path. Needs to be different than Jersey's to enable/disable Actuator endpoints access (/info, /health, ...)
 server.servlet-path: /
