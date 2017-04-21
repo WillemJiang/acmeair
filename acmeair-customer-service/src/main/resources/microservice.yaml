@@ -1,6 +1,6 @@
-APPLICATION_ID: customer_service
+APPLICATION_ID: acmeair
 service_description:
-  name: customer_service
+  name: customerServiceApp 
   version: 0.0.1
 cse:
   service:
