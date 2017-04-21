@@ -34,7 +34,8 @@ import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-@RestSchema(schemaId="customer_REST")
+
+@RestSchema(schemaId = "customer_REST")
 @Path("/api/customer")
 @Api(value = "Customer Information Query and Update Service", produces = MediaType.APPLICATION_JSON)
 public class CustomerREST {
@@ -43,75 +44,71 @@ public class CustomerREST {
 
 	@Autowired
 	private CustomerService customerService;
-	
-	@Context 
+
+	@Context
 	private HttpServletRequest request;
 
-
-	private boolean validate(String customerid)	{
+	private boolean validate(String customerid) {
 		String loginUser = request.getHeader(LOGIN_USER);
 		return customerid.equals(loginUser);
 	}
+
 	@GET
 	@Path("/byid/{custid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Get the customer from customer id when the customer is logged.",
-				  notes = "This can only be done by the logged in user.",
-				  response = CustomerInfo.class ,produces=MediaType.APPLICATION_JSON)
-	public CustomerInfo getCustomer(@ApiParam(value = "Session id from the cookie", required = true) @CookieParam("sessionid") String sessionid,
-										   @ApiParam(value = "Customer id", required = true) @PathParam("custid") String customerid) {
+	@ApiOperation(value = "Get the customer from customer id when the customer is logged.", notes = "This can only be done by the logged in user.", response = CustomerInfo.class, produces = MediaType.APPLICATION_JSON)
+	public CustomerInfo getCustomerById(
+			@ApiParam(value = "Session id from the cookie", required = true) @CookieParam("sessionid") String sessionid,
+			@ApiParam(value = "Customer id", required = true) @PathParam("custid") String customerid) {
 		try {
 			logger.info("Received request to get customer by id {} with session {}", customerid, sessionid);
-			// make sure the user isn't trying to update a customer other than the one currently logged in
-			if (!validate(customerid)) {
-				logger.info("Customer id mismatched, requested = {}, logged = {}", customerid, request.getHeader("acmeair.login_user"));
-				throw new InvocationException(Response.Status.FORBIDDEN, "Forbidden");
-			}
-			Customer customer = customerService.getCustomerByUsername(customerid);	
-			CustomerInfo customerDTO = new CustomerInfo(customer);			
+			// make sure the user isn't trying to update a customer other than
+			// the one currently logged in
+//			if (!validate(customerid)) {
+//				logger.info("Customer id mismatched, requested = {}, logged = {}", customerid,
+//						request.getHeader("acmeair.login_user"));
+//				throw new InvocationException(Response.Status.FORBIDDEN, "Forbidden");
+//			}
+			Customer customer = customerService.getCustomerByUsername(customerid);
+			CustomerInfo customerDTO = new CustomerInfo(customer);
 			return customerDTO;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new InvocationException(Response.Status.INTERNAL_SERVER_ERROR, "Internal Server Error");
 		}
 	}
-    
-    
-    @GET
-    @Path("/{custid}")
-    @Produces(MediaType.APPLICATION_JSON)
-    // We should not expose this API to the public (It can be 
-    public CustomerInfo getCustomer(@PathParam("custid") String customerid) {
-        try {
-            Customer customer = customerService.getCustomerByUsername(customerid);
-            return new CustomerInfo(customer);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            throw new InvocationException(Response.Status.INTERNAL_SERVER_ERROR, "Internal Server Error");
-        }
-    }
-    
+
+	@GET
+	@Path("/{custid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	// We should not expose this API to the public (It can be
+	public CustomerInfo getCustomer(@PathParam("custid") String customerid) {
+		try {
+			Customer customer = customerService.getCustomerByUsername(customerid);
+			return new CustomerInfo(customer);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new InvocationException(Response.Status.INTERNAL_SERVER_ERROR, "Internal Server Error");
+		}
+	}
+
 	@POST
-    @Path("/byid/{custid}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(
-            value = "Update the customer information",
-            produces = MediaType.APPLICATION_JSON,
-            response = Customer.class)
+	@Path("/byid/{custid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Update the customer information", produces = MediaType.APPLICATION_JSON, response = Customer.class)
 	@ApiResponses(value = { @ApiResponse(code = 403, message = "Invalid user information") })
 	public Customer putCustomer(@CookieParam("sessionid") String sessionid, CustomerInfo customer) {
 		if (!validate(customer.getUsername())) {
-		    throw new InvocationException(Response.Status.FORBIDDEN, "Forbidden");
+			throw new InvocationException(Response.Status.FORBIDDEN, "Forbidden");
 		}
-		
-		Customer customerFromDB = customerService.getCustomerByUsernameAndPassword(customer.getUsername(), customer.getPassword());
+
+		Customer customerFromDB = customerService.getCustomerByUsernameAndPassword(customer.getUsername(),
+				customer.getPassword());
 		if (customerFromDB == null) {
 			// either the customer doesn't exist or the password is wrong
-		    throw new InvocationException(Response.Status.FORBIDDEN, "Forbidden");
+			throw new InvocationException(Response.Status.FORBIDDEN, "Forbidden");
 		}
-		
+
 		CustomerAddress addressFromDB = customerFromDB.getAddress();
 		addressFromDB.setStreetAddress1(customer.getAddress().getStreetAddress1());
 		if (customer.getAddress().getStreetAddress2() != null) {
@@ -121,16 +118,14 @@ public class CustomerREST {
 		addressFromDB.setStateProvince(customer.getAddress().getStateProvince());
 		addressFromDB.setCountry(customer.getAddress().getCountry());
 		addressFromDB.setPostalCode(customer.getAddress().getPostalCode());
-		
+
 		customerFromDB.setPhoneNumber(customer.getPhoneNumber());
 		customerFromDB.setPhoneNumberType(Customer.PhoneType.valueOf(customer.getPhoneNumberType()));
-		
+
 		customerService.updateCustomer(customerFromDB);
 		customerFromDB.setPassword(null);
-		
+
 		return customerFromDB;
 	}
-	
 
-	
 }
