@@ -16,43 +16,50 @@
 package com.acmeair.web.dto;
 
 public class BookingReceiptInfo {
-	
-	private String departBookingId;
-	private String returnBookingId;
-	private boolean oneWay;
-	
-	public BookingReceiptInfo(String departBookingId, String returnBookingId, boolean oneWay) {
-		this.departBookingId = departBookingId;
-		this.returnBookingId = returnBookingId;
-		this.oneWay = oneWay;
-	}
-	
-	public BookingReceiptInfo() {
-	}
-	
-	public String getDepartBookingId() {
-		return departBookingId;
-	}
-	public void setDepartBookingId(String departBookingId) {
-		this.departBookingId = departBookingId;
-	}
-	public String getReturnBookingId() {
-		return returnBookingId;
-	}
-	public void setReturnBookingId(String returnBookingId) {
-		this.returnBookingId = returnBookingId;
-	}
-	public boolean isOneWay() {
-		return oneWay;
-	}
-	public void setOneWay(boolean oneWay) {
-		this.oneWay = oneWay;
-	}
-	
-	@Override
-	public String toString() {
-		return "BookingInfo [departBookingId=" + departBookingId
-				+ ", returnBookingId=" + returnBookingId + ", oneWay=" + oneWay
-				+ "]";
-	}
+
+    private String departBookingId;
+
+    private String returnBookingId;
+
+    private boolean oneWay;
+
+    public BookingReceiptInfo(String departBookingId, String returnBookingId, boolean oneWay) {
+        this.departBookingId = departBookingId;
+        this.returnBookingId = returnBookingId;
+        this.oneWay = oneWay;
+    }
+
+    public BookingReceiptInfo() {
+    }
+
+    public String getDepartBookingId() {
+        return departBookingId;
+    }
+
+    public void setDepartBookingId(String departBookingId) {
+        this.departBookingId = departBookingId;
+    }
+
+    public String getReturnBookingId() {
+        return returnBookingId;
+    }
+
+    public void setReturnBookingId(String returnBookingId) {
+        this.returnBookingId = returnBookingId;
+    }
+
+    public boolean isOneWay() {
+        return oneWay;
+    }
+
+    public void setOneWay(boolean oneWay) {
+        this.oneWay = oneWay;
+    }
+
+    @Override
+    public String toString() {
+        return "BookingInfo [departBookingId=" + departBookingId
+                + ", returnBookingId=" + returnBookingId + ", oneWay=" + oneWay
+                + "]";
+    }
 }

@@ -7,15 +7,14 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 import javax.servlet.ServletContext;
 
-
 @SpringBootApplication(scanBasePackages = "com.acmeair.web")
 public class FlightRestTestApplication extends SpringBootServletInitializer {
-    
+
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        
+
         return builder.sources(FlightRestTestApplication.class);
     }
-    
+
     @Override
     public void onStartup(ServletContext container) {
         // we can setup the filter here

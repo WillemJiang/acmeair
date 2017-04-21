@@ -1,6 +1,5 @@
 package com.acmeair.web;
 
-
 import com.acmeair.config.AcmeAirConfiguration;
 import com.acmeair.config.LoaderREST;
 import io.swagger.jaxrs.config.BeanConfig;
@@ -13,31 +12,30 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import javax.annotation.PostConstruct;
-import javax.ws.rs.ApplicationPath;
 
 @Configuration
 @Primary
 public class AcmeAirApp extends ResourceConfig {
-    
+
     @Value("${spring.jersey.application-path:/}")
     private String apiPath;
-    
+
     public AcmeAirApp() {
         registerClasses(BookingsREST.class, FlightsREST.class);
         registerClasses(LoaderREST.class, AcmeAirConfiguration.class);
         property(ServletProperties.FILTER_FORWARD_ON_404, true);
     }
-    
+
     @PostConstruct
     public void init() {
         // The init method is called
         configureSwagger();
     }
-    
+
     private void configureSwagger() {
         register(ApiListingResource.class);
         register(SwaggerSerializers.class);
-        
+
         // Just setup the configuration of the swagger API
         BeanConfig config = new BeanConfig();
         config.setConfigId("AcmeAire-BookingService");
@@ -49,4 +47,4 @@ public class AcmeAirApp extends ResourceConfig {
         config.setPrettyPrint(true);
         config.setScan(true);
     }
-}   
+}
