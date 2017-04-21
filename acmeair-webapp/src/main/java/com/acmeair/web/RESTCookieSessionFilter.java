@@ -33,16 +33,18 @@ import java.io.IOException;
 import java.util.Arrays;
 
 @Component
-@Profile({"!dev"})
+@Profile({"!test"})
 public class RESTCookieSessionFilter extends ZuulFilter {
 	private static final Logger logger = LoggerFactory.getLogger(RESTCookieSessionFilter.class);
 	
-	static final String LOGIN_USER = "acmeair.login_user";
-	private static final String LOGIN_PATH = "/rest/api/login";
+	static final String         LOGIN_USER  = "acmeair.login_user";
+	private static final String LOGIN_PATH  = "/rest/api/login";
 	private static final String LOGOUT_PATH = "/rest/api/login/logout";
 	private static final String LOADDB_PATH = "/rest/api/loaddb";
-
-    @Autowired
+	public static final String  CONFIG_PATH = "/info/config/";
+	public static final String  LOADER_PATH = "/info/loader/";
+	
+	@Autowired
     private AuthenticationService authenticationService;
 
 
@@ -54,9 +56,12 @@ public class RESTCookieSessionFilter extends ZuulFilter {
 		if (request.getPathInfo() != null) {
 			path = path + request.getPathInfo();
 		}
+		logger.debug("Get the request path {}", path);
 		
-		if (path.endsWith(LOGIN_PATH) || path.endsWith(LOGOUT_PATH) || path.endsWith(LOADDB_PATH)) {
-			// if logging in, logging out, or loading the database, let the request flow
+		
+		if (path.endsWith(LOGIN_PATH) || path.endsWith(LOGOUT_PATH) || path.endsWith(LOADDB_PATH) ||
+				path.contains(CONFIG_PATH) || path.contains(LOADER_PATH)) {
+			// if logging in, logging out, lookup configuration, or loading the database , let the request flow
 			return;
 		}
 		

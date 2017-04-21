@@ -90,7 +90,7 @@
     		content : {
     			numCustomers: dijit.byId('customerSizeInput').value
     		},
-    		url: customersPath.concat(basePath.concat('loader/load')),
+    		url: bookingsPath.concat(basePath.concat('loader/load')),
     		load: function(response, ioArgs) {
     			hideWaitDialog();
     			alert('Database Loaded, response: ' + response);

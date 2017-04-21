@@ -141,8 +141,7 @@
     	dojo.xhrGet({
 			url: customersPath.concat(basePath.concat("config/countCustomers")),
 			handleAs: "json",
-			load: function(response, ioArgs) {	
-		    	//alert("Response: " + response);
+			load: function(response, ioArgs) {
 		    	document.getElementById('custData').innerHTML=response;
 			},
 			error: function(response, ioArgs) {
@@ -162,9 +161,9 @@
     	});
     	
        	dojo.xhrGet({
-			url: bookings.concat(basePath.concat("config/countFlights")),
+			url: bookingsPath.concat(basePath.concat("config/countFlights")),
 			handleAs: "json",
-			load: function(response, ioArgs) {			    	
+			load: function(response, ioArgs) {
 		    	document.getElementById('flightData').innerHTML=response;
 			},
 			error: function(response, ioArgs) {
@@ -173,9 +172,9 @@
     	});
 	 
        	dojo.xhrGet({
-			url: bookings.concat(basePath.concat("config/countFlightSegments")),
+			url: bookingsPath.concat(basePath.concat("config/countFlightSegments")),
 			handleAs: "json",
-			load: function(response, ioArgs) {			    
+			load: function(response, ioArgs) {
 		    	document.getElementById('flightSegmentData').innerHTML=response;
 			},
 			error: function(response, ioArgs) {
@@ -185,9 +184,9 @@
        	
        	
     	dojo.xhrGet({
-			url: bookings.concat(basePath.concat("config/countBookings")),
+			url: bookingsPath.concat(basePath.concat("config/countBookings")),
 			handleAs: "json",
-			load: function(response, ioArgs) {	
+			load: function(response, ioArgs) {
 		    	document.getElementById('bookingData').innerHTML=response;
 			},
 			error: function(response, ioArgs) {
@@ -196,7 +195,7 @@
     	});	
     	
     	dojo.xhrGet({
-			url: bookings.concat(basePath.concat("config/countAirports")),
+			url: bookingsPath.concat(basePath.concat("config/countAirports")),
 			handleAs: "json",
 			load: function(response, ioArgs) {	
 		    	document.getElementById('airportData').innerHTML=response;
