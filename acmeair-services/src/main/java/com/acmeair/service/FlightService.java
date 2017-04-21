@@ -110,7 +110,7 @@ public abstract class FlightService {
 
 	public abstract void storeFlightSegment(FlightSegment flightSeg);
 	
-	public abstract void storeFlightSegment(String flightName, String origPort, String destPort, int miles);
+	public abstract FlightSegment storeFlightSegment(String flightName, String origPort, String destPort, int miles);
 	
 	public abstract Long countFlightSegments();
 	
