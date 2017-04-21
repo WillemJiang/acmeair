@@ -46,13 +46,14 @@
     }
     
     var basePath =  "rest/info/";
-    var customerPath = "customers/"
+    var customersPath = "customers/"
+    var bookingsPath = "bookings/"
     
     function getDataServiceInformation() {
     	var grid, store, dataStore;
     	
     	dojo.xhrGet({
-			url: basePath.concat("config/dataServices"),
+			url: bookingsPath.concat(basePath.concat("config/dataServices")),
 			handleAs: "json",
 			load: function(response, ioArgs) {
 				var theData = { items : response };
@@ -86,7 +87,7 @@
     	var grid, store, dataStore;
     	
     	dojo.xhrGet({
-			url: basePath.concat("config/runtime"),
+			url: bookingsPath.concat(basePath.concat("config/runtime")),
 			handleAs: "json",
 			load: function(response, ioArgs) {
 				var theData = { items : response };
@@ -121,7 +122,7 @@
     	var grid, store, dataStore;
     	
     	dojo.xhrGet({
-			url: basePath.concat("config/activeDataService"),
+			url: bookingsPath.concat(basePath.concat("config/activeDataService")),
 			handleAs: "text",
 			load: function(response, ioArgs) {	
 		    	document.getElementById('activeServiceLoc').innerHTML="The active Data Service is '".concat(response).concat("''");		    	
@@ -138,7 +139,7 @@
     	var airportCodeMapping, booking, customer, customerSession, flight, flightSegment;
 
     	dojo.xhrGet({
-			url: customerPath.concat(basePath.concat("config/countCustomers")),
+			url: customersPath.concat(basePath.concat("config/countCustomers")),
 			handleAs: "json",
 			load: function(response, ioArgs) {	
 		    	//alert("Response: " + response);
@@ -150,7 +151,7 @@
     	});
     		
     	dojo.xhrGet({
-			url: customerPath.concat(basePath.concat("config/countSessions")),
+			url: customersPath.concat(basePath.concat("config/countSessions")),
 			handleAs: "json",
 			load: function(response, ioArgs) {			    	
 		    	document.getElementById('sessionData').innerHTML=response;
@@ -161,7 +162,7 @@
     	});
     	
        	dojo.xhrGet({
-			url: basePath.concat("config/countFlights"),
+			url: bookings.concat(basePath.concat("config/countFlights")),
 			handleAs: "json",
 			load: function(response, ioArgs) {			    	
 		    	document.getElementById('flightData').innerHTML=response;
@@ -172,7 +173,7 @@
     	});
 	 
        	dojo.xhrGet({
-			url: basePath.concat("config/countFlightSegments"),
+			url: bookings.concat(basePath.concat("config/countFlightSegments")),
 			handleAs: "json",
 			load: function(response, ioArgs) {			    
 		    	document.getElementById('flightSegmentData').innerHTML=response;
@@ -184,7 +185,7 @@
        	
        	
     	dojo.xhrGet({
-			url: basePath.concat("config/countBookings"),
+			url: bookings.concat(basePath.concat("config/countBookings")),
 			handleAs: "json",
 			load: function(response, ioArgs) {	
 		    	document.getElementById('bookingData').innerHTML=response;
@@ -195,7 +196,7 @@
     	});	
     	
     	dojo.xhrGet({
-			url: basePath.concat("config/countAirports"),
+			url: bookings.concat(basePath.concat("config/countAirports")),
 			handleAs: "json",
 			load: function(response, ioArgs) {	
 		    	document.getElementById('airportData').innerHTML=response;

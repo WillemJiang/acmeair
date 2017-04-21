@@ -175,7 +175,7 @@
                                             <descriptor>${project.basedir}/src/assembly/webapp.xml</descriptor>
                                         </assembly>
                                         <entryPoint>
-                                            <shell>java -Dspring.profiles.active=mongodb,consul -Dserver.port=8080 -jar /maven/acmeair/acmeair-webapp-exec.jar
+                                            <shell>java -Dspring.profiles.active=consul -Dserver.port=8080 -jar /maven/acmeair/acmeair-webapp-exec.jar
                                             </shell>
                                         </entryPoint>
                                     </build>

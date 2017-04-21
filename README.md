@@ -69,24 +69,24 @@ Source:
   3.Staring acmeair-customer-service 
      
       #Running the customer service with in memory db
-      java -Dspring.profiles.active=jpa -Dspring.cloud.consul.host=localhost -Dserver.port=8082 -D-jar acmeaire-customer-service/target/acmeair/acmeair-customer-service-exec.jar
+      java -Dspring.profiles.active=jpa -Dspring.cloud.consul.host=localhost -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
         
       #Running the customer service with mongoDB service
-      java -Dspring.profiles.active=mongodb -Dspring.data.mongodb.host=localhost -Dspring.cloud.consul.host=localhost -Dserver.port=8082 -jar acmeaire-customer-service/target/acmeair/acmeair-customer-service-exec.jar
+      java -Dspring.profiles.active=mongodb -Dspring.data.mongodb.host=localhost -Dspring.cloud.consul.host=localhost -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
               
         
   4.Staring acmeair-booking-service 
    
       #Running the booking service with in memory db
-      java -Dspring.profiles.active=jpa -Dspring.cloud.consul.host=localhost  -Dserver.port=8081 -jar acmeaire-booking-service/target/acmeair/acmeair-booking-service-exec.jar
+      java -Dspring.profiles.active=jpa -Dspring.cloud.consul.host=localhost  -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
         
       # Running the booking service with mongoDB service
-      java -Dspring.profiles.active=mongodb -Dspring.data.mongodb.host=localhost -Dspring.cloud.consul.host=localhost  -Dserver.port=8081 -jar acmeaire-booking-service/target/acmeair/acmeair-booking-service-exec.jar
+      java -Dspring.profiles.active=mongodb -Dspring.data.mongodb.host=localhost -Dspring.cloud.consul.host=localhost  -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
              
       
   5.Starting acmeair-webapp
       
-      java -Dspring.cloud.consul.host=localhost  -Dserver.port=8080 -jar acmeair-webapp/target/acmeair/acmeair-webapp-exec.jar
+      java -Dspring.cloud.consul.host=localhost -Dspring.profiles.active=consul -Dserver.port=8080 -jar acmeair-webapp/target/acmeair/acmeair-webapp-exec.jar
        
   6.Access the acmeair-webapp from browser with below address
   

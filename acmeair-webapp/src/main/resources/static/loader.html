@@ -46,14 +46,15 @@
     }
     
     var basePath =  "rest/info/";
-        
+    var customersPath = "customers/";
+    var bookingsPath = "bookings/";
     
     
     function getActiveDataServiceInfo() {
     	var grid, store, dataStore;
     	
     	dojo.xhrGet({
-			url: basePath.concat("config/activeDataService"),
+			url: bookingsPath.concat(basePath.concat("config/activeDataService")),
 			handleAs: "text",
 			load: function(response, ioArgs) {	
 		    	document.getElementById('activeServiceLoc').innerHTML="The loader to the '".concat(response).concat("' data service.");;		    	
@@ -68,7 +69,7 @@
     
     function loadLoaderConfigData() {
     	dojo.xhrGet({
-			url: basePath.concat('loader/query'),
+			url: bookingsPath.concat(basePath.concat('loader/query')),
 			handleAs: "text",
 			load: function(response, ioArgs) {
 				updateFormData(response);
@@ -89,7 +90,7 @@
     		content : {
     			numCustomers: dijit.byId('customerSizeInput').value
     		},
-    		url: basePath.concat('loader/load'),
+    		url: customersPath.concat(basePath.concat('loader/load')),
     		load: function(response, ioArgs) {
     			hideWaitDialog();
     			alert('Database Loaded, response: ' + response);
