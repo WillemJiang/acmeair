@@ -23,6 +23,9 @@ import com.acmeair.entities.Customer;
 import com.acmeair.entities.CustomerAddress;
 import com.acmeair.service.*;
 import com.acmeair.web.dto.*;
+import com.huawei.paas.cse.core.exception.InvocationException;
+import com.huawei.paas.cse.provider.rest.common.RestSchema;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -31,7 +34,7 @@ import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
+@RestSchema(schemaId="customer_REST")
 @Path("/api/customer")
 @Api(value = "Customer Information Query and Update Service", produces = MediaType.APPLICATION_JSON)
 public class CustomerREST {
@@ -54,24 +57,23 @@ public class CustomerREST {
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Get the customer from customer id when the customer is logged.",
 				  notes = "This can only be done by the logged in user.",
-				  response = Customer.class)
-	public Response getCustomer(@ApiParam(value = "Session id from the cookie", required = true) @CookieParam("sessionid") String sessionid,
+				  response = CustomerInfo.class ,produces=MediaType.APPLICATION_JSON)
+	public CustomerInfo getCustomer(@ApiParam(value = "Session id from the cookie", required = true) @CookieParam("sessionid") String sessionid,
 										   @ApiParam(value = "Customer id", required = true) @PathParam("custid") String customerid) {
 		try {
 			logger.info("Received request to get customer by id {} with session {}", customerid, sessionid);
 			// make sure the user isn't trying to update a customer other than the one currently logged in
 			if (!validate(customerid)) {
 				logger.info("Customer id mismatched, requested = {}, logged = {}", customerid, request.getHeader("acmeair.login_user"));
-				return Response.status(Response.Status.FORBIDDEN).build();
-
+				throw new InvocationException(Response.Status.FORBIDDEN, "Forbidden");
 			}
 			Customer customer = customerService.getCustomerByUsername(customerid);	
 			CustomerInfo customerDTO = new CustomerInfo(customer);			
-			return Response.ok(customerDTO).build();
+			return customerDTO;
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			throw new InvocationException(Response.Status.INTERNAL_SERVER_ERROR, "Internal Server Error");
 		}
 	}
     
@@ -80,34 +82,34 @@ public class CustomerREST {
     @Path("/{custid}")
     @Produces(MediaType.APPLICATION_JSON)
     // We should not expose this API to the public (It can be 
-    public Response getCustomer(@PathParam("custid") String customerid) {
+    public CustomerInfo getCustomer(@PathParam("custid") String customerid) {
         try {
             Customer customer = customerService.getCustomerByUsername(customerid);
-            CustomerInfo customerDTO = new CustomerInfo(customer);
-            return Response.ok(customerDTO).build();
+            return new CustomerInfo(customer);
         }
         catch (Exception e) {
             e.printStackTrace();
-            return null;
+            throw new InvocationException(Response.Status.INTERNAL_SERVER_ERROR, "Internal Server Error");
         }
     }
     
 	@POST
-	@Path("/byid/{custid}")
-	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Update the customer information",
-				  notes = "This can only be done by the logged in user.",
-				  response = Customer.class)
+    @Path("/byid/{custid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(
+            value = "Update the customer information",
+            produces = MediaType.APPLICATION_JSON,
+            response = Customer.class)
 	@ApiResponses(value = { @ApiResponse(code = 403, message = "Invalid user information") })
-	public Response putCustomer(@CookieParam("sessionid") String sessionid, CustomerInfo customer) {
+	public Customer putCustomer(@CookieParam("sessionid") String sessionid, CustomerInfo customer) {
 		if (!validate(customer.getUsername())) {
-			return Response.status(Response.Status.FORBIDDEN).build();
+		    throw new InvocationException(Response.Status.FORBIDDEN, "Forbidden");
 		}
 		
 		Customer customerFromDB = customerService.getCustomerByUsernameAndPassword(customer.getUsername(), customer.getPassword());
 		if (customerFromDB == null) {
 			// either the customer doesn't exist or the password is wrong
-			return Response.status(Response.Status.FORBIDDEN).build();
+		    throw new InvocationException(Response.Status.FORBIDDEN, "Forbidden");
 		}
 		
 		CustomerAddress addressFromDB = customerFromDB.getAddress();
@@ -126,7 +128,7 @@ public class CustomerREST {
 		customerService.updateCustomer(customerFromDB);
 		customerFromDB.setPassword(null);
 		
-		return Response.ok(customerFromDB).build();
+		return customerFromDB;
 	}
 	
 

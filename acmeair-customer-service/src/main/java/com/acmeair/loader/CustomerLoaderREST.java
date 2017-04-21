@@ -19,6 +19,8 @@ import com.acmeair.entities.Customer;
 import com.acmeair.entities.Customer.PhoneType;
 import com.acmeair.entities.CustomerAddress;
 import com.acmeair.service.CustomerService;
+import com.huawei.paas.cse.provider.rest.common.RestSchema;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -31,6 +33,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+@RestSchema(schemaId="customer_loader_REST")
 @Path("/info/loader")
 @Api(value = "Customer Service User Information Loading Service", produces = MediaType.TEXT_PLAIN)
 public class CustomerLoaderREST {
@@ -45,12 +48,11 @@ public class CustomerLoaderREST {
 	@POST
 	@Path("/load")
 	@Produces(MediaType.TEXT_PLAIN)
-    @ApiOperation(value = "Loading Customer Information.", response = Long.class)
-    public Response loadCustomers(@ApiParam(value = "Customer numbers which could be loaded", required = true) @QueryParam("number") long numCustomers) {
+    @ApiOperation(value = "Loading Customer Information.", produces=MediaType.APPLICATION_JSON, response = Long.class)
+    public void loadCustomers(@ApiParam(value = "Customer numbers which could be loaded", required = true) @QueryParam("number") long numCustomers) {
 		CustomerAddress address = customerService.createAddress("123 Main St.", null, "Anytown", "NC", "USA", "27617");
 		for (long ii = 0; ii < numCustomers; ii++) {
 			customerService.createCustomer("uid"+ii+"@email.com", "password", Customer.MemberShipStatus.GOLD, 1000000, 1000, "919-123-4567", PhoneType.BUSINESS, address);
 		}
-		return Response.ok().build();
 	}
 }
