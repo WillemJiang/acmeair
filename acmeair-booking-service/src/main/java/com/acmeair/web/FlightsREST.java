@@ -15,6 +15,7 @@
 *******************************************************************************/
 package com.acmeair.web;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -50,14 +51,15 @@ public class FlightsREST {
     public TripFlightOptions getTripFlights(
             @FormParam("fromAirport") String fromAirport,
             @FormParam("toAirport") String toAirport,
-            @FormParam("fromDate") Date fromDate,
-            @FormParam("returnDate") Date returnDate,
+            @FormParam("fromDate") String fromDate,
+            @FormParam("returnDate") String returnDate,
             @FormParam("oneWay") boolean oneWay) {
         TripFlightOptions options = new TripFlightOptions();
         ArrayList<TripLegInfo> legs = new ArrayList<TripLegInfo>();
 
         TripLegInfo toInfo = new TripLegInfo();
-        List<Flight> toFlights = flightService.getFlightByAirportsAndDepartureDate(fromAirport, toAirport, fromDate);
+        List<Flight> toFlights =
+            flightService.getFlightByAirportsAndDepartureDate(fromAirport, toAirport, new Date(fromDate));
         toInfo.addFlightsOptions(toFlights);
         legs.add(toInfo);
         toInfo.setCurrentPage(0);
@@ -68,7 +70,7 @@ public class FlightsREST {
         if (!oneWay) {
             TripLegInfo retInfo = new TripLegInfo();
             List<Flight> retFlights =
-                flightService.getFlightByAirportsAndDepartureDate(toAirport, fromAirport, returnDate);
+                flightService.getFlightByAirportsAndDepartureDate(toAirport, fromAirport, new Date(returnDate));
             retInfo.addFlightsOptions(retFlights);
             legs.add(retInfo);
             retInfo.setCurrentPage(0);
@@ -122,6 +124,28 @@ public class FlightsREST {
         options.setTripFlights(legs);
 
         return options;
+    }
+
+    @POST
+    @Path("/createflight")
+    @Consumes({"application/x-www-form-urlencoded"})
+    @Produces("application/json")
+    public Flight createFlight(@FormParam("flightSegmentId") String flightSegmentId,
+            @FormParam("scheduledDepartureTime") String scheduledDepartureTime,
+            @FormParam("scheduledArrivalTime") String scheduledArrivalTime,
+            @FormParam("firstClassBaseCost") BigDecimal firstClassBaseCost,
+            @FormParam("economyClassBaseCost") BigDecimal economyClassBaseCost,
+            @FormParam("numFirstClassSeats") int numFirstClassSeats,
+            @FormParam("numEconomyClassSeats") int numEconomyClassSeats,
+            @FormParam("airplaneTypeId") String airplaneTypeId) {
+        return flightService.createNewFlight(flightSegmentId,
+                new Date(scheduledDepartureTime),
+                new Date(scheduledArrivalTime),
+                firstClassBaseCost,
+                economyClassBaseCost,
+                numFirstClassSeats,
+                numEconomyClassSeats,
+                airplaneTypeId);
     }
 
 }

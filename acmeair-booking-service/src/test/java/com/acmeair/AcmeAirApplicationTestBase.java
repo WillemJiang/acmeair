@@ -13,6 +13,8 @@ import com.acmeair.web.dto.CustomerSessionInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.huawei.paas.cse.provider.springmvc.reference.RestTemplateBuilder;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,7 +22,6 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +30,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 
@@ -78,8 +80,7 @@ public class AcmeAirApplicationTestBase {
 
     private final CustomerInfo customerInfo = new CustomerInfo();
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    private RestTemplate restTemplate = RestTemplateBuilder.create();
 
     @Autowired
     private FlightRepository flightRepository;
