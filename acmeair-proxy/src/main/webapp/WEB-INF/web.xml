@@ -1,0 +1,52 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+          http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath*:META-INF/spring/*.bean.xml
+			classpath*:app-config.xml
+		</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>com.huawei.paas.cse.transport.rest.servlet.RestServletContextListener</listener-class>
+	</listener>
+	<servlet>
+		<servlet-name>RestServlet</servlet-name>
+		<servlet-class>com.huawei.paas.cse.transport.rest.servlet.RestServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet>
+		<servlet-name>ProxyServlet</servlet-name>
+		<servlet-class>com.acmeair.service.ProxyServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ProxyServlet</servlet-name>
+		<url-pattern>/customers/*</url-pattern>
+		<url-pattern>/bookings/*</url-pattern>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+		<filter-name>TokenAuthFilter</filter-name>
+		<filter-class>com.acmeair.service.TokenAuthFilter</filter-class>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>0</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>TokenAuthFilter</filter-name>
+		<!-- url匹配规则 -->
+		<url-pattern>/customers/*</url-pattern>
+		<url-pattern>/bookings/*</url-pattern>
+		<url-pattern>/rest/*</url-pattern>
+	</filter-mapping>
+</web-app>
