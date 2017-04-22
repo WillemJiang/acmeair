@@ -48,7 +48,7 @@ Source:
     
   Here are the dependencies of these service:
   
-      acmeair-web -----> acmeair-booking-service (DB)  --------+
+      acmeair-webapp -----> acmeair-booking-service (DB)  --------+
            |        |               |                          |
            |        |               |                          |
            |        |               v                          |
@@ -90,4 +90,4 @@ Source:
        
   6.Access the acmeair-webapp from browser with below address
   
-      http://localhost:8080/rest/index.html
+      http://localhost:8080/index.html
