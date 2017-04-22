@@ -144,9 +144,8 @@ public class FlightServiceImpl extends FlightService {
     }
 
     @Override
-    public FlightSegment storeFlightSegment(String flightName, String origPort, String destPort, int miles) {
+    public void storeFlightSegment(String flightName, String origPort, String destPort, int miles) {
         FlightSegment flightSeg = new FlightSegmentImpl(flightName, origPort, destPort, miles);
         storeFlightSegment(flightSeg);
-        return flightSeg;
     }
 }
