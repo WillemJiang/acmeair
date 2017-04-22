@@ -28,94 +28,98 @@ import com.acmeair.entities.FlightSegment;
 import com.acmeair.entities.AirportCodeMapping;
 
 public abstract class FlightService {
-	protected Logger logger =  Logger.getLogger(FlightService.class.getName());
-	
-	//TODO:need to find a way to invalidate these maps
-	protected static ConcurrentHashMap<String, FlightSegment> originAndDestPortToSegmentCache = new ConcurrentHashMap<String,FlightSegment>();
-	protected static ConcurrentHashMap<String, List<Flight>> flightSegmentAndDataToFlightCache = new ConcurrentHashMap<String,List<Flight>>();
-	protected static ConcurrentHashMap<String, Flight> flightPKtoFlightCache = new ConcurrentHashMap<String, Flight>();
-	
-	
+    protected Logger logger = Logger.getLogger(FlightService.class.getName());
 
-	public Flight getFlightByFlightId(String flightId, String flightSegment) {
-		try {
-			Flight flight = flightPKtoFlightCache.get(flightId);
-			if (flight == null) {				
-				flight = getFlight(flightId, flightSegment);
-				if (flightId != null && flight != null) {
-					flightPKtoFlightCache.putIfAbsent(flightId, flight);
-				}
-			}
-			return flight;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
-	
-	protected abstract Flight getFlight(String flightId, String flightSegment);
-	
-	public List<Flight> getFlightByAirportsAndDepartureDate(String fromAirport,	String toAirport, Date deptDate) {
-		if(logger.isLoggable(Level.FINE))
-			logger.fine("Search for flights from "+ fromAirport + " to " + toAirport + " on " + deptDate.toString());
+    //TODO:need to find a way to invalidate these maps
+    protected static ConcurrentHashMap<String, FlightSegment> originAndDestPortToSegmentCache =
+        new ConcurrentHashMap<String, FlightSegment>();
 
-		String originPortAndDestPortQueryString= fromAirport+toAirport;
-		FlightSegment segment = originAndDestPortToSegmentCache.get(originPortAndDestPortQueryString);
+    protected static ConcurrentHashMap<String, List<Flight>> flightSegmentAndDataToFlightCache =
+        new ConcurrentHashMap<String, List<Flight>>();
 
-		if (segment == null) {
-			segment = getFlightSegment(fromAirport, toAirport);
-			originAndDestPortToSegmentCache.putIfAbsent(originPortAndDestPortQueryString, segment);
-		}		
-		// cache flights that not available (checks against sentinel value above indirectly)
-		if (segment.getFlightName() == null) {
-			return new ArrayList<Flight>(); 
-		}
+    protected static ConcurrentHashMap<String, Flight> flightPKtoFlightCache =
+        new ConcurrentHashMap<String, Flight>();
 
-		String segId = segment.getFlightName();
-		String flightSegmentIdAndScheduledDepartureTimeQueryString = segId + deptDate.toString();
-		List<Flight> flights = flightSegmentAndDataToFlightCache.get(flightSegmentIdAndScheduledDepartureTimeQueryString);
+    public Flight getFlightByFlightId(String flightId, String flightSegment) {
+        try {
+            Flight flight = flightPKtoFlightCache.get(flightId);
+            if (flight == null) {
+                flight = getFlight(flightId, flightSegment);
+                if (flightId != null && flight != null) {
+                    flightPKtoFlightCache.putIfAbsent(flightId, flight);
+                }
+            }
+            return flight;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-		if (flights == null) {				
-			flights = getFlightBySegment(segment, deptDate);
-			flightSegmentAndDataToFlightCache.putIfAbsent(flightSegmentIdAndScheduledDepartureTimeQueryString, flights);
-		}
-		if(logger.isLoggable(Level.FINEST))
-			logger.finest("Returning "+ flights);
-		return flights;
+    protected abstract Flight getFlight(String flightId, String flightSegment);
 
-	}
+    public List<Flight> getFlightByAirportsAndDepartureDate(String fromAirport, String toAirport, Date deptDate) {
+        if (logger.isLoggable(Level.FINE))
+            logger.fine("Search for flights from " + fromAirport + " to " + toAirport + " on " + deptDate.toString());
 
-	// NOTE:  This is not cached
-	public List<Flight> getFlightByAirports(String fromAirport, String toAirport) {
-			FlightSegment segment = getFlightSegment(fromAirport, toAirport);
-			if (segment == null) {
-				return new ArrayList<Flight>(); 
-			}	
-			return getFlightBySegment(segment, null);
-	}
-	
-	protected abstract FlightSegment getFlightSegment(String fromAirport, String toAirport);
-	
-	protected abstract List<Flight> getFlightBySegment(FlightSegment segment, Date deptDate);  
-			
-	public abstract void storeAirportMapping(AirportCodeMapping mapping);
+        String originPortAndDestPortQueryString = fromAirport + toAirport;
+        FlightSegment segment = originAndDestPortToSegmentCache.get(originPortAndDestPortQueryString);
 
-	public abstract AirportCodeMapping createAirportCodeMapping(String airportCode, String airportName);
-	
-	public abstract Flight createNewFlight(String flightSegmentId,
-			Date scheduledDepartureTime, Date scheduledArrivalTime,
-			BigDecimal firstClassBaseCost, BigDecimal economyClassBaseCost,
-			int numFirstClassSeats, int numEconomyClassSeats,
-			String airplaneTypeId);
+        if (segment == null) {
+            segment = getFlightSegment(fromAirport, toAirport);
+            originAndDestPortToSegmentCache.putIfAbsent(originPortAndDestPortQueryString, segment);
+        }
+        // cache flights that not available (checks against sentinel value above indirectly)
+        if (segment.getFlightName() == null) {
+            return new ArrayList<Flight>();
+        }
 
-	public abstract void storeFlightSegment(FlightSegment flightSeg);
-	
-	public abstract FlightSegment storeFlightSegment(String flightName, String origPort, String destPort, int miles);
-	
-	public abstract Long countFlightSegments();
-	
-	public abstract Long countFlights();
-	
-	public abstract Long countAirports();
-	
+        String segId = segment.getFlightName();
+        String flightSegmentIdAndScheduledDepartureTimeQueryString = segId + deptDate.toString();
+        List<Flight> flights =
+            flightSegmentAndDataToFlightCache.get(flightSegmentIdAndScheduledDepartureTimeQueryString);
+
+        if (flights == null) {
+            flights = getFlightBySegment(segment, deptDate);
+            flightSegmentAndDataToFlightCache.putIfAbsent(flightSegmentIdAndScheduledDepartureTimeQueryString,
+                    flights);
+        }
+        if (logger.isLoggable(Level.FINEST))
+            logger.finest("Returning " + flights);
+        return flights;
+
+    }
+
+    // NOTE:  This is not cached
+    public List<Flight> getFlightByAirports(String fromAirport, String toAirport) {
+        FlightSegment segment = getFlightSegment(fromAirport, toAirport);
+        if (segment == null) {
+            return new ArrayList<Flight>();
+        }
+        return getFlightBySegment(segment, null);
+    }
+
+    protected abstract FlightSegment getFlightSegment(String fromAirport, String toAirport);
+
+    protected abstract List<Flight> getFlightBySegment(FlightSegment segment, Date deptDate);
+
+    public abstract void storeAirportMapping(AirportCodeMapping mapping);
+
+    public abstract AirportCodeMapping createAirportCodeMapping(String airportCode, String airportName);
+
+    public abstract Flight createNewFlight(String flightSegmentId,
+            Date scheduledDepartureTime, Date scheduledArrivalTime,
+            BigDecimal firstClassBaseCost, BigDecimal economyClassBaseCost,
+            int numFirstClassSeats, int numEconomyClassSeats,
+            String airplaneTypeId);
+
+    public abstract void storeFlightSegment(FlightSegment flightSeg);
+
+    public abstract void storeFlightSegment(String flightName, String origPort, String destPort, int miles);
+
+    public abstract Long countFlightSegments();
+
+    public abstract Long countFlights();
+
+    public abstract Long countAirports();
+
 }
