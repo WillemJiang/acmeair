@@ -15,7 +15,6 @@
 *******************************************************************************/
 package com.acmeair.web;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -28,7 +27,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.acmeair.entities.Flight;
-import com.acmeair.entities.FlightSegment;
 import com.acmeair.service.FlightService;
 import com.acmeair.web.dto.TripFlightOptions;
 import com.acmeair.web.dto.TripLegInfo;
@@ -125,38 +123,6 @@ public class FlightsREST {
         options.setTripFlights(legs);
 
         return options;
-    }
-
-    @POST
-    @Path("/createsegment")
-    @Consumes({"application/x-www-form-urlencoded"})
-    @Produces("application/json")
-    public FlightSegment createFlightSegment(@FormParam("flightName") String flightName,
-            @FormParam("origPort") String origPort, @FormParam("destPort") String destPort,
-            @FormParam("miles") int miles) {
-        return flightService.storeFlightSegment(flightName, origPort, destPort, miles);
-    }
-
-    @POST
-    @Path("/createflight")
-    @Consumes({"application/x-www-form-urlencoded"})
-    @Produces("application/json")
-    public Flight createFlight(@FormParam("flightSegmentId") String flightSegmentId,
-            @FormParam("scheduledDepartureTime") String scheduledDepartureTime,
-            @FormParam("scheduledArrivalTime") String scheduledArrivalTime,
-            @FormParam("firstClassBaseCost") BigDecimal firstClassBaseCost,
-            @FormParam("economyClassBaseCost") BigDecimal economyClassBaseCost,
-            @FormParam("numFirstClassSeats") int numFirstClassSeats,
-            @FormParam("numEconomyClassSeats") int numEconomyClassSeats,
-            @FormParam("airplaneTypeId") String airplaneTypeId) {
-        return flightService.createNewFlight(flightSegmentId,
-                new Date(scheduledDepartureTime),
-                new Date(scheduledArrivalTime),
-                firstClassBaseCost,
-                economyClassBaseCost,
-                numFirstClassSeats,
-                numEconomyClassSeats,
-                airplaneTypeId);
     }
 
 }
