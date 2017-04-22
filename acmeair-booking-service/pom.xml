@@ -175,7 +175,7 @@
                                     <name>acmeair-booking-service:${project.version}</name>
                                     <alias>booking-service</alias>
                                     <build>
-                                        <from>java:8</from>
+                                        <from>openjdk:8-jre-alpine</from>
                                         <ports>
                                             <port>8080</port>
                                         </ports>

@@ -163,7 +163,7 @@
                                     <name>acmeair-customer-service:${project.version}</name>
                                     <alias>customer-service</alias>
                                     <build>
-                                        <from>java:8</from>
+                                        <from>openjdk:8-jre-alpine</from>
                                         <ports>
                                             <port>8082</port>
                                         </ports>
