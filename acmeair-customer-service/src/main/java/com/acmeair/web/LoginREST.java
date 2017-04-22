@@ -37,6 +37,9 @@ import com.acmeair.web.dto.CustomerSessionInfo;
 import com.huawei.paas.cse.core.exception.InvocationException;
 import com.huawei.paas.cse.provider.rest.common.RestSchema;
 
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestSchema(schemaId = "login")
 @Path("/api/login")
 public class LoginREST {
@@ -49,6 +52,7 @@ public class LoginREST {
     @Path("/login")
     @Consumes({MediaType.APPLICATION_FORM_URLENCODED})
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiResponses(value = { @ApiResponse(code = 403, message = "Invalid user information"),@ApiResponse(code = 500, message = "CustomerService Internal Server Error") })
     public TokenInfo login(@FormParam("login") String login, @FormParam("password") String password) {
         logger.info("Received login request of username [{}]", login);
         try {
@@ -81,6 +85,7 @@ public class LoginREST {
     @GET
     @Path("/logout")
     @Produces("text/plain")
+    @ApiResponses(value = { @ApiResponse(code = 500, message = "CustomerService Internal Server Error") })
     public String logout(@QueryParam("login") String login, @CookieParam("sessionid") String sessionid) {
         try {
             customerService.invalidateSession(sessionid);
@@ -104,6 +109,7 @@ public class LoginREST {
     @Path("/validate")
     @Consumes({"application/x-www-form-urlencoded"})
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiResponses(value = { @ApiResponse(code = 403, message = "Invalid user information")})
     public CustomerSessionInfo validateCustomer(@FormParam("sessionId") String sessionId) {
         logger.info("Received customer validation request with session id {}", sessionId);
         CustomerSession customerSession = customerService.validateSession(sessionId);
@@ -113,7 +119,7 @@ public class LoginREST {
             logger.info("Found customer session {}", customerSession);
         }
         else{
-            throw new InvocationException(Status.UNAUTHORIZED, "invalid token");
+            throw new InvocationException(Status.FORBIDDEN, "invalid token");
         }
         return sessionInfo;
     }

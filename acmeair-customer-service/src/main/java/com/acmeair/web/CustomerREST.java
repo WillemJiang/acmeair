@@ -57,6 +57,7 @@ public class CustomerREST {
 	@Path("/byid/{custid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Get the customer from customer id when the customer is logged.", notes = "This can only be done by the logged in user.", response = CustomerInfo.class, produces = MediaType.APPLICATION_JSON)
+	@ApiResponses(value = { @ApiResponse(code = 403, message = "Invalid user information"),@ApiResponse(code = 500, message = "CustomerService Internal Server Error") })
 	public CustomerInfo getCustomerById(
 			@ApiParam(value = "Session id from the cookie", required = true) @CookieParam("sessionid") String sessionid,
 			@ApiParam(value = "Customer id", required = true) @PathParam("custid") String customerid) {
@@ -81,6 +82,7 @@ public class CustomerREST {
 	@GET
 	@Path("/{custid}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "CustomerService Internal Server Error") })
 	// We should not expose this API to the public (It can be
 	public CustomerInfo getCustomer(@PathParam("custid") String customerid) {
 		try {
