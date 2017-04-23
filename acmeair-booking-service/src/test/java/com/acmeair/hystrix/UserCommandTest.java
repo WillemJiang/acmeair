@@ -51,7 +51,7 @@ public class UserCommandTest {
         return pactDslWithProvider
                 .given("Customer Sean is registered")
                 .uponReceiving("a request for Sean")
-                .path("/rest/api/customer/" + customerInfo.getUsername())
+                .path("/rest/api/customer/" + customerInfo.getId())
                 .method("GET")
                 .willRespondWith()
                 .headers(headers)
@@ -63,7 +63,7 @@ public class UserCommandTest {
     @Test
     @PactVerification
     public void fetchesExpectedCustomer() throws IOException {
-        CustomerInfo actual = userService.getCustomerInfo(customerInfo.getUsername());
+        CustomerInfo actual = userService.getCustomerInfo(customerInfo.getId());
 
         assertThat(actual, is(customerInfo));
     }

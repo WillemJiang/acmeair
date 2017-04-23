@@ -88,7 +88,27 @@ public abstract class FlightService {
         return flights;
 
     }
+    public List<Flight> getFlightByAirportsAndDate(String fromAirport, String toAirport, Date deptDate) {
+        if (logger.isLoggable(Level.FINE))
+            logger.fine("Search for flights from " + fromAirport + " to " + toAirport + " on " + deptDate.toString());
 
+        List<Flight> flights = getFlightByAirports(fromAirport, toAirport);
+        List<Flight> results = new ArrayList<>();
+        for (Flight flight : flights) {
+            if (inOneDay(flight.getScheduledDepartureTime(), deptDate)) {
+                results.add(flight);
+            }
+        }
+
+        return results;
+    }
+
+    @SuppressWarnings("deprecation")
+    protected boolean inOneDay(Date date1, Date date2) {
+        return (date1.getYear() == date2.getYear()) && (date1.getMonth() == date2.getMonth())
+                && (date1.getDate() == date2.getDate());
+    }
+    
     // NOTE:  This is not cached
     public List<Flight> getFlightByAirports(String fromAirport, String toAirport) {
         FlightSegment segment = getFlightSegment(fromAirport, toAirport);

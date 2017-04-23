@@ -32,8 +32,8 @@ public class CustomerInfo implements Serializable{
 
 	
 	private static final long serialVersionUID = 1L;
-	@XmlElement(name="_id")
-	private String _id;
+	@XmlElement(name="id")
+	private String id;
 	
 	@XmlElement(name="password")
 	private String password;
@@ -60,7 +60,7 @@ public class CustomerInfo implements Serializable{
 	}
 	
 	public CustomerInfo(String username, String password, String status, int total_miles, int miles_ytd, AddressInfo address, String phoneNumber, String phoneNumberType) {
-		this._id = username;
+		this.id = username;
 		this.password = password;
 		this.status = status;
 		this.total_miles = total_miles;
@@ -71,7 +71,7 @@ public class CustomerInfo implements Serializable{
 	}
 	
 	public CustomerInfo(Customer c) {
-		this._id = c.getUsername();
+		this.id = c.getUsername();
 		this.password = c.getPassword();
 		this.status = c.getStatus().toString();
 		this.total_miles = c.getTotal_miles();
@@ -81,12 +81,14 @@ public class CustomerInfo implements Serializable{
 		this.phoneNumberType = c.getPhoneNumberType().toString();
 	}
 
-	public String getUsername() {
-		return _id;
-	}
+
 	
-	public void setUsername(String username) {
-		this._id = username;
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	public String getPassword() {
@@ -147,7 +149,7 @@ public class CustomerInfo implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Customer [id=" + _id + ", password=" + password + ", status="
+		return "Customer [id=" + id + ", password=" + password + ", status="
 				+ status + ", total_miles=" + total_miles + ", miles_ytd="
 				+ miles_ytd + ", address=" + address + ", phoneNumber="
 				+ phoneNumber + ", phoneNumberType=" + phoneNumberType + "]";
@@ -167,10 +169,10 @@ public class CustomerInfo implements Serializable{
 				return false;
 		} else if (!address.equals(other.address))
 			return false;
-		if (_id == null) {
-			if (other._id != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!_id.equals(other._id))
+		} else if (!id.equals(other.id))
 			return false;
 		if (miles_ytd != other.miles_ytd)
 			return false;
