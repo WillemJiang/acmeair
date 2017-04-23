@@ -7,11 +7,11 @@ cse:
     registry:
       address: http://127.0.0.1:9980
   grpc:
-    address: 0.0.0.0:9090
+    address: 0.0.0.0:9002
   rest:
-    address: 0.0.0.0:8083?sslEnabled=false
+    address: 0.0.0.0:7002?sslEnabled=false
   highway:
-    address: 0.0.0.0:7070?sslEnabled=false
+    address: 0.0.0.0:6002?sslEnabled=false
   handler:
     chain:
       Provider:

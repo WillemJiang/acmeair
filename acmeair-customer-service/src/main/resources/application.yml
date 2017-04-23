@@ -1,5 +1,5 @@
 server:
-  port: ${appPort:8080}
+  port: ${appPort:8022}
 spring:
   cloud:
     consul:
