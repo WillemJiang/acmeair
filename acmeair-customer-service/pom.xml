@@ -165,14 +165,14 @@
                                     <build>
                                         <from>openjdk:8-jre-alpine</from>
                                         <ports>
-                                            <port>8082</port>
+                                            <port>8080</port>
                                         </ports>
                                         <assembly>
                                             <mode>tar</mode>
                                             <descriptor>${project.basedir}/src/assembly/customer-service.xml</descriptor>
                                         </assembly>
                                         <entryPoint>
-                                            <shell>java -Dspring.profiles.active=jpa -Dserver.port=8082 -jar /maven/acmeair/acmeair-customer-service-exec.jar
+                                            <shell>java $JAVA_OPTS -jar /maven/acmeair/acmeair-customer-service-exec.jar
                                             </shell>
                                         </entryPoint>
                                     </build>

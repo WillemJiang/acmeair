@@ -184,7 +184,7 @@
                                             <descriptor>${project.basedir}/src/assembly/booking-service.xml</descriptor>
                                         </assembly>
                                         <entryPoint>
-                                            <shell>java -Dspring.profiles.active=mongodb -Dserver.port=8080 -jar /maven/acmeair/acmeair-booking-service-exec.jar
+                                            <shell>java $JAVA_OPTS -jar /maven/acmeair/acmeair-booking-service-exec.jar
                                             </shell>
                                         </entryPoint>
                                     </build>
