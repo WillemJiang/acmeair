@@ -109,7 +109,7 @@ public class AcmeAirApplicationTestBase {
         toFlight = Fixture.from(FlightImpl.class).gimme("valid");
         retFlight = Fixture.from(FlightImpl.class).gimme("valid");
 
-        customerInfo.setUsername(customerId);
+        customerInfo.setId(customerId);
 
         stubFor(post(urlEqualTo("/rest/api/login"))
                 .willReturn(

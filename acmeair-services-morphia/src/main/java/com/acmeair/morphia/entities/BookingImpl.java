@@ -54,7 +54,7 @@ public class BookingImpl implements Booking, Serializable{
 		this._id = bookingId;
 		this.flightId = flight.getFlightId();
 		this.dateOfBooking = dateOfFlight;
-		this.customerId = customer.getUsername();
+		this.customerId = customer.getId();
 	}
 	
 	
