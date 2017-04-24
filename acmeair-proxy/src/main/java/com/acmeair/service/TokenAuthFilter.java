@@ -38,7 +38,7 @@ public class TokenAuthFilter implements Filter{
 
 	public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2)
 			throws IOException, ServletException {
-		LOGGER.info("TokenAuthFilter begin");
+		LOGGER.info("TokenAuthFilter begin...");
 		HttpServletRequest request = (HttpServletRequest) arg0; 
 		HttpServletResponse response = (HttpServletResponse) arg1;
 		String path = ((HttpServletRequest)request).getContextPath() + ((HttpServletRequest)request).getServletPath();
@@ -48,26 +48,18 @@ public class TokenAuthFilter implements Filter{
 
 		if (path.endsWith(LOADDB_PATH) ||
  				path.contains(CONFIG_PATH) || path.contains(LOADER_PATH)) {
-			// if logging in, logging out, or loading the database, let the request flow
 			arg2.doFilter(arg0, arg1);
 			return;
 		}
-		
-/*		if (path.startsWith("/bookings")) {
-			// if logging in, logging out, or loading the database, let the request flow
-			arg2.doFilter(arg0, arg1);
-			return;
-		}*/
+
 		
 		if (path.endsWith(LOGIN_PATH) ) {
-			// if logging in, logging out, or loading the database, let the request flow
 			request.setAttribute(LOGIN, "true");
 			arg2.doFilter(arg0, arg1);			
 			return;
 		}
 		
 		if (path.endsWith(LOGOUT_PATH) ) {
-			// if logging in, logging out, or loading the database, let the request flow
 			request.setAttribute(LOGINOUT, "true");
 			arg2.doFilter(arg0, arg1);			
 			return;
@@ -85,27 +77,19 @@ public class TokenAuthFilter implements Filter{
 					break; 
 			}
 			String sessionId = "";
-			LOGGER.info("sessionCookie:{}",sessionCookie);
 			if (sessionCookie!=null) // We need both cookie to work
 				sessionId= sessionCookie.getValue().trim();
-			// did this check as the logout currently sets the cookie value to "" instead of aging it out
-			// see comment in LogingREST.java
-			LOGGER.info("sessionId:{}",sessionId);
 			if (sessionId.equals("")) {
 				response.sendError(HttpServletResponse.SC_FORBIDDEN);
 				return;
 			}
-			// Need the URLDecoder so that I can get @ not %40
 			CustomerSession cs = getCustomerSession(sessionId);
             if (cs != null) { 
-            	LOGGER.info("cs.getCustomerid():{}",cs.getCustomerid());
             	request.setAttribute(LOGIN_USER, cs.getCustomerid());
-            	LOGGER.error("here!!!!!!!!!!");
             	arg2.doFilter(request, arg1);
 				return;
 			}
 			else {
-				LOGGER.error("here!!!!!!!!!!");
 				response.sendError(HttpServletResponse.SC_FORBIDDEN);
 				return;
 			}

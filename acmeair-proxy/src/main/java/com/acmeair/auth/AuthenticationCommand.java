@@ -10,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.ResponseErrorHandler;
@@ -55,6 +54,7 @@ public class AuthenticationCommand implements AuthenticationService {
             );
             return responseEntity.getBody();
     	} catch (Exception e) {
+    		logger.error("Failed in token validate.");
     		return null;
     	}
 
@@ -64,9 +64,9 @@ public class AuthenticationCommand implements AuthenticationService {
     protected String getCustomerServiceAddress() {
         loadBalancer =  new AcmLoadbalance("customerServiceApp");
         String address = loadBalancer.choose().toString();
-        logger.info("Just get the address {} from LoadBalancer.", address);
         String[] parts = address.split(":");
         address = "http://" + parts[0] + ":" + parts[1];
+        logger.info("Just get the address {} from LoadBalancer.", address);
         return address;
     }
 
