@@ -98,7 +98,7 @@ public class LoginREST {
             // and the server will need to detect the value is invalid vs actually forcing the browser to time out the cookie and
             // not send it to begin with
             //                NewCookie sessCookie = new NewCookie(SESSIONID_COOKIE_NAME, "");
-            return "logout success";
+            return "logged out";
         }
         catch (Exception e) {
             throw new InvocationException(Status.INTERNAL_SERVER_ERROR, "Internal Server Error");

@@ -16,6 +16,23 @@
 
 package com.acmeair.service;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpCookie;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.BitSet;
+import java.util.Enumeration;
+import java.util.Formatter;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -40,24 +57,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.sf.json.JSONObject;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.MediaType;
-
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpCookie;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.BitSet;
-import java.util.Enumeration;
-import java.util.Formatter;
-import java.util.List;
 
 /**
  * An HTTP reverse proxy/gateway servlet. It is designed to be extended for
@@ -134,7 +133,7 @@ public class ProxyServlet extends HttpServlet {
 
 	@Override
 	public String getServletInfo() {
-		return "A proxy servlet by David Smiley, dsmiley@apache.org";
+		return "From open source ~~";
 	}
 
 	protected String getTargetUri(HttpServletRequest servletRequest) {
@@ -149,7 +148,6 @@ public class ProxyServlet extends HttpServlet {
 			lb = new AcmLoadbalance("customerServiceApp");
 		}
 		String[] string = lb.choose().split(":");
-		LOGGER.error(string[0] + Integer.valueOf(string[1]) + "http");
 		return new HttpHost(string[0], Integer.valueOf(string[1]), "http");
 	}
 
@@ -274,7 +272,6 @@ public class ProxyServlet extends HttpServlet {
 		// would truly be compatible
 		String method = servletRequest.getMethod();
 		String proxyRequestUri = rewriteUrlFromRequest(servletRequest);
-		LOGGER.error("proxyRequestUri:" + proxyRequestUri);
 		HttpRequest proxyRequest;
 		// spec: RFC 2616, sec 4.3: either of these two headers signal that
 		// there is a message body.
@@ -293,6 +290,7 @@ public class ProxyServlet extends HttpServlet {
 		HttpResponse proxyResponse = null;
 		try {
 			// Execute the request
+			LOGGER.info("invoke request: {} in proxy servlet now ." , proxyRequestUri);
 			proxyResponse = doExecute(servletRequest, servletResponse, proxyRequest);
 
 			// Process the response:
@@ -324,6 +322,7 @@ public class ProxyServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			// abort request, according to best practice with HttpClient
+			LOGGER.error("failed to invoke request: {} in proxy servlet ." , proxyRequestUri ,e);
 			if (proxyRequest instanceof AbortableHttpRequest) {
 				AbortableHttpRequest abortableHttpRequest = (AbortableHttpRequest) proxyRequest;
 				abortableHttpRequest.abort();
@@ -624,7 +623,6 @@ public class ProxyServlet extends HttpServlet {
 	protected String rewriteUrlFromRequest(HttpServletRequest servletRequest) {
 		StringBuilder uri = new StringBuilder(500);
 		uri.append(getTargetUri(servletRequest));
-		LOGGER.error("uri:{}", uri);
 		// Handle the path given to the servlet
 		if (servletRequest.getPathInfo() != null) {// ex: /my/path.html
 			String pathInfo = servletRequest.getPathInfo();
@@ -641,20 +639,7 @@ public class ProxyServlet extends HttpServlet {
 				uri.append(encodeUriQuery("/login"));
 			}	
 		}
-		
-/*		if(servletRequest.getAttribute(TokenAuthFilter.LOGINOUT) != null) {
-			
-			Cookie[] cookies = servletRequest.getCookies();
 
-			for (Cookie cookie : cookies) {
-				// set cookie name prefixed w/ a proxy value so it won't collide w/
-				// other cookies
-				if(cookie.getName().equals(SESSIONID_COOKIE_NAME)) {
-					uri.append("&" + SESSIONID_COOKIE_NAME + "=" + encodeUriQuery(cookie.getValue()));
-				}
-			}
-		}*/
-		LOGGER.error("uri:{}", uri);
 		// Handle the query string & fragment
 		String queryString = servletRequest.getQueryString();// ex:(following
 																// '?'):
@@ -679,7 +664,7 @@ public class ProxyServlet extends HttpServlet {
 			uri.append('#');
 			uri.append(encodeUriQuery(fragment));
 		}
-		LOGGER.error("uri:{}", uri);
+
 		return uri.toString();
 	}
 
