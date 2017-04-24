@@ -15,9 +15,4 @@ class UnitTestRemoteCustomerLoader extends RemoteCustomerLoader {
     UnitTestRemoteCustomerLoader(@Value("${customer.service.address}") String remoteUrl) {
         this.remoteUrl = remoteUrl;
     }
-
-    @Override
-    protected String getCustomerServiceAddress() {
-        return remoteUrl;
-    }
 }

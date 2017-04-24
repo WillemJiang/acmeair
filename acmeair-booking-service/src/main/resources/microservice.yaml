@@ -11,9 +11,9 @@ cse:
   handler:
     chain:
       Provider:
-        default: perf-stats
+        default: perf-stats,tracing-provider,sla-provider
       Consumer:
-        default: perf-stats,loadbalance
+        default: perf-stats,loadbalance,tracing-consumer,sla-consumer
 
   references:
     customerServiceApp:
