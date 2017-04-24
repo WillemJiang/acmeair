@@ -100,9 +100,9 @@ public class CustomerREST {
 	@ApiOperation(value = "Update the customer information", produces = MediaType.APPLICATION_JSON, response = Customer.class)
 	@ApiResponses(value = { @ApiResponse(code = 403, message = "Invalid user information") })
 	public Customer putCustomer(@CookieParam("sessionid") String sessionid, CustomerInfo customer) {
-		if (!validate(customer.getId())) {
+/*		if (!validate(customer.getId())) {
 			throw new InvocationException(Response.Status.FORBIDDEN, "Forbidden");
-		}
+		}*/
 
 		Customer customerFromDB = customerService.getCustomerByUsernameAndPassword(customer.getId(),
 				customer.getPassword());
