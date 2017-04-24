@@ -110,7 +110,7 @@
 		if (!(dijit.byId('street2AddressInput').value == '')) {
 			customerData.address.streetAddress2 = dijit.byId('street2AddressInput').value;
 		}
-                 customerData.id = "uid0@email.com";
+
 		dojo.xhrPost({
 			url: 'customers/rest/api/customer/byid/' + userid,
 			postData : dojo.toJson(customerData),
