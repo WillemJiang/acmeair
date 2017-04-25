@@ -115,7 +115,7 @@
                                     <name>acmeair-webapp:${project.version}</name>
                                     <alias>webapp</alias>
                                     <build>
-                                        <from>java:8</from>
+                                        <from>openjdk:8-jre-alpine</from>
                                         <ports>
                                             <port>8080</port>
                                         </ports>
@@ -124,7 +124,7 @@
                                             <descriptor>${project.basedir}/src/assembly/webapp.xml</descriptor>
                                         </assembly>
                                         <entryPoint>
-                                            <shell>java -Dserver.port=8080 -jar /maven/acmeair/acmeair-webapp-exec.jar
+                                            <shell>java $JAVA_OPTS -jar /maven/acmeair/acmeair-webapp-exec.jar
                                             </shell>
                                         </entryPoint>
                                     </build>
