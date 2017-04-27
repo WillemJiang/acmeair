@@ -1,0 +1,44 @@
+acmeair-consul:
+  image: "consul"
+  hostname: consul
+  ports:
+    - "8500:8500"
+
+acmeair-mongo:
+  image: "mongo"
+  hostname: mongo
+  ports:
+    - "27017:27017"
+
+acmeair-customerservice:
+  image: "acmeair-customer-service:2.0.0-SNAPSHOT"
+  hostname: customerservice
+  links:
+    - "acmeair-consul:consul.acmeair.com"
+    - "acmeair-mongo:mongo.acmeair.com"
+  environment:
+    - JAVA_OPTS=-Dspring.profiles.active=mongodb
+  ports:
+    - "8082:8080"
+
+
+acmeair-bookingservice:
+  image: "acmeair-booking-service:2.0.0-SNAPSHOT"
+  hostname: bookingservice
+  links:
+    - "acmeair-consul:consul.acmeair.com"
+    - "acmeair-mongo:mongo.acmeair.com"
+  environment:
+    - JAVA_OPTS=-Dspring.profiles.active=mongodb
+  ports:
+    - "8084:8080"
+  
+acmeair-webapp:
+  image: "acmeair-webapp:2.0.0-SNAPSHOT"
+  hostname: webapp
+  links:
+    - "acmeair-consul:consul.acmeair.com"
+  environment:
+    - JAVA_OPTS=-Dspring.profiles.active=consul
+  ports:
+    - "8080:8080"

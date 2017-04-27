@@ -56,7 +56,14 @@ Source:
            |                                               |   |
            |                                               V   V
            +-------------------------------------------->Service Registry (Consul)            
-                    
+  
+  
+* Running Application with docker-compose
+    
+      docker-componse up
+  
+  
+* Running Application with java command
   
   1.Running Consul with docker
   
@@ -73,8 +80,7 @@ Source:
         
       #Running the customer service with mongoDB service
       java -Dspring.profiles.active=mongodb -Dspring.data.mongodb.host=localhost -Dspring.cloud.consul.host=localhost -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
-              
-        
+                   
   4.Staring acmeair-booking-service 
    
       #Running the booking service with in memory db
@@ -82,8 +88,7 @@ Source:
         
       # Running the booking service with mongoDB service
       java -Dspring.profiles.active=mongodb -Dspring.data.mongodb.host=localhost -Dspring.cloud.consul.host=localhost  -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
-             
-      
+                
   5.Starting acmeair-webapp
       
       java -Dspring.cloud.consul.host=localhost -Dspring.profiles.active=consul -Dserver.port=8080 -jar acmeair-webapp/target/acmeair/acmeair-webapp-exec.jar
