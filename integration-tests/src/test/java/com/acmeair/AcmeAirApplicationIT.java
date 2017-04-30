@@ -51,7 +51,6 @@ import static org.springframework.http.HttpStatus.OK;
         classes = AcmeAirSitApplication.class,
         webEnvironment = RANDOM_PORT,
         properties = {
-                "spring.data.mongodb.host=localhost"
         })
 @ActiveProfiles({"sit"})
 public class AcmeAirApplicationIT {

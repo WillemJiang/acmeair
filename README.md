@@ -60,7 +60,7 @@ Source:
   
 * Running Application with docker-compose
     
-      docker-componse up
+      docker-compose up
   
   
 * Running Application with java command
@@ -73,7 +73,7 @@ Source:
      
       docker run -p 27017:27017 mongo
       
-  3.Staring acmeair-customer-service 
+  3.Starting acmeair-customer-service 
      
       #Running the customer service with in memory db
       java -Dspring.profiles.active=jpa -Dspring.cloud.consul.host=localhost -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
@@ -81,7 +81,7 @@ Source:
       #Running the customer service with mongoDB service
       java -Dspring.profiles.active=mongodb -Dspring.data.mongodb.host=localhost -Dspring.cloud.consul.host=localhost -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
                    
-  4.Staring acmeair-booking-service 
+  4.Starting acmeair-booking-service 
    
       #Running the booking service with in memory db
       java -Dspring.profiles.active=jpa -Dspring.cloud.consul.host=localhost  -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar

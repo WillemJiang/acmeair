@@ -34,6 +34,26 @@
       </modules>
     </profile>
     <profile>
+      <id>docker-machine</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>io.fabric8</groupId>
+              <artifactId>docker-maven-plugin</artifactId>
+              <version>0.18.1</version>
+              <configuration>
+                <machine>
+                  <name>default</name>
+                  <autoCreate>true</autoCreate>
+                </machine>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
+    <profile>
           <id>jacoco</id>
           <build>
               <plugins>
@@ -365,6 +385,11 @@
               <pact.rootDir>../target/pacts</pact.rootDir>
             </systemPropertyVariables>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.gmaven</groupId>
+          <artifactId>gmaven-plugin</artifactId>
+          <version>1.5</version>
         </plugin>
       </plugins>
     </pluginManagement>
