@@ -22,8 +22,6 @@ import com.acmeair.service.CustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.POST;
@@ -37,8 +35,12 @@ import javax.ws.rs.core.Response;
 @Api(value = "Customer Service User Information Loading Service", produces = MediaType.TEXT_PLAIN)
 public class CustomerLoaderREST {
 
+	private final CustomerService customerService;
+
 	@Autowired
-	private CustomerService customerService;
+	CustomerLoaderREST(CustomerService customerService) {
+		this.customerService = customerService;
+	}
 
 	@POST
 	@Path("/load")

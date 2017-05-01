@@ -65,7 +65,10 @@ Source:
 * Running Application with docker-compose
     
       docker-compose up
-  
+
+* Running Application with docker-compose and pre-loaded customers/flights data
+    
+      docker-compose -f docker-compose.yml -f docker-compose.perf.yml up
   
 * Running Application with java command
   

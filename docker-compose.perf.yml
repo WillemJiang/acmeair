@@ -1,0 +1,7 @@
+acmeair-customerservice:
+  environment:
+    - JAVA_OPTS=-Dspring.profiles.active=mongodb,perf
+
+acmeair-bookingservice:
+  environment:
+    - JAVA_OPTS=-Dspring.profiles.active=mongodb,perf
