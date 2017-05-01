@@ -40,6 +40,10 @@ Source:
   
       mvn clean install -Pdocker
       
+  If you are using docker machine, please use the following command
+  
+      mvn clean install -Pdocker -Pdocker-machine
+      
 * Running Application
 
   The Acmeair Application have three separated services process: acmeair-customer-service, acmeair-booking-service and acmeair-webapp.
@@ -96,3 +100,11 @@ Source:
   6.Access the acmeair-webapp from browser with below address
   
       http://localhost:8080/index.html
+
+* Running AcmeAir on [Google Compute Engine](https://cloud.google.com/compute/)
+  
+  The default Java version is 1.7 on Google Compute Engine but AcmeAir is using 1.8. Run the following command to set up Java 8 on Google Compute Engine.
+      
+      sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+      export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/
+      

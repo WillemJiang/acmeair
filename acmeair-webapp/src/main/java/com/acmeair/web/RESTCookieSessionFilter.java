@@ -81,6 +81,7 @@ public class RESTCookieSessionFilter extends ZuulFilter {
 			// did this check as the logout currently sets the cookie value to "" instead of aging it out
 			// see comment in LogingREST.java
 			if (sessionId.equals("")) {
+				logger.warn("Session id is empty");
 				response.sendError(HttpServletResponse.SC_FORBIDDEN);
 				return;
 			}
@@ -88,14 +89,17 @@ public class RESTCookieSessionFilter extends ZuulFilter {
 			CustomerSession cs = getCustomerSession(sessionId);
             if (cs != null) {
 				context.addZuulRequestHeader(LOGIN_USER, cs.getCustomerid());
+				logger.info("Customer {} validated with session id {}", cs.getCustomerid(), sessionId);
 				return;
 			}
 			else {
+				logger.warn("No customer session found with session id {}", sessionId);
 				response.sendError(HttpServletResponse.SC_FORBIDDEN);
 				return;
 			}
 		}
-		
+
+		logger.warn("No session cookie provided");
 		// if we got here, we didn't detect the session cookie, so we need to return 404
 		response.sendError(HttpServletResponse.SC_FORBIDDEN);
 	}

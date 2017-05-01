@@ -113,10 +113,12 @@ public class LoginREST {
 				  notes = "This can only be done by the logged in user.",
 				  response = CustomerSessionInfo.class)
 	public Response validateCustomer(@ApiParam(value = "Session id from the cookie", required = true) @FormParam("sessionId") String sessionId) {
+		logger.info("Received customer validation request with session id {}", sessionId);
 		CustomerSession customerSession = customerService.validateSession(sessionId);
 		CustomerSessionInfo sessionInfo = null;
 		if (customerSession != null) {
 			sessionInfo = new CustomerSessionInfo(customerSession);
+			logger.info("Found customer session {}", customerSession);
 		}
 		return Response.ok(sessionInfo, MediaType.APPLICATION_JSON).build();
 	}
