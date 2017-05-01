@@ -41,7 +41,7 @@
             <plugin>
               <groupId>io.fabric8</groupId>
               <artifactId>docker-maven-plugin</artifactId>
-              <version>0.18.1</version>
+              <version>${docker.plugin.version}</version>
               <configuration>
                 <machine>
                   <name>default</name>
@@ -73,6 +73,7 @@
     <java.version>1.8</java.version>
     <pact.version>3.2.13</pact.version>
     <swagger.version>1.5.9</swagger.version>
+    <docker.plugin.version>1.8.1</docker.plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -305,6 +306,11 @@
   <build>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>io.fabric8</groupId>
+          <artifactId>docker-maven-plugin</artifactId>
+          <version>${docker.plugin.version}</version>
+        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
