@@ -1,0 +1,15 @@
+acmeair-mongo:
+  image: "mongo"
+  hostname: mongo
+  ports:
+    - "27017:27017"
+
+acmeair-webapp:
+  image: "acmeair-webapp:2.0.0-Monolith-SNAPSHOT"
+  hostname: webapp
+  links:
+    - "acmeair-mongo:mongo.acmeair.com"
+  environment:
+    - JAVA_OPTS=-Dmongo.host=mongo.acmeair.com
+  ports:
+    - "8080:8080"
