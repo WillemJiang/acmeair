@@ -18,6 +18,6 @@ class UnitTestRemoteCustomerLoader extends RemoteCustomerLoader {
 
     @Override
     protected String getCustomerServiceAddress() {
-        return remoteUrl;
+        return remoteUrl + "/rest";
     }
 }

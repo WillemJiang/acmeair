@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResponseErrorHandler;
@@ -13,20 +14,25 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 
 @Component
+@Profile("!cse")
 class RemoteCustomerLoader implements CustomerLoader {
     private static final Logger logger = LoggerFactory.getLogger(RemoteCustomerLoader.class);
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
 
     @Autowired
     private LoadBalancerClient loadBalancer;
 
     @Value("${customer.service.name:customerServiceApp}")
-    private String customerServiceName;
+    String customerServiceName;
 
     RemoteCustomerLoader() {
+        this(new RestTemplate());
+    }
 
-        restTemplate.setErrorHandler(new ResponseErrorHandler() {
+    RemoteCustomerLoader(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+        this.restTemplate.setErrorHandler(new ResponseErrorHandler() {
             @Override
             public boolean hasError(ClientHttpResponse clientHttpResponse) throws IOException {
                 return !clientHttpResponse.getStatusCode().is2xxSuccessful();
@@ -43,7 +49,7 @@ class RemoteCustomerLoader implements CustomerLoader {
     @Override
     public void loadCustomers(long numCustomers) {
         restTemplate.postForEntity(
-                getCustomerServiceAddress() + "/rest/info/loader/load?number={numberOfCustomers}",
+                getCustomerServiceAddress() + "/info/loader/load?number={numberOfCustomers}",
                 null,
                 String.class,
                 numCustomers
@@ -53,6 +59,6 @@ class RemoteCustomerLoader implements CustomerLoader {
     protected String getCustomerServiceAddress() {
         String address = loadBalancer.choose(customerServiceName).getUri().toString();
         logger.info("Just get the address {} from LoadBalancer.", address);
-        return address;
+        return address + "/rest";
     }
 }
