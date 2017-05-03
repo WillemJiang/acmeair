@@ -1,34 +1,18 @@
 package com.acmeair.loader;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 
-@Component
-@Profile("!cse")
-class RemoteCustomerLoader implements CustomerLoader {
-    private static final Logger logger = LoggerFactory.getLogger(RemoteCustomerLoader.class);
+abstract class RemoteCustomerLoader implements CustomerLoader {
 
     private final RestTemplate restTemplate;
 
-    @Autowired
-    private LoadBalancerClient loadBalancer;
-
     @Value("${customer.service.name:customerServiceApp}")
     String customerServiceName;
-
-    RemoteCustomerLoader() {
-        this(new RestTemplate());
-    }
 
     RemoteCustomerLoader(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -56,9 +40,5 @@ class RemoteCustomerLoader implements CustomerLoader {
         );
     }
 
-    protected String getCustomerServiceAddress() {
-        String address = loadBalancer.choose(customerServiceName).getUri().toString();
-        logger.info("Just get the address {} from LoadBalancer.", address);
-        return address + "/rest";
-    }
+    protected abstract String getCustomerServiceAddress();
 }

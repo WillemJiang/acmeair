@@ -20,18 +20,15 @@
 		<dependency>
 			<groupId>com.huawei.paas.cse</groupId>
 			<artifactId>cse-spring-boot-starter-provider</artifactId>
-			<version>${paas.cse.version}</version>
 		</dependency>
 		<!-- cse -->
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-codec</artifactId>
-			<version>4.1.5.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-codec-http</artifactId>
-			<version>4.1.5.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>acmeair</groupId>
