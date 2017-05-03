@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Primary
 @Component
 @Profile({"test", "sit"})
-class UnitTestRemoteCustomerLoader extends RemoteCustomerLoader {
+class UnitTestRemoteCustomerLoader extends SpringCloudCustomerLoader {
 
     private final String remoteUrl;
 
@@ -17,7 +17,7 @@ class UnitTestRemoteCustomerLoader extends RemoteCustomerLoader {
     }
 
     @Override
-    protected String getCustomerServiceAddress() {
-        return remoteUrl + "/rest";
+    protected String customerServiceAddress() {
+        return remoteUrl;
     }
 }

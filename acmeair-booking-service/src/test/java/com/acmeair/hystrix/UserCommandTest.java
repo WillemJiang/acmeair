@@ -22,6 +22,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 public class UserCommandTest {
+    @Rule
+    public final PactProviderRule providerRule = new PactProviderRule("CustomerService", this);
+
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final CustomerInfo customerInfo = new CustomerInfo(
             "sean-123",
@@ -41,7 +44,7 @@ public class UserCommandTest {
             Customer.PhoneType.MOBILE.name()
     );
 
-    private final UserService userService = new TestUserCommand("http://localhost:8082");
+    private final UserService userService = new TestUserCommand(providerRule.getConfig().url());
 
     @Pact(consumer = "UserService")
     public PactFragment createFragment(PactDslWithProvider pactDslWithProvider) throws JsonProcessingException {
