@@ -9,7 +9,6 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
-import com.huawei.paas.cse.provider.springmvc.reference.RestTemplateBuilder;
 
 import java.io.IOException;
 
@@ -17,7 +16,7 @@ import java.io.IOException;
 class RemoteCustomerLoader implements CustomerLoader {
     private static final Logger logger = LoggerFactory.getLogger(RemoteCustomerLoader.class);
 
-    private RestTemplate restTemplate = RestTemplateBuilder.create();
+    private final RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
     private LoadBalancerClient loadBalancer;
@@ -43,12 +42,17 @@ class RemoteCustomerLoader implements CustomerLoader {
 
     @Override
     public void loadCustomers(long numCustomers) {
-        String url = String.format("cse://%s/info/loader/load?number={%d}",customerServiceName,numCustomers);
-        restTemplate.postForEntity(url,
+        restTemplate.postForEntity(
+                getCustomerServiceAddress() + "/rest/info/loader/load?number={numberOfCustomers}",
                 null,
                 String.class,
                 numCustomers
         );
     }
 
+    protected String getCustomerServiceAddress() {
+        String address = loadBalancer.choose(customerServiceName).getUri().toString();
+        logger.info("Just get the address {} from LoadBalancer.", address);
+        return address;
+    }
 }
