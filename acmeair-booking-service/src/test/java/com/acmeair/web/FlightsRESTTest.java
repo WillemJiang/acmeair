@@ -5,6 +5,7 @@ import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import com.acmeair.FlightRestTestApplication;
 import com.acmeair.entities.Flight;
 import com.acmeair.morphia.entities.FlightImpl;
+import com.acmeair.service.BookingService;
 import com.acmeair.service.FlightService;
 import com.acmeair.service.UserService;
 import com.acmeair.web.dto.FlightInfo;
@@ -50,6 +51,8 @@ public class FlightsRESTTest {
     private UserService   customerService;
     @MockBean
     private FlightService flightService;
+    @MockBean
+    private BookingService bookingService;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -73,12 +76,12 @@ public class FlightsRESTTest {
 
     @Test
     public void getsFlightsWithUnderlyingService() {
-        when(flightService.getFlightByAirportsAndDepartureDate(
+        when(flightService.getFlightByAirportsAndDate(
                 departFlight.getFlightSegment().getOriginPort(),
                 departFlight.getFlightSegment().getDestPort(),
                 departFlight.getScheduledDepartureTime())).thenReturn(singletonList(departFlight));
 
-        when(flightService.getFlightByAirportsAndDepartureDate(
+        when(flightService.getFlightByAirportsAndDate(
                 departFlight.getFlightSegment().getDestPort(),
                 departFlight.getFlightSegment().getOriginPort(),
                 returnFlight.getScheduledDepartureTime())).thenReturn(singletonList(returnFlight));
