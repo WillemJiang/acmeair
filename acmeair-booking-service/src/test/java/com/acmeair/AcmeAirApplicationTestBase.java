@@ -13,8 +13,6 @@ import com.acmeair.web.dto.CustomerSessionInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.huawei.paas.cse.provider.springmvc.reference.RestTemplateBuilder;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -22,6 +20,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -30,16 +29,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 
 import static com.acmeair.entities.CustomerSession.SESSIONID_COOKIE_NAME;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.seanyinx.github.unit.scaffolding.Randomness.uniquify;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -80,7 +74,8 @@ public class AcmeAirApplicationTestBase {
 
     private final CustomerInfo customerInfo = new CustomerInfo();
 
-    private RestTemplate restTemplate = RestTemplateBuilder.create();
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Autowired
     private FlightRepository flightRepository;
