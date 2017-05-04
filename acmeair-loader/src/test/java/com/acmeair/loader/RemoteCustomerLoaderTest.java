@@ -6,6 +6,7 @@ import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.model.PactFragment;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.http.HttpStatus;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -26,7 +27,7 @@ public class RemoteCustomerLoaderTest {
                 .query("number=5")
                 .method("POST")
                 .willRespondWith()
-                .status(200)
+                .status(HttpStatus.SC_NO_CONTENT)
                 .toFragment();
     }
 

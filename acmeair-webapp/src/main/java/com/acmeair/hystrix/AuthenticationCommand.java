@@ -59,6 +59,10 @@ public class AuthenticationCommand implements AuthenticationService {
                 validationRequest(sessionId),
                 CustomerSessionInfo.class
         );
+        if (!responseEntity.getStatusCode().is2xxSuccessful()) {
+            logger.warn("No such customer found with session id {}", sessionId);
+            return null;
+        }
         return responseEntity.getBody();
     }
 

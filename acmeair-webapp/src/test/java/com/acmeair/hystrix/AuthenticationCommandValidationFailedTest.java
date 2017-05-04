@@ -8,6 +8,7 @@ import au.com.dius.pact.model.PactFragment;
 import com.acmeair.entities.CustomerSession;
 import com.acmeair.service.AuthenticationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.http.HttpStatus;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -40,7 +41,7 @@ public class AuthenticationCommandValidationFailedTest {
                 .query("sessionId=" + sessionId)
                 .headers(headers)
                 .willRespondWith()
-                .status(200)
+                .status(HttpStatus.SC_INTERNAL_SERVER_ERROR)
                 .toFragment();
     }
 

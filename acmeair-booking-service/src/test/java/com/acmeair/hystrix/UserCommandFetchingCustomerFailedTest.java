@@ -6,6 +6,7 @@ import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.model.PactFragment;
 import com.acmeair.service.UserService;
+import org.apache.http.HttpStatus;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -30,7 +31,7 @@ public class UserCommandFetchingCustomerFailedTest {
                 .path("/rest/api/customer/mike")
                 .method("GET")
                 .willRespondWith()
-                .status(204)
+                .status(HttpStatus.SC_INTERNAL_SERVER_ERROR)
                 .toFragment();
     }
 
