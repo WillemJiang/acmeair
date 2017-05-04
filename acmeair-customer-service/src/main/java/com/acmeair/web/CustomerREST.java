@@ -15,17 +15,12 @@
 *******************************************************************************/
 package com.acmeair.web;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-
 import com.acmeair.entities.Customer;
 import com.acmeair.entities.CustomerAddress;
-import com.acmeair.service.*;
-import com.acmeair.web.dto.*;
+import com.acmeair.service.CustomerService;
+import com.acmeair.web.dto.CustomerInfo;
 import com.huawei.paas.cse.core.exception.InvocationException;
 import com.huawei.paas.cse.provider.rest.common.RestSchema;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -34,6 +29,17 @@ import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.CookieParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @RestSchema(schemaId = "customer_REST")
 @Path("/api/customer")
@@ -48,9 +54,11 @@ public class CustomerREST {
 	@Context
 	private HttpServletRequest request;
 
+	@Autowired
+	private CustomerValidationRule customerValidationRule;
+
 	private boolean validate(String customerid) {
-		String loginUser = request.getHeader(LOGIN_USER);
-		return customerid.equals(loginUser);
+		return customerValidationRule.validate(customerid, request);
 	}
 
 	@GET
@@ -65,16 +73,18 @@ public class CustomerREST {
 			logger.info("Received request to get customer by id {} with session {}", customerid, sessionid);
 			// make sure the user isn't trying to update a customer other than
 			// the one currently logged in
-//			if (!validate(customerid)) {
-//				logger.info("Customer id mismatched, requested = {}, logged = {}", customerid,
-//						request.getHeader("acmeair.login_user"));
-//				throw new InvocationException(Response.Status.FORBIDDEN, "Forbidden");
-//			}
+			if (!validate(customerid)) {
+				logger.info("Customer id mismatched, requested = {}, logged = {}", customerid,
+						request.getHeader("acmeair.login_user"));
+				throw new InvocationException(Response.Status.FORBIDDEN, "Forbidden");
+			}
 			Customer customer = customerService.getCustomerByUsername(customerid);
 			CustomerInfo customerDTO = new CustomerInfo(customer);
 			return customerDTO;
+		} catch (InvocationException e) {
+			throw e;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.warn("Failed to get customer information", e);
 			throw new InvocationException(Response.Status.INTERNAL_SERVER_ERROR, "Internal Server Error");
 		}
 	}
@@ -100,9 +110,9 @@ public class CustomerREST {
 	@ApiOperation(value = "Update the customer information", produces = MediaType.APPLICATION_JSON, response = Customer.class)
 	@ApiResponses(value = { @ApiResponse(code = 403, message = "Invalid user information") })
 	public Customer putCustomer(@CookieParam("sessionid") String sessionid, CustomerInfo customer) {
-/*		if (!validate(customer.getId())) {
+		if (!validate(customer.getId())) {
 			throw new InvocationException(Response.Status.FORBIDDEN, "Forbidden");
-		}*/
+		}
 
 		Customer customerFromDB = customerService.getCustomerByUsernameAndPassword(customer.getId(),
 				customer.getPassword());
