@@ -112,6 +112,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+        </dependency>
+        <dependency>
             <groupId>br.com.six2six</groupId>
             <artifactId>fixture-factory</artifactId>
             <scope>test</scope>
