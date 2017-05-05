@@ -14,7 +14,7 @@ public class AcmeAirApplication {
     }
 
     @Configuration
-    @Profile("consul")
+    @Profile("!cse")
     @EnableDiscoveryClient
     class ConsulServiceDiscoveryConfig {
     }

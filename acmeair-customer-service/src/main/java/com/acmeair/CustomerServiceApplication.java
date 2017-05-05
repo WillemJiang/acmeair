@@ -15,7 +15,7 @@ public class CustomerServiceApplication {
 
     @Configuration
     @EnableDiscoveryClient
-    @Profile("consul")
+    @Profile("!cse")
     class ConsulServiceDiscoveryConfig {
     }
 }
