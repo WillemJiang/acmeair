@@ -159,7 +159,7 @@
                         <configuration>
                             <images>
                                 <image>
-                                    <name>acmeair-customer-service:${project.version}</name>
+                                    <name>seanyinx/acmeair-customer-service:${project.version}</name>
                                     <alias>customer-service</alias>
                                     <build>
                                         <from>openjdk:8-jre-alpine</from>

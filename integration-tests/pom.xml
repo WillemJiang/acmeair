@@ -145,7 +145,7 @@
                             </run>
                         </image>
                         <image>
-                            <name>acmeair-customer-service:${project.version}</name>
+                            <name>seanyinx/acmeair-customer-service:${project.version}</name>
                             <alias>customer-service</alias>
                             <run>
                                 <env>
@@ -167,7 +167,7 @@
                             </run>
                         </image>
                         <image>
-                            <name>acmeair-booking-service:${project.version}</name>
+                            <name>seanyinx/acmeair-booking-service:${project.version}</name>
                             <alias>booking-service</alias>
                             <run>
                                 <env>
@@ -191,7 +191,7 @@
                             </run>
                         </image>
                         <image>
-                            <name>acmeair-webapp:${project.version}</name>
+                            <name>seanyinx/acmeair-webapp:${project.version}</name>
                             <alias>gateway</alias>
                             <run>
                                 <env>

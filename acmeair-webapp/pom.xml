@@ -162,7 +162,7 @@
                         <configuration>
                             <images>
                                 <image>
-                                    <name>acmeair-webapp:${project.version}</name>
+                                    <name>seanyinx/acmeair-webapp:${project.version}</name>
                                     <alias>webapp</alias>
                                     <build>
                                         <from>openjdk:8-jre-alpine</from>

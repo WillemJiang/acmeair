@@ -11,7 +11,7 @@ acmeair-mongo:
     - "27017:27017"
 
 acmeair-customerservice:
-  image: "acmeair-customer-service:2.0.0-SNAPSHOT"
+  image: "seanyinx/acmeair-customer-service:2.0.0-SNAPSHOT"
   hostname: customerservice
   links:
     - "acmeair-consul:consul.acmeair.com"
@@ -23,7 +23,7 @@ acmeair-customerservice:
 
 
 acmeair-bookingservice:
-  image: "acmeair-booking-service:2.0.0-SNAPSHOT"
+  image: "seanyinx/acmeair-booking-service:2.0.0-SNAPSHOT"
   hostname: bookingservice
   links:
     - "acmeair-consul:consul.acmeair.com"
@@ -34,7 +34,7 @@ acmeair-bookingservice:
     - "8084:8080"
   
 acmeair-webapp:
-  image: "acmeair-webapp:2.0.0-SNAPSHOT"
+  image: "seanyinx/acmeair-webapp:2.0.0-SNAPSHOT"
   hostname: webapp
   links:
     - "acmeair-consul:consul.acmeair.com"
