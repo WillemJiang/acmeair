@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: "consul-web"
+spec:
+  selector:
+    app: "consul"
+    role: "web"
+  ports:
+    - protocol: "TCP"
+      port: 8500
+      targetPort: 8500
+      nodePort: 31005
+  type: NodePort
+

@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: booking-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: booking-service
+        track: stable
+    spec:
+      containers:
+        - name: booking-service
+          image: "seanyinx/acmeair-booking-service:2.0.0-SNAPSHOT"
+          env:
+            - name: JAVA_OPTS
+              value: "-Dspring.profiles.active=mongodb,perf -Dspring.data.mongodb.host=mongo-0.mongo -Dspring.cloud.consul.host=consul-0.consul"
+          ports:
+            - name: http
+              containerPort: 8080
+          resources:
+            limits:
+              cpu: 0.2
+              memory: "1Gi"
+#          livenessProbe:
+#            httpGet:
+#              path: /health
+#              port: 8080
+#              scheme: HTTP
+#            initialDelaySeconds: 35
+#            periodSeconds: 15
+#            timeoutSeconds: 5
+#          readinessProbe:
+#            httpGet:
+#              path: /health
+#              port: 8080
+#              scheme: HTTP
+#            initialDelaySeconds: 30
+#            timeoutSeconds: 2
