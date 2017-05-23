@@ -148,18 +148,19 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                        <configuration>
-                            <finalName>acmeair-webapp</finalName>
-                            <outputDirectory>${project.build.directory}/acmeair</outputDirectory>
-                            <classifier>exec</classifier>
-                        </configuration>
-                    </execution>
-                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.odavid.maven.plugins</groupId>
+                <artifactId>mixin-maven-plugin</artifactId>
+                <configuration>
+                    <mixins>
+                        <mixin>
+                            <groupId>acmeair</groupId>
+                            <artifactId>docker-build-config</artifactId>
+                            <version>${acmeair.version}</version>
+                        </mixin>
+                    </mixins>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -171,37 +172,10 @@
                     <plugin>
                         <groupId>io.fabric8</groupId>
                         <artifactId>docker-maven-plugin</artifactId>
-                        <configuration>
-                            <images>
-                                <image>
-                                    <name>acmeair-webapp:${project.version}</name>
-                                    <alias>webapp</alias>
-                                    <build>
-                                        <from>openjdk:8-jre-alpine</from>
-                                        <ports>
-                                            <port>8080</port>
-                                        </ports>
-                                        <assembly>
-                                            <mode>tar</mode>
-                                            <descriptor>${project.basedir}/src/assembly/webapp.xml</descriptor>
-                                        </assembly>
-                                        <entryPoint>
-                                            <shell>java $JAVA_OPTS -jar /maven/acmeair/acmeair-webapp-exec.jar
-                                            </shell>
-                                        </entryPoint>
-                                    </build>
-                                </image>
-                            </images>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>build</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>build</goal>
-                                </goals>
-                            </execution>
-                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.commonjava.maven.plugins</groupId>
+                        <artifactId>directory-maven-plugin</artifactId>
                     </plugin>
                 </plugins>
             </build>
