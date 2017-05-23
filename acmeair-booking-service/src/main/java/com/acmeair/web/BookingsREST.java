@@ -24,7 +24,7 @@ import com.acmeair.entities.Booking;
 import com.acmeair.service.BookingService;
 import com.acmeair.web.dto.BookingInfo;
 import com.acmeair.web.dto.BookingReceiptInfo;
-import com.huawei.paas.cse.provider.rest.common.RestSchema;
+import io.servicecomb.provider.rest.common.RestSchema;
 
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;

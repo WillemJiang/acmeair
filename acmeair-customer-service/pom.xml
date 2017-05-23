@@ -12,7 +12,7 @@
 	<artifactId>acmeair-customer-service</artifactId>
 	<dependencies>
 		<dependency>
-			<groupId>com.huawei.paas.cse</groupId>
+			<groupId>io.servicecomb</groupId>
 			<artifactId>cse-spring-boot-starter-provider</artifactId>
 		</dependency>
 		<dependency>

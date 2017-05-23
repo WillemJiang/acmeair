@@ -13,7 +13,7 @@
 	<version>2.0.0-SNAPSHOT</version>
 	<dependencies>
 		<dependency>
-			<groupId>com.huawei.paas.cse</groupId>
+			<groupId>io.servicecomb</groupId>
 			<artifactId>cse-spring-boot-starter-provider</artifactId>
 		</dependency>
 		<dependency>

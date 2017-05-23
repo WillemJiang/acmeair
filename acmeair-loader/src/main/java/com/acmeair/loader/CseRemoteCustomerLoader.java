@@ -1,6 +1,6 @@
 package com.acmeair.loader;
 
-import com.huawei.paas.cse.provider.springmvc.reference.RestTemplateBuilder;
+import io.servicecomb.provider.springmvc.reference.RestTemplateBuilder;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 

@@ -14,7 +14,7 @@
 	<dependencies>
 		<!-- cse -->
 		<dependency>
-			<groupId>com.huawei.paas.cse</groupId>
+			<groupId>io.servicecomb</groupId>
 			<artifactId>cse-spring-boot-starter-provider</artifactId>
 		</dependency>
 		<!-- cse -->
