@@ -8,7 +8,7 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.acmeair.service.CustomerService;
-import com.huawei.paas.cse.provider.rest.common.RestSchema;
+import io.servicecomb.provider.rest.common.RestSchema;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

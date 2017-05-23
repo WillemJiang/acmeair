@@ -9,10 +9,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.huawei.paas.cse.serviceregistry.cache.CacheEndpoint;
-import com.huawei.paas.cse.serviceregistry.cache.InstanceCache;
-import com.huawei.paas.cse.serviceregistry.cache.InstanceCacheManager;
-import com.huawei.paas.cse.serviceregistry.RegistryUtils;
+import io.servicecomb.serviceregistry.cache.CacheEndpoint;
+import io.servicecomb.serviceregistry.cache.InstanceCache;
+import io.servicecomb.serviceregistry.cache.InstanceCacheManager;
+import io.servicecomb.serviceregistry.RegistryUtils;
 
 public class AcmLoadbalance {
     private static final Logger LOG = LoggerFactory.getLogger(AcmLoadbalance.class);
