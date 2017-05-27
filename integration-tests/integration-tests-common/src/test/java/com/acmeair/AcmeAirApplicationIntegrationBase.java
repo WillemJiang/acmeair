@@ -55,7 +55,7 @@ import static org.springframework.http.HttpStatus.OK;
         properties = {
         })
 @ActiveProfiles({"sit"})
-public class AcmeAirApplicationIT {
+public class AcmeAirApplicationIntegrationBase {
     private final boolean oneWay         = false;
 
     private final String      customerId = "uid0@email.com";
