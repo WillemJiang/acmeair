@@ -35,6 +35,8 @@ import java.util.Date;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.Calendar.SECOND;
+import static org.apache.commons.lang3.time.DateUtils.truncate;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -125,11 +127,11 @@ public class AcmeAirApplicationIT {
     public void checkBookingWithoutLoggedIn() {
         HttpHeaders headers = new HttpHeaders();
         
-        ResponseEntity<BookingInfo> bookingInfoResponseEntity = restTemplate.exchange(
+        ResponseEntity<String> bookingInfoResponseEntity = restTemplate.exchange(
                 gatewayUrl + "/bookings/rest/api/bookings/bybookingnumber/{userid}/{number}",
                 GET,
                 new HttpEntity<String>(headers),
-                BookingInfo.class,
+                String.class,
                 booking.getCustomerId(),
                 booking.getBookingId()
         );
@@ -156,7 +158,7 @@ public class AcmeAirApplicationIT {
         assertThat(bookingInfo.getBookingId(), is(booking.getBookingId()));
         assertThat(bookingInfo.getCustomerId(), is(booking.getCustomerId()));
         assertThat(bookingInfo.getFlightId(), is(booking.getFlightId()));
-        assertThat(bookingInfo.getDateOfBooking(), is(booking.getDateOfBooking()));
+        assertThat(truncate(bookingInfo.getDateOfBooking(), SECOND), is(truncate(booking.getDateOfBooking(), SECOND)));
     }
 
     @Test

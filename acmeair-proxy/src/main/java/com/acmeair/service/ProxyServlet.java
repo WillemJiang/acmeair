@@ -621,6 +621,7 @@ public class ProxyServlet extends HttpServlet {
 	 * considering targetUri. It's used to make the new request.
 	 */
 	protected String rewriteUrlFromRequest(HttpServletRequest servletRequest) {
+		LOGGER.info("Rewriting http request {}", servletRequest);
 		StringBuilder uri = new StringBuilder(500);
 		uri.append(getTargetUri(servletRequest));
 		// Handle the path given to the servlet
@@ -634,10 +635,7 @@ public class ProxyServlet extends HttpServlet {
 			}
 			if (servletRequest.getPathInfo().startsWith("/rest")) {
 				uri.append(encodeUriQuery(pathInfo.substring(4)));
-			}	
-			if (servletRequest.getPathInfo().endsWith("/login")) {
-				uri.append(encodeUriQuery("/login"));
-			}	
+			}
 		}
 
 		// Handle the query string & fragment
@@ -665,6 +663,7 @@ public class ProxyServlet extends HttpServlet {
 			uri.append(encodeUriQuery(fragment));
 		}
 
+		LOGGER.info("Rewritten http request to {}", uri);
 		return uri.toString();
 	}
 

@@ -26,10 +26,6 @@
             <artifactId>acmeair-customer-common</artifactId>
         </dependency>
         <dependency>
-            <groupId>acmeair</groupId>
-            <artifactId>acmeair-customer-service</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jersey</artifactId>
             <exclusions>
@@ -87,10 +83,6 @@
         </dependency>
         <dependency>
             <groupId>acmeair</groupId>
-            <artifactId>acmeair-webapp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>acmeair</groupId>
             <artifactId>acmeair-booking-service</artifactId>
         </dependency>
         <dependency>
@@ -114,127 +106,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <configuration>
-                    <images>
-                        <image>
-                            <name>mongo</name>
-                            <alias>acmeair-mongo</alias>
-                            <run>
-                                <wait>
-                                    <log>waiting for connections on port</log>
-                                    <time>60000</time>
-                                </wait>
-                                <ports>
-                                    <port>mongo.port:27017</port>
-                                </ports>
-                            </run>
-                        </image>
-                        <image>
-                            <name>consul</name>
-                            <alias>acmeair-consul</alias>
-                            <run>
-                                <wait>
-                                    <log>cluster leadership acquired</log>
-                                    <time>60000</time>
-                                </wait>
-                                <ports>
-                                    <port>consul.port:8500</port>
-                                </ports>
-                            </run>
-                        </image>
-                        <image>
-                            <name>acmeair-customer-service:${project.version}</name>
-                            <alias>customer-service</alias>
-                            <run>
-                                <env>
-                                    <JAVA_OPTS>-Dspring.profiles.active=jpa -Dserver.port=8080</JAVA_OPTS>
-                                    <JAR_NAME>acmeair-customer-service</JAR_NAME>
-                                </env>
-                                <links>
-                                    <link>acmeair-consul:consul.acmeair.com</link>
-                                </links>
-                                <wait>
-                                    <log>Tomcat started on port</log>
-                                    <time>100000</time>
-                                </wait>
-                                <ports>
-                                    <port>customer.service.port:8080</port>
-                                </ports>
-                                <dependsOn>
-                                    <dependsOn>acmeair-consul</dependsOn>
-                                </dependsOn>
-                            </run>
-                        </image>
-                        <image>
-                            <name>acmeair-booking-service:${project.version}</name>
-                            <alias>booking-service</alias>
-                            <run>
-                                <env>
-                                    <JAVA_OPTS>-Dspring.profiles.active=mongodb -Dserver.port=8080 -Dspring.data.mongodb.host=mongo.acmeair.com</JAVA_OPTS>
-                                    <JAR_NAME>acmeair-booking-service</JAR_NAME>
-                                </env>
-                                <links>
-                                    <link>acmeair-mongo:mongo.acmeair.com</link>
-                                    <link>acmeair-consul:consul.acmeair.com</link>
-                                </links>
-                                <wait>
-                                    <log>Tomcat started on port</log>
-                                    <time>100000</time>
-                                </wait>
-                                <ports>
-                                    <port>booking.service.port:8080</port>
-                                </ports>
-                                <dependsOn>
-                                    <dependsOn>acmeair-mongo</dependsOn>
-                                    <dependsOn>acmeair-consul</dependsOn>
-                                </dependsOn>
-                            </run>
-                        </image>
-                        <image>
-                            <name>acmeair-webapp:${project.version}</name>
-                            <alias>gateway</alias>
-                            <run>
-                                <env>
-                                    <JAVA_OPTS>-Dspring.profiles.active=consul -Dserver.port=8080</JAVA_OPTS>
-                                    <JAR_NAME>acmeair-webapp</JAR_NAME>
-                                </env>
-                                <links>
-                                    <link>acmeair-consul:consul.acmeair.com</link>
-                                </links>
-                                <wait>
-                                    <log>Tomcat started on port</log>
-                                    <time>100000</time>
-                                </wait>
-                                <ports>
-                                    <port>gateway.port:8080</port>
-                                </ports>
-                                <dependsOn>
-                                    <dependsOn>acmeair-consul</dependsOn>
-                                </dependsOn>
-                            </run>
-                        </image>
-                    </images>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>start</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>stop</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.19.1</version>
@@ -242,11 +113,10 @@
                     <systemPropertyVariables>
                         <spring.data.mongodb.host>${docker.hostname}</spring.data.mongodb.host>
                         <spring.data.mongodb.port>${mongo.port}</spring.data.mongodb.port>
-                        <spring.cloud.consul.host>${docker.hostname}</spring.cloud.consul.host>
-                        <spring.cloud.consul.port>${consul.port}</spring.cloud.consul.port>
                         <!-- Uses customer service address to load the data for integration test-->
                         <customer.service.address>http://${docker.hostname}:${customer.service.port}</customer.service.address>
                         <gateway.address>http://${docker.hostname}:${gateway.port}</gateway.address>
+                        <cse.service.registry.address>http://${docker.hostname}:${service.center.port}</cse.service.registry.address>
                     </systemPropertyVariables>
                     <argLine>${jacoco.failsafe.argLine}</argLine>
                 </configuration>
@@ -332,6 +202,281 @@
                                 <phase>verify</phase>
                                 <goals>
                                     <goal>report-aggregate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>spring-cloud</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <name>mongo</name>
+                                    <alias>acmeair-mongo</alias>
+                                    <run>
+                                        <wait>
+                                            <log>waiting for connections on port</log>
+                                            <time>60000</time>
+                                        </wait>
+                                        <ports>
+                                            <port>mongo.port:27017</port>
+                                        </ports>
+                                    </run>
+                                </image>
+                                <image>
+                                    <name>consul</name>
+                                    <alias>acmeair-consul</alias>
+                                    <run>
+                                        <wait>
+                                            <log>cluster leadership acquired</log>
+                                            <time>60000</time>
+                                        </wait>
+                                        <ports>
+                                            <port>consul.port:8500</port>
+                                        </ports>
+                                    </run>
+                                </image>
+                                <image>
+                                    <name>acmeair-customer-service:${project.version}</name>
+                                    <alias>customer-service</alias>
+                                    <run>
+                                        <env>
+                                            <JAVA_OPTS>-Dspring.profiles.active=jpa -Dserver.port=8080</JAVA_OPTS>
+                                            <JAR_NAME>acmeair-customer-service</JAR_NAME>
+                                        </env>
+                                        <links>
+                                            <link>acmeair-consul:consul.acmeair.com</link>
+                                        </links>
+                                        <wait>
+                                            <log>Tomcat started on port</log>
+                                            <time>100000</time>
+                                        </wait>
+                                        <ports>
+                                            <port>customer.service.port:8080</port>
+                                        </ports>
+                                        <dependsOn>
+                                            <dependsOn>acmeair-consul</dependsOn>
+                                        </dependsOn>
+                                    </run>
+                                </image>
+                                <image>
+                                    <name>acmeair-booking-service:${project.version}</name>
+                                    <alias>booking-service</alias>
+                                    <run>
+                                        <env>
+                                            <JAVA_OPTS>
+                                                -Dspring.profiles.active=mongodb
+                                                -Dserver.port=8080
+                                                -Dspring.data.mongodb.host=mongo.acmeair.com
+                                            </JAVA_OPTS>
+                                            <JAR_NAME>acmeair-booking-service</JAR_NAME>
+                                        </env>
+                                        <links>
+                                            <link>acmeair-mongo:mongo.acmeair.com</link>
+                                            <link>acmeair-consul:consul.acmeair.com</link>
+                                        </links>
+                                        <wait>
+                                            <log>Tomcat started on port</log>
+                                            <time>100000</time>
+                                        </wait>
+                                        <ports>
+                                            <port>booking.service.port:8080</port>
+                                        </ports>
+                                        <dependsOn>
+                                            <dependsOn>acmeair-mongo</dependsOn>
+                                            <dependsOn>acmeair-consul</dependsOn>
+                                        </dependsOn>
+                                    </run>
+                                </image>
+                                <image>
+                                    <name>acmeair-webapp:${project.version}</name>
+                                    <alias>gateway</alias>
+                                    <run>
+                                        <env>
+                                            <JAVA_OPTS>-Dspring.profiles.active=consul -Dserver.port=8080</JAVA_OPTS>
+                                            <JAR_NAME>acmeair-webapp</JAR_NAME>
+                                        </env>
+                                        <links>
+                                            <link>acmeair-consul:consul.acmeair.com</link>
+                                        </links>
+                                        <wait>
+                                            <log>Tomcat started on port</log>
+                                            <time>100000</time>
+                                        </wait>
+                                        <ports>
+                                            <port>gateway.port:8080</port>
+                                        </ports>
+                                        <dependsOn>
+                                            <dependsOn>acmeair-consul</dependsOn>
+                                        </dependsOn>
+                                    </run>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>start</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>stop</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>servicecomb</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <name>mongo</name>
+                                    <alias>acmeair-mongo</alias>
+                                    <run>
+                                        <wait>
+                                            <log>waiting for connections on port</log>
+                                            <time>60000</time>
+                                        </wait>
+                                        <ports>
+                                            <port>mongo.port:27017</port>
+                                        </ports>
+                                    </run>
+                                </image>
+                                <image>
+                                    <name>seanyinx/sc</name>
+                                    <alias>service-center</alias>
+                                    <run>
+                                        <wait>
+                                            <log>listen on server</log>
+                                            <time>60000</time>
+                                        </wait>
+                                        <ports>
+                                            <port>service.center.port:9980</port>
+                                        </ports>
+                                    </run>
+                                </image>
+                                <image>
+                                    <name>acmeair-customer-service:${project.version}</name>
+                                    <alias>customer-service</alias>
+                                    <run>
+                                        <env>
+                                            <JAVA_OPTS>
+                                                -Dcse.service.registry.address=http://sc.servicecomb.io:9980
+                                                -Dspring.profiles.active=jpa,cse
+                                                -Dserver.port=8080
+                                                -Dcse.highway.address=0.0.0.0:7072
+                                                -Dcse.rest.address=0.0.0.0:8082
+                                                -Dcse.grpc.address=0.0.0.0:9092
+                                            </JAVA_OPTS>
+                                            <JAR_NAME>acmeair-customer-service</JAR_NAME>
+                                        </env>
+                                        <links>
+                                            <link>service-center:sc.servicecomb.io</link>
+                                        </links>
+                                        <wait>
+                                            <log>Tomcat started on port</log>
+                                            <time>100000</time>
+                                        </wait>
+                                        <ports>
+                                            <port>customer.service.port:8080</port>
+                                            <port>customer.rest.port:8082</port>
+                                        </ports>
+                                        <dependsOn>
+                                            <dependsOn>service-center</dependsOn>
+                                        </dependsOn>
+                                    </run>
+                                </image>
+                                <image>
+                                    <name>acmeair-booking-service:${project.version}</name>
+                                    <alias>booking-service</alias>
+                                    <run>
+                                        <env>
+                                            <JAVA_OPTS>
+                                                -Dcse.service.registry.address=http://sc.servicecomb.io:9980
+                                                -Dspring.profiles.active=mongodb,cse
+                                                -Dserver.port=8080
+                                                -Dspring.data.mongodb.host=mongo.acmeair.com
+                                                -Dcse.rest.address=0.0.0.0:8082
+                                            </JAVA_OPTS>
+                                            <JAR_NAME>acmeair-booking-service</JAR_NAME>
+                                        </env>
+                                        <links>
+                                            <link>acmeair-mongo:mongo.acmeair.com</link>
+                                            <link>service-center:sc.servicecomb.io</link>
+                                        </links>
+                                        <wait>
+                                            <log>Tomcat started on port</log>
+                                            <time>100000</time>
+                                        </wait>
+                                        <ports>
+                                            <port>booking.service.port:8080</port>
+                                        </ports>
+                                        <dependsOn>
+                                            <dependsOn>acmeair-mongo</dependsOn>
+                                            <dependsOn>service-center</dependsOn>
+                                        </dependsOn>
+                                    </run>
+                                </image>
+                                <image>
+                                    <name>acmeair-proxy:${project.version}</name>
+                                    <alias>gateway</alias>
+                                    <run>
+                                        <env>
+                                            <JAVA_OPTS>
+                                                -Dcse.service.registry.address=http://sc.servicecomb.io:9980
+                                            </JAVA_OPTS>
+                                        </env>
+                                        <links>
+                                            <link>service-center:sc.servicecomb.io</link>
+                                        </links>
+                                        <wait>
+                                            <log>Catalina.start Server startup in</log>
+                                            <time>100000</time>
+                                        </wait>
+                                        <ports>
+                                            <port>gateway.port:8080</port>
+                                        </ports>
+                                        <dependsOn>
+                                            <dependsOn>service-center</dependsOn>
+                                        </dependsOn>
+                                    </run>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>start</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>stop</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
                                 </goals>
                             </execution>
                         </executions>
