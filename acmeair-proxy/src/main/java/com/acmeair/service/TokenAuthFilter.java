@@ -41,7 +41,7 @@ public class TokenAuthFilter implements Filter{
 		LOGGER.info("TokenAuthFilter begin...");
 		HttpServletRequest request = (HttpServletRequest) arg0; 
 		HttpServletResponse response = (HttpServletResponse) arg1;
-		String path = ((HttpServletRequest)request).getContextPath() + ((HttpServletRequest)request).getServletPath();
+		String path = request.getContextPath() + request.getServletPath();
 		if (request.getPathInfo() != null) {
 			path = path + request.getPathInfo();
 		}
@@ -80,6 +80,7 @@ public class TokenAuthFilter implements Filter{
 			if (sessionCookie!=null) // We need both cookie to work
 				sessionId= sessionCookie.getValue().trim();
 			if (sessionId.equals("")) {
+				LOGGER.warn("Session id is empty");
 				response.sendError(HttpServletResponse.SC_FORBIDDEN);
 				return;
 			}
@@ -87,14 +88,17 @@ public class TokenAuthFilter implements Filter{
             if (cs != null) { 
             	request.setAttribute(LOGIN_USER, cs.getCustomerid());
             	arg2.doFilter(request, arg1);
+            	LOGGER.info("Customer {} validated with session id {}", cs.getCustomerid(), sessionId);
 				return;
 			}
 			else {
+				LOGGER.warn("No customer session found with session id {}", sessionId);
 				response.sendError(HttpServletResponse.SC_FORBIDDEN);
 				return;
 			}
 		}
-		
+
+		LOGGER.warn("No session cookie provided");
 		// if we got here, we didn't detect the session cookie, so we need to return 404
 		response.sendError(HttpServletResponse.SC_FORBIDDEN);
 		

@@ -1,9 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>acmeair</groupId>
+		<artifactId>acmeair-parent</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
+
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>acmeair</groupId>
 	<artifactId>acmeair-proxy</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<dependencyManagement>
@@ -11,7 +15,7 @@
 			<dependency>
 				<groupId>io.servicecomb</groupId>
 				<artifactId>cse-dependency</artifactId>
-				<version>0.1.0-SNAPSHOT</version>
+				<version>${servicecomb.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -35,11 +39,23 @@
 		<dependency>
 			<groupId>io.servicecomb</groupId>
 			<artifactId>cse-provider-pojo</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>io.servicecomb</groupId>
 			<artifactId>cse-transport-grpc</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- provider -->
@@ -64,23 +80,65 @@
 		<dependency>
 			<groupId>acmeair</groupId>
 			<artifactId>acmeair-customer-common</artifactId>
-			<version>2.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>acmeair</groupId>
 			<artifactId>acmeair-services</artifactId>
-			<version>2.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>acmeair</groupId>
 			<artifactId>acmeair-common</artifactId>
-			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
 	</dependencies>
 	<build>
 		<finalName>ROOT</finalName>
 	</build>
+
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <name>${project.artifactId}:${project.version}</name>
+                                    <alias>${project.artifactId}</alias>
+                                    <build>
+										<dockerFileDir>${project.basedir}/src/docker</dockerFileDir>
+                                        <assembly>
+                                            <descriptorRef>rootWar</descriptorRef>
+                                        </assembly>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>build</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

@@ -15,7 +15,7 @@ cse:
   handler:
     chain:
       Provider:
-        default: perf-stats,tracing-provider,sla-provider,bizkeeper-provider
+        default: bizkeeper-provider
   tracing:
     enabled: true
     samplingRate: 0.5
