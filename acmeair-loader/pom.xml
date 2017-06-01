@@ -14,7 +14,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-provider-springmvc</artifactId>
+			<artifactId>cse-spring-boot-starter-provider</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.netty</groupId>
