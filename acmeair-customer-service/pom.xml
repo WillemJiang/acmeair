@@ -13,44 +13,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-provider-springmvc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-provider-jaxrs</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-provider-pojo</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-handler-bizkeeper</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-handler-loadbalance</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-transport-highway</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-transport-grpc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-transport-rest-vertx</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-handler-flowcontrol-qps</artifactId>
+			<artifactId>cse-spring-boot-starter-provider</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.netty</groupId>

@@ -64,7 +64,6 @@
                   </plugin>
               </plugins>
           </build>
-
       </profile>
   </profiles>
 
@@ -82,7 +81,7 @@
     <dependencies>
       <dependency>
         <groupId>io.servicecomb</groupId>
-        <artifactId>cse-provider-springmvc</artifactId>
+        <artifactId>cse-spring-boot-starter-provider</artifactId>
         <version>${servicecomb.version}</version>
         <exclusions>
           <exclusion>
@@ -94,92 +93,6 @@
             <artifactId>slf4j-log4j12</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>io.servicecomb</groupId>
-        <artifactId>cse-provider-rest-common</artifactId>
-        <version>${servicecomb.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>io.servicecomb</groupId>
-        <artifactId>cse-core</artifactId>
-        <version>${servicecomb.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>io.servicecomb</groupId>
-        <artifactId>cse-provider-jaxrs</artifactId>
-        <version>${servicecomb.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>*</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>io.servicecomb</groupId>
-        <artifactId>cse-provider-pojo</artifactId>
-        <version>${servicecomb.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>io.servicecomb</groupId>
-        <artifactId>cse-handler-bizkeeper</artifactId>
-        <version>${servicecomb.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.servicecomb</groupId>
-        <artifactId>cse-handler-loadbalance</artifactId>
-        <version>${servicecomb.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.servicecomb</groupId>
-        <artifactId>cse-transport-highway</artifactId>
-        <version>${servicecomb.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>io.servicecomb</groupId>
-        <artifactId>cse-transport-grpc</artifactId>
-        <version>${servicecomb.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.servicecomb</groupId>
-        <artifactId>cse-transport-rest-vertx</artifactId>
-        <version>${servicecomb.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>javax.servlet-api</artifactId>
-        <version>3.1.0</version>
-        <scope>compile</scope>
-      </dependency>
-      <dependency>
-        <groupId>io.servicecomb</groupId>
-        <artifactId>cse-handler-flowcontrol-qps</artifactId>
-        <version>${servicecomb.version}</version>
       </dependency>
       <dependency>
         <groupId>io.netty</groupId>
