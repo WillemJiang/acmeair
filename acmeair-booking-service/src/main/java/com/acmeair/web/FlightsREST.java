@@ -15,6 +15,8 @@
 *******************************************************************************/
 package com.acmeair.web;
 
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -39,6 +41,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Path("/api/flights")
 @Api(value = "Flight Service ", produces = MediaType.APPLICATION_JSON)
 public class FlightsREST {
+    private final ISO8601DateFormat dateFormat = new ISO8601DateFormat();
+
     @Autowired
     private FlightService flightService;
 
@@ -50,15 +54,19 @@ public class FlightsREST {
     public TripFlightOptions getTripFlights(
             @FormParam("fromAirport") String fromAirport,
             @FormParam("toAirport") String toAirport,
-            @FormParam("fromDate") Date fromDate,
-            @FormParam("returnDate") Date returnDate,
+            @FormParam("fromDate") String fromDate,
+            @FormParam("returnDate") String returnDate,
             @FormParam("oneWay") boolean oneWay) {
+
+        Date formattedFromDate = formattedDate(fromDate, "From ");
+        Date formattedReturnDate = formattedDate(returnDate, "Return ");
+
         TripFlightOptions options = new TripFlightOptions();
         ArrayList<TripLegInfo> legs = new ArrayList<TripLegInfo>();
 
         TripLegInfo toInfo = new TripLegInfo();
         List<Flight> toFlights =
-            flightService.getFlightByAirportsAndDate(fromAirport, toAirport, fromDate);
+            flightService.getFlightByAirportsAndDate(fromAirport, toAirport, formattedFromDate);
         toInfo.addFlightsOptions(toFlights);
         legs.add(toInfo);
         toInfo.setCurrentPage(0);
@@ -69,7 +77,7 @@ public class FlightsREST {
         if (!oneWay) {
             TripLegInfo retInfo = new TripLegInfo();
             List<Flight> retFlights =
-                flightService.getFlightByAirportsAndDate(toAirport, fromAirport, returnDate);
+                flightService.getFlightByAirportsAndDate(toAirport, fromAirport, formattedReturnDate);
             retInfo.addFlightsOptions(retFlights);
             legs.add(retInfo);
             retInfo.setCurrentPage(0);
@@ -125,4 +133,11 @@ public class FlightsREST {
         return options;
     }
 
+    private Date formattedDate(String fromDate, String dateType) {
+        try {
+            return dateFormat.parse(fromDate);
+        } catch (ParseException | NumberFormatException e) {
+            throw new IllegalArgumentException(dateType + " date must be comply with ISO8601 format", e);
+        }
+    }
 }

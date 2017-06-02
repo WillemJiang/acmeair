@@ -7,7 +7,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @SpringBootTest(
         classes = AcmeAirApplication.class,
+        properties = "flights.max.per.segment=3",
         webEnvironment = RANDOM_PORT)
-@ActiveProfiles({"jpa", "test"})
+@ActiveProfiles({"jpa", "test", "perf"})
 public class AcmeAirApplicationJpaTest extends AcmeAirApplicationTestBase {
 }

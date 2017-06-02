@@ -10,9 +10,14 @@ import com.acmeair.web.dto.BookingInfo;
 import com.acmeair.web.dto.BookingReceiptInfo;
 import com.acmeair.web.dto.CustomerInfo;
 import com.acmeair.web.dto.CustomerSessionInfo;
+import com.acmeair.web.dto.TripFlightOptions;
+import com.acmeair.web.dto.TripLegInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -35,6 +40,7 @@ import java.util.Date;
 import static com.acmeair.entities.CustomerSession.SESSIONID_COOKIE_NAME;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.seanyinx.github.unit.scaffolding.Randomness.uniquify;
+import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.apache.http.HttpStatus.SC_OK;
@@ -61,8 +67,6 @@ public class AcmeAirApplicationTestBase {
     private final boolean oneWay = false;
 
     private final String customerId = "uid0@email.com";
-
-    private final String password = "password";
 
     private final BookingImpl booking = new BookingImpl("1", new Date(), customerId, "SIN-2131");
 
@@ -186,6 +190,36 @@ public class AcmeAirApplicationTestBase {
         assertThat(bookingInfo.isOneWay(), is(oneWay));
         assertThat(bookingInfo.getDepartBookingId(), is(notNullValue()));
         assertThat(bookingInfo.getReturnBookingId(), is(notNullValue()));
+    }
+
+    @Test
+    public void canQueryFlights() {
+        String now = OffsetDateTime.now(ZoneId.systemDefault()).format(ISO_DATE_TIME);
+
+        HttpHeaders headers = headers();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("fromAirport", "PEK");
+        map.add("toAirport", "SHA");
+        map.add("fromDate", now);
+        map.add("returnDate", now);
+        map.add("oneWay", String.valueOf(false));
+
+        ResponseEntity<TripFlightOptions> bookingInfoResponseEntity = restTemplate.exchange(
+                "/rest/api/flights/queryflights",
+                POST,
+                new HttpEntity<>(map, headers),
+                TripFlightOptions.class);
+
+        assertThat(bookingInfoResponseEntity.getStatusCode(), is(OK));
+
+        TripFlightOptions flightOptions = bookingInfoResponseEntity.getBody();
+        assertThat(flightOptions.getTripLegs(), is(2));
+
+        List<TripLegInfo> tripFlights = flightOptions.getTripFlights();
+        assertThat(tripFlights.get(0).getFlightsOptions(), is(notNullValue()));
+        assertThat(tripFlights.get(1).getFlightsOptions(), is(notNullValue()));
     }
 
     private HttpHeaders headers() {
