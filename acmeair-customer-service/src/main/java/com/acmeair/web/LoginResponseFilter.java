@@ -19,6 +19,7 @@ class LoginResponseFilter implements ContainerResponseFilter {
         if (doesPathContain(requestContext, "/api/login")) {
             String sessionId = ((TokenInfo) responseContext.getEntity()).getSessionid();
             addCookie(responseContext, newCookie(sessionId));
+            responseContext.setEntity("logged in");
         } else if (doesPathContain(requestContext, "/api/login/logout")) {
             addCookie(responseContext, newCookie(""));
         }
