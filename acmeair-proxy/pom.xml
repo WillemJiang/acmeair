@@ -14,7 +14,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>io.servicecomb</groupId>
-				<artifactId>java-chassis-dependency</artifactId>
+				<artifactId>java-chassis-dependencies</artifactId>
 				<version>${servicecomb.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
