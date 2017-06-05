@@ -74,14 +74,14 @@
     <pact.version>3.2.13</pact.version>
     <swagger.version>1.5.12</swagger.version>
     <acmeair.version>2.0.0-SNAPSHOT</acmeair.version>
-    <servicecomb.version>0.1.0-SNAPSHOT</servicecomb.version>
+    <servicecomb.version>0.1.0-m1</servicecomb.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>io.servicecomb</groupId>
-        <artifactId>cse-spring-boot-starter-provider</artifactId>
+        <artifactId>spring-boot-starter-provider</artifactId>
         <version>${servicecomb.version}</version>
         <exclusions>
           <exclusion>

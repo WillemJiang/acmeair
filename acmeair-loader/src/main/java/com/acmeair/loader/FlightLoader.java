@@ -18,18 +18,23 @@ package com.acmeair.loader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.math.*;
 
 import com.acmeair.entities.AirportCodeMapping;
 import com.acmeair.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FlightLoader {
-	
-	private static final int MAX_FLIGHTS_PER_SEGMENT = 30;
+
+  @Value("${flights.max.per.segment:30}")
+	private int maxFlightsPerSegment;
 	
 	@Autowired
 	private FlightService flightService;
@@ -84,17 +89,11 @@ public class FlightLoader {
 				String toAirport = airports.get(indexIntoTopLine).getAirportCode();
 				String flightId = "AA" + flightNumber;			
 				flightService.storeFlightSegment(flightId, airportCode, toAirport, miles);
-				Date now = new Date();
-				for (int daysFromNow = 0; daysFromNow < MAX_FLIGHTS_PER_SEGMENT; daysFromNow++) {
-					Calendar c = Calendar.getInstance();
-					c.setTime(now);
-					c.set(Calendar.HOUR_OF_DAY, 0);
-				    c.set(Calendar.MINUTE, 0);
-				    c.set(Calendar.SECOND, 0);
-				    c.set(Calendar.MILLISECOND, 0);
-					c.setTimeZone(TimeZone.getTimeZone("GMT"));
-					c.add(Calendar.DATE, daysFromNow);
-					Date departureTime = c.getTime();
+        for (int daysFromNow = 0; daysFromNow < maxFlightsPerSegment; daysFromNow++) {
+					Date departureTime = Date.from(OffsetDateTime.now(ZoneId.of("Asia/Shanghai"))
+							.truncatedTo(ChronoUnit.DAYS)
+							.plusDays(daysFromNow)
+							.toInstant());
 					Date arrivalTime = getArrivalTime(departureTime, miles);
 					flightService.createNewFlight(flightId, departureTime, arrivalTime, new BigDecimal(500), new BigDecimal(200), 10, 200, "B747");
 					

@@ -11,6 +11,9 @@ import com.acmeair.service.UserService;
 import com.acmeair.web.dto.FlightInfo;
 import com.acmeair.web.dto.TripFlightOptions;
 import com.acmeair.web.dto.TripLegInfo;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,7 +60,6 @@ public class FlightsRESTTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private final DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
     private final Calendar calendar = Calendar.getInstance();
 
     private Flight departFlight;
@@ -92,8 +94,8 @@ public class FlightsRESTTest {
         MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
         form.add("fromAirport", departFlight.getFlightSegment().getOriginPort());
         form.add("toAirport", departFlight.getFlightSegment().getDestPort());
-        form.add("fromDate", dateFormat.format(departFlight.getScheduledDepartureTime()));
-        form.add("returnDate", dateFormat.format(returnFlight.getScheduledDepartureTime()));
+        form.add("fromDate", isoDateTime(departFlight.getScheduledDepartureTime()));
+        form.add("returnDate", isoDateTime(returnFlight.getScheduledDepartureTime()));
         form.add("oneWay", String.valueOf(false));
 
         ResponseEntity<TripFlightOptions> responseEntity = restTemplate.exchange(
@@ -111,6 +113,40 @@ public class FlightsRESTTest {
         List<TripLegInfo> tripFlights = flightOptions.getTripFlights();
         assertThat(tripFlights.get(0).getFlightsOptions(), contains(toFlightInfo(departFlight)));
         assertThat(tripFlights.get(1).getFlightsOptions(), contains(toFlightInfo(returnFlight)));
+    }
+
+    @Test
+    public void blowsUpWhenDateFormatDoesNotComplyWithISO8601() {
+        DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+
+        when(flightService.getFlightByAirportsAndDate(
+                departFlight.getFlightSegment().getOriginPort(),
+                departFlight.getFlightSegment().getDestPort(),
+                departFlight.getScheduledDepartureTime())).thenReturn(singletonList(departFlight));
+
+        when(flightService.getFlightByAirportsAndDate(
+                departFlight.getFlightSegment().getDestPort(),
+                departFlight.getFlightSegment().getOriginPort(),
+                returnFlight.getScheduledDepartureTime())).thenReturn(singletonList(returnFlight));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
+        form.add("fromAirport", departFlight.getFlightSegment().getOriginPort());
+        form.add("toAirport", departFlight.getFlightSegment().getDestPort());
+        form.add("fromDate", dateFormat.format(departFlight.getScheduledDepartureTime()));
+        form.add("returnDate", dateFormat.format(returnFlight.getScheduledDepartureTime()));
+        form.add("oneWay", String.valueOf(false));
+
+        ResponseEntity<TripFlightOptions> responseEntity = restTemplate.exchange(
+                "/rest/api/flights/queryflights",
+                HttpMethod.POST,
+                new HttpEntity<>(form, headers),
+                TripFlightOptions.class
+        );
+
+        assertThat(responseEntity.getStatusCode(), is(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     @Test
@@ -156,5 +192,10 @@ public class FlightsRESTTest {
         calendar.setTime(time);
         calendar.set(Calendar.MILLISECOND, 0);
         time.setTime(calendar.getTimeInMillis());
+    }
+
+    private String isoDateTime(Date date) {
+        return OffsetDateTime.ofInstant(date.toInstant(), ZoneId.of("Asia/Shanghai"))
+            .format(DateTimeFormatter.ISO_INSTANT);
     }
 }

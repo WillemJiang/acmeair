@@ -14,7 +14,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>io.servicecomb</groupId>
-				<artifactId>cse-dependency</artifactId>
+				<artifactId>java-chassis-dependencies</artifactId>
 				<version>${servicecomb.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
@@ -27,18 +27,18 @@
 		<!-- transport -->
 		<dependency>
 			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-transport-rest-servlet</artifactId>
+			<artifactId>transport-rest-servlet</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>io.servicecomb</groupId>
-					<artifactId>cse-transport-rest-vertx</artifactId>
+					<artifactId>transport-rest-vertx</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-provider-pojo</artifactId>
+			<artifactId>provider-pojo</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
@@ -49,7 +49,7 @@
 
 		<dependency>
 			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-transport-grpc</artifactId>
+			<artifactId>transport-grpc</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
@@ -61,21 +61,21 @@
 		<!-- provider -->
 		<dependency>
 			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-provider-springmvc</artifactId>
+			<artifactId>provider-springmvc</artifactId>
 		</dependency>
 
 		<!-- handlers -->
 		<dependency>
 			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-handler-bizkeeper</artifactId>
+			<artifactId>handler-bizkeeper</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-handler-loadbalance</artifactId>
+			<artifactId>handler-loadbalance</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.servicecomb</groupId>
-			<artifactId>cse-transport-highway</artifactId>
+			<artifactId>transport-highway</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>acmeair</groupId>
