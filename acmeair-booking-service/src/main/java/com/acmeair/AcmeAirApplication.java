@@ -1,16 +1,19 @@
 package com.acmeair;
 
-import io.servicecomb.springboot.starter.provider.EnableServiceComb;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import io.servicecomb.foundation.common.utils.Log4jUtils;
+import io.servicecomb.springboot.starter.provider.EnableServiceComb;
+
 @SpringBootApplication
 public class AcmeAirApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        Log4jUtils.init();
         SpringApplication.run(AcmeAirApplication.class, args);
     }
 
