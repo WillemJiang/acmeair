@@ -118,7 +118,7 @@
                                     </run>
                                 </image>
                                 <image>
-                                    <name>acmeair-proxy:${project.version}</name>
+                                    <name>acmeair-website:${project.version}</name>
                                     <alias>gateway</alias>
                                     <run>
                                         <env>
