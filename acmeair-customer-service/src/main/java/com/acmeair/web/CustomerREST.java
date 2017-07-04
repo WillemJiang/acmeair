@@ -17,9 +17,10 @@ package com.acmeair.web;
 
 import com.acmeair.entities.Customer;
 import com.acmeair.entities.CustomerAddress;
+import com.acmeair.morphia.entities.CustomerImpl;
 import com.acmeair.service.CustomerService;
 import com.acmeair.web.dto.CustomerInfo;
-import io.servicecomb.core.exception.InvocationException;
+import io.servicecomb.swagger.invocation.exception.InvocationException;
 import io.servicecomb.provider.rest.common.RestSchema;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -107,7 +108,7 @@ public class CustomerREST {
 	@POST
 	@Path("/byid/{custid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Update the customer information", produces = MediaType.APPLICATION_JSON, response = Customer.class)
+	@ApiOperation(value = "Update the customer information", produces = MediaType.APPLICATION_JSON, response = CustomerImpl.class)
 	@ApiResponses(value = { @ApiResponse(code = 403, message = "Invalid user information") })
 	public Customer putCustomer(@CookieParam("sessionid") String sessionid, CustomerInfo customer) {
 		if (!validate(customer.getId())) {
@@ -136,7 +137,7 @@ public class CustomerREST {
 
 		customerService.updateCustomer(customerFromDB);
 		customerFromDB.setPassword(null);
-
+		
 		return customerFromDB;
 	}
 

@@ -47,17 +47,6 @@
 			</exclusions>
 		</dependency>
 
-		<dependency>
-			<groupId>io.servicecomb</groupId>
-			<artifactId>transport-grpc</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-log4j12</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
 		<!-- provider -->
 		<dependency>
 			<groupId>io.servicecomb</groupId>

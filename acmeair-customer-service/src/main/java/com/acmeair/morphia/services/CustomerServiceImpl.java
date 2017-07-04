@@ -38,23 +38,20 @@ class CustomerServiceImpl extends CustomerService {
 		return sessionRepository.count();
 	}
 	
-	@Override
 	public Customer createCustomer(String username, String password,
 			MemberShipStatus status, int total_miles, int miles_ytd,
 			String phoneNumber, PhoneType phoneNumberType,
-			CustomerAddress address) {
+			CustomerAddressImpl address) {
 	
 		CustomerImpl customer = new CustomerImpl(username, password, status, total_miles, miles_ytd, address, phoneNumber, phoneNumberType);
 		customerRepository.save(customer);
 		return customer;
 	}
 	
-	@Override 
-	public CustomerAddress createAddress (String streetAddress1, String streetAddress2,
+	public CustomerAddressImpl createAddress (String streetAddress1, String streetAddress2,
 			String city, String stateProvince, String country, String postalCode){
-		CustomerAddress address = new CustomerAddressImpl(streetAddress1, streetAddress2,
+		return new CustomerAddressImpl(streetAddress1, streetAddress2,
 				 city, stateProvince,  country,  postalCode);
-		return address;
 	}
 
 	@Override

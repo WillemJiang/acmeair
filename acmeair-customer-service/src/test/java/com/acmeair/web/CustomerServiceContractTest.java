@@ -112,7 +112,7 @@ public class CustomerServiceContractTest {
     }
     @State("Remote customer loader is available")
     public void customerLoaderIsAvailable() {
-        CustomerAddress address = Fixture.from(CustomerAddressImpl.class).gimme("valid");
+        CustomerAddressImpl address = Fixture.from(CustomerAddressImpl.class).gimme("valid");
 
         when(customerService.createAddress(
                 anyString(),

@@ -18,6 +18,7 @@ package com.acmeair.loader;
 import com.acmeair.entities.Customer;
 import com.acmeair.entities.Customer.PhoneType;
 import com.acmeair.entities.CustomerAddress;
+import com.acmeair.morphia.entities.CustomerAddressImpl;
 import com.acmeair.service.CustomerService;
 import io.servicecomb.provider.rest.common.RestSchema;
 
@@ -50,7 +51,7 @@ public class CustomerLoaderREST {
 	@Produces(MediaType.TEXT_PLAIN)
     @ApiOperation(value = "Loading Customer Information.", produces=MediaType.APPLICATION_JSON, response = Long.class)
     public void loadCustomers(@ApiParam(value = "Customer numbers which could be loaded", required = true) @QueryParam("number") long numCustomers) {
-		CustomerAddress address = customerService.createAddress("123 Main St.", null, "Anytown", "NC", "USA", "27617");
+		CustomerAddressImpl address = customerService.createAddress("123 Main St.", null, "Anytown", "NC", "USA", "27617");
 		for (long ii = 0; ii < numCustomers; ii++) {
 			customerService.createCustomer("uid"+ii+"@email.com", "password", Customer.MemberShipStatus.GOLD, 1000000, 1000, "919-123-4567", PhoneType.BUSINESS, address);
 		}

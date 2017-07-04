@@ -19,7 +19,7 @@ import com.acmeair.entities.CustomerSession;
 import com.acmeair.entities.TokenInfo;
 import com.acmeair.service.CustomerService;
 import com.acmeair.web.dto.CustomerSessionInfo;
-import io.servicecomb.core.exception.InvocationException;
+import io.servicecomb.swagger.invocation.exception.InvocationException;
 import io.servicecomb.provider.rest.common.RestSchema;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

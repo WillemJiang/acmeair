@@ -47,13 +47,13 @@ public class CustomerImpl implements Customer, Serializable{
 	public CustomerImpl() {
 	}
 	
-	public CustomerImpl(String username, String password, MemberShipStatus status, int total_miles, int miles_ytd, CustomerAddress address, String phoneNumber, PhoneType phoneNumberType) {
+	public CustomerImpl(String username, String password, MemberShipStatus status, int total_miles, int miles_ytd, CustomerAddressImpl address, String phoneNumber, PhoneType phoneNumberType) {
 		this._id = username;
 		this.password = password;
 		this.status = status;
 		this.total_miles = total_miles;
 		this.miles_ytd = miles_ytd;
-		this.address = (CustomerAddressImpl) address;
+		this.address = address;
 		this.phoneNumber = phoneNumber;
 		this.phoneNumberType = phoneNumberType;
 	}
@@ -118,7 +118,7 @@ public class CustomerImpl implements Customer, Serializable{
 		this.phoneNumberType = phoneNumberType;
 	}
 
-	public CustomerAddress getAddress() {
+	public CustomerAddressImpl getAddress() {
 		return address;
 	}
 

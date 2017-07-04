@@ -3,7 +3,7 @@ package com.acmeair.web;
 
 import com.acmeair.config.CustomerConfiguration;
 import com.acmeair.loader.CustomerLoaderREST;
-import io.servicecomb.core.exception.InvocationException;
+import io.servicecomb.swagger.invocation.exception.InvocationException;
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.jaxrs.listing.ApiListingResource;
 import io.swagger.jaxrs.listing.SwaggerSerializers;
