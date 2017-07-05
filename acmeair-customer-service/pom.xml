@@ -21,23 +21,6 @@
             <artifactId>slf4j-log4j12</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.huawei.paas.cse</groupId>
-            <artifactId>foundation-auth</artifactId>
-            <version>0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.huawei.paas.cse</groupId>
-            <artifactId>foundation-config-cc</artifactId>
-            <version>0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.huawei.paas.cse</groupId>
-            <artifactId>cse-handler-tracing</artifactId>
-            <version>0.1</version>
-        </dependency>
-
-
-        <dependency>
             <groupId>io.servicecomb</groupId>
             <artifactId>spring-boot-starter-provider</artifactId>
         </dependency>
@@ -211,4 +194,6 @@
             </build>
         </profile>
     </profiles>
+    
+    
 </project>

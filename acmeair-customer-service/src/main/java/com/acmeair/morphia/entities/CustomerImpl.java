@@ -15,15 +15,17 @@
 *******************************************************************************/
 package com.acmeair.morphia.entities;
 
-import com.acmeair.entities.Customer;
-import com.acmeair.entities.CustomerAddress;
-import org.springframework.data.mongodb.core.mapping.Document;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.io.Serializable;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.acmeair.entities.Customer;
+import com.acmeair.entities.CustomerAddress;
 
 @Document(collection="customer")
 @Entity(name = "customer")
@@ -47,7 +49,7 @@ public class CustomerImpl implements Customer, Serializable{
 	public CustomerImpl() {
 	}
 	
-	public CustomerImpl(String username, String password, MemberShipStatus status, int total_miles, int miles_ytd, CustomerAddress address, String phoneNumber, PhoneType phoneNumberType) {
+	public CustomerImpl(String username, String password, MemberShipStatus status, int total_miles, int miles_ytd, CustomerAddressImpl address, String phoneNumber, PhoneType phoneNumberType) {
 		this._id = username;
 		this.password = password;
 		this.status = status;
@@ -118,7 +120,7 @@ public class CustomerImpl implements Customer, Serializable{
 		this.phoneNumberType = phoneNumberType;
 	}
 
-	public CustomerAddress getAddress() {
+	public CustomerAddressImpl getAddress() {
 		return address;
 	}
 

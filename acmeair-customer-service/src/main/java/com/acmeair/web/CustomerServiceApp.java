@@ -1,21 +1,23 @@
 package com.acmeair.web;
 
 
-import com.acmeair.config.CustomerConfiguration;
-import com.acmeair.loader.CustomerLoaderREST;
-import io.servicecomb.core.exception.InvocationException;
-import io.swagger.jaxrs.config.BeanConfig;
-import io.swagger.jaxrs.listing.ApiListingResource;
-import io.swagger.jaxrs.listing.SwaggerSerializers;
+import javax.annotation.PostConstruct;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
+
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import javax.annotation.PostConstruct;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
+import com.acmeair.config.CustomerConfiguration;
+import com.acmeair.loader.CustomerLoaderREST;
+
+import io.servicecomb.swagger.invocation.exception.InvocationException;
+import io.swagger.jaxrs.config.BeanConfig;
+import io.swagger.jaxrs.listing.ApiListingResource;
+import io.swagger.jaxrs.listing.SwaggerSerializers;
 
 
 @Configuration

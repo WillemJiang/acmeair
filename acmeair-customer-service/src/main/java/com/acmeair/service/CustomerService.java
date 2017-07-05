@@ -21,10 +21,11 @@ import java.util.Date;
 import javax.inject.Inject;
 
 import com.acmeair.entities.Customer;
-import com.acmeair.entities.CustomerAddress;
 import com.acmeair.entities.Customer.MemberShipStatus;
 import com.acmeair.entities.Customer.PhoneType;
+import com.acmeair.entities.CustomerAddress;
 import com.acmeair.entities.CustomerSession;
+import com.acmeair.morphia.entities.CustomerAddressImpl;
 
 public abstract class CustomerService {
 	protected static final int DAYS_TO_ALLOW_SESSION = 1;
@@ -34,9 +35,9 @@ public abstract class CustomerService {
 	
 	public abstract Customer createCustomer(
 			String username, String password, MemberShipStatus status, int total_miles,
-			int miles_ytd, String phoneNumber, PhoneType phoneNumberType, CustomerAddress address);
+			int miles_ytd, String phoneNumber, PhoneType phoneNumberType, CustomerAddressImpl address);
 	
-	public abstract CustomerAddress createAddress (String streetAddress1, String streetAddress2,
+	public abstract CustomerAddressImpl createAddress (String streetAddress1, String streetAddress2,
 			String city, String stateProvince, String country, String postalCode);
 	
 	public abstract Customer updateCustomer(Customer customer);

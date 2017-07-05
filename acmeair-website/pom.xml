@@ -35,22 +35,6 @@
             <artifactId>slf4j-log4j12</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.huawei.paas.cse</groupId>
-            <artifactId>foundation-auth</artifactId>
-            <version>0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.huawei.paas.cse</groupId>
-            <artifactId>foundation-config-cc</artifactId>
-            <version>0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.huawei.paas.cse</groupId>
-            <artifactId>cse-handler-tracing</artifactId>
-            <version>0.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>io.servicecomb</groupId>
             <artifactId>transport-rest-servlet</artifactId>
             <exclusions>
@@ -64,17 +48,6 @@
         <dependency>
             <groupId>io.servicecomb</groupId>
             <artifactId>provider-pojo</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>io.servicecomb</groupId>
-            <artifactId>transport-grpc</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>

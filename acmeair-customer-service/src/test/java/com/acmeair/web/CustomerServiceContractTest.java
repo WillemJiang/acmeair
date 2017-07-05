@@ -42,7 +42,7 @@ public class CustomerServiceContractTest {
     private static ConfigurableApplicationContext customerApplicationContext;
 
     @TestTarget
-    public final Target target = new HttpTarget(8081);
+    public final Target target = new HttpTarget(8089);
 
     private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
@@ -75,7 +75,7 @@ public class CustomerServiceContractTest {
 
     @BeforeClass
     public static void startCustomerService() {
-        customerApplicationContext = SpringApplication.run(CustomerRestApplication.class, "--server.port=8081", "--spring.profiles.active=test,jpa");
+        customerApplicationContext = SpringApplication.run(CustomerRestApplication.class, "--server.port=8089", "--spring.profiles.active=test,jpa");
         customerService = customerApplicationContext.getBean(CustomerService.class);
 
         FixtureFactoryLoader.loadTemplates("com.acmeair.customer.templates");
@@ -112,7 +112,7 @@ public class CustomerServiceContractTest {
     }
     @State("Remote customer loader is available")
     public void customerLoaderIsAvailable() {
-        CustomerAddress address = Fixture.from(CustomerAddressImpl.class).gimme("valid");
+        CustomerAddressImpl address = Fixture.from(CustomerAddressImpl.class).gimme("valid");
 
         when(customerService.createAddress(
                 anyString(),

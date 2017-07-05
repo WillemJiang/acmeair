@@ -15,21 +15,6 @@
 *******************************************************************************/
 package com.acmeair.web;
 
-import com.acmeair.entities.Customer;
-import com.acmeair.entities.CustomerAddress;
-import com.acmeair.service.CustomerService;
-import com.acmeair.web.dto.CustomerInfo;
-import io.servicecomb.core.exception.InvocationException;
-import io.servicecomb.provider.rest.common.RestSchema;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +27,24 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.acmeair.entities.Customer;
+import com.acmeair.entities.CustomerAddress;
+import com.acmeair.morphia.entities.CustomerImpl;
+import com.acmeair.service.CustomerService;
+import com.acmeair.web.dto.CustomerInfo;
+
+import io.servicecomb.provider.rest.common.RestSchema;
+import io.servicecomb.swagger.invocation.exception.InvocationException;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestSchema(schemaId = "customer_REST")
 @Path("/api/customer")
@@ -171,7 +174,7 @@ public class CustomerREST {
     @ApiOperation(
             value = "Update the customer information",
             produces = MediaType.APPLICATION_JSON,
-            response = Customer.class)
+            response = CustomerImpl.class)
     @ApiResponses(value = {@ApiResponse(code = 403, message = "Invalid user information")})
     public Customer putCustomer(@CookieParam("sessionid") String sessionid, CustomerInfo customer) {
         if (!validate(customer.getId())) {
