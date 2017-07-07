@@ -34,17 +34,17 @@
         <dependency>
             <groupId>com.huawei.paas.cse</groupId>
             <artifactId>foundation-auth</artifactId>
-            <version>0.1</version>
+            <version>2.0-m9</version>
         </dependency>
         <dependency>
             <groupId>com.huawei.paas.cse</groupId>
             <artifactId>foundation-config-cc</artifactId>
-            <version>0.1</version>
+            <version>2.0-m9</version>
         </dependency>
         <dependency>
             <groupId>com.huawei.paas.cse</groupId>
             <artifactId>cse-handler-tracing</artifactId>
-            <version>0.1</version>
+            <version>2.0-m9</version>
         </dependency>
     </dependencies>
 
@@ -74,6 +74,7 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
+    
     <profiles>
         <profile>
             <id>docker</id>
@@ -120,7 +121,7 @@
         <pact.version>3.2.13</pact.version>
         <swagger.version>1.5.12</swagger.version>
         <acmeair.version>2.0.0-SNAPSHOT</acmeair.version>
-        <servicecomb.version>0.1.0-m2</servicecomb.version>
+        <servicecomb.version>0.1.0-m3-SNAPSHOT</servicecomb.version>
     </properties>
 
     <dependencyManagement>
