@@ -57,6 +57,16 @@
                         </images>
                     </configuration>
                     <executions>
+                       <execution>
+                            <id>remove</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>remove</goal>
+                            </goals>
+                            <configuration>
+                                <removeAll>true</removeAll>
+                            </configuration>
+                        </execution>
                         <execution>
                             <id>build</id>
                             <phase>package</phase>
