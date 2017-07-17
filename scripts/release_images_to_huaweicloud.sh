@@ -84,7 +84,7 @@ fi
 CUR_PATH=`pwd`
 ROOT_PATH=${CUR_PATH}/../
 cd ${ROOT_PATH}
-mvn clean  install  -Phuaweicloud -Pdocker -Dmaven.test.skip=true  -settings=${ROOT_PATH}/acmeair_settings.xml
+mvn clean  install  -Phuaweicloud -Pdocker -Dmaven.test.skip=true
 docker tag acmeair-customer-service:$ORIGIN_VERSION  ${REPO_ADDRESS}/${TENANT_NAME}/${CUSTOMER_REPO_NAME}:$TARGET_VERSION
 docker tag acmeair-booking-service:$ORIGIN_VERSION   ${REPO_ADDRESS}/${TENANT_NAME}/${BOOKING_REPO_NAME}:$TARGET_VERSION
 docker tag acmeair-website:$ORIGIN_VERSION           ${REPO_ADDRESS}/${TENANT_NAME}/${WEBSITE_REPO_NAME}:$TARGET_VERSION
