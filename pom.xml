@@ -29,7 +29,7 @@
 
     <profiles>
         <profile>
-            <id>docker</id>
+            <id>autotest</id>
             <modules>
                 <module>integration-tests</module>
             </modules>

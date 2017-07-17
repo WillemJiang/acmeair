@@ -14,7 +14,6 @@
 
     <modules>
         <module>integration-tests-common</module>
-        <module>integration-tests-spring</module>
         <module>integration-tests-chassis</module>
     </modules>
 
