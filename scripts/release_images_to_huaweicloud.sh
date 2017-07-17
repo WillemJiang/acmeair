@@ -84,9 +84,9 @@ fi
 CUR_PATH=`pwd`
 ROOT_PATH=${CUR_PATH}/../
 cd ${ROOT_PATH}
-docker rmi -f acmeair-customer-service:$ORIGIN_VERSION 
-docker rmi -f acmeair-booking-service:$ORIGIN_VERSION 
-docker rmi -f acmeair-website:$ORIGIN_VERSION 
+docker rmi -f $(docker images|grep acmeair-customer-service|grep $ORIGIN_VERSION |awk '{print $3}')
+docker rmi -f $(docker images|grep acmeair-booking-service|grep $ORIGIN_VERSION |awk '{print $3}')
+docker rmi -f $(docker images|grep acmeair-website|grep $ORIGIN_VERSION |awk '{print $3}')
 mvn clean  install  -Phuaweicloud -Pdocker -Dmaven.test.skip=true
 docker tag acmeair-customer-service:$ORIGIN_VERSION  ${REPO_ADDRESS}/${TENANT_NAME}/${CUSTOMER_REPO_NAME}:$TARGET_VERSION
 docker tag acmeair-booking-service:$ORIGIN_VERSION   ${REPO_ADDRESS}/${TENANT_NAME}/${BOOKING_REPO_NAME}:$TARGET_VERSION
