@@ -1,7 +1,6 @@
 # Acme Air Sample and Benchmark [![Build Status](https://travis-ci.org/TankTian/acmeair.svg?branch=master)](https://travis-ci.org/TankTian/acmeair)[![Coverage Status](https://coveralls.io/repos/github/TankTian/acmeair/badge.svg)](https://coveralls.io/github/TankTian/acmeair)
 
-This application shows an implementation of a fictitious airline called "Acme Air".  The application was built with the some key business requirements: the ability to scale to billions of web API calls per day, the need to develop and deploy the application in public clouds (as opposed to dedicated pre-allocated infrastructure), and the need to support multiple channels for user interaction (with mobile enablement first and browser/Web 2.0 second).
-
+This application shows an implementation of a fictitious airline called "Acme Air".  The application was built with the some key business requirements: the ability to scale to billions of web API calls per day, the need to develop and deploy the application in public clouds (as opposed to dedicated pre-allocated infrastructure).
 ## Repository Contents
 
 Source:
