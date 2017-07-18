@@ -65,54 +65,54 @@
             </build>
         </profile>
         <profile>
-			<id>huaweicloud</id>
-			<!-- 下面是应用基于开源ServiceComb开发上华为公有云运行时必须依赖的包（非编译依赖），他们放在单独仓库：http://cse.servicecomb.io/maven 
-				如果本地调试没有上华为公有云，可以删除该依赖，同时删除microservice.yaml文件中下面两个handler： tracing-provider,sla-provider -->
-			<dependencies>
-				<dependency>
-					<groupId>com.huawei.paas.cse</groupId>
-					<artifactId>foundation-auth</artifactId>
-					<version>2.0-m9</version>
-				</dependency>
-				<dependency>
-					<groupId>com.huawei.paas.cse</groupId>
-					<artifactId>foundation-config-cc</artifactId>
-					<version>2.0-m9</version>
-				</dependency>
-				<dependency>
-					<groupId>com.huawei.paas.cse</groupId>
-					<artifactId>cse-handler-tracing</artifactId>
-					<version>2.0-m9</version>
-				</dependency>
-			</dependencies>
+            <id>huaweicloud</id>
+            <!-- 下面是应用基于开源ServiceComb开发上华为公有云运行时必须依赖的包（非编译依赖），他们放在单独仓库：http://cse.servicecomb.io/maven 如果本地调试没有上华为公有云，可以删除该依赖，同时删除microservice.yaml文件中下面两个handler： 
+                tracing-provider,sla-provider -->
+            <dependencies>
+                <dependency>
+                    <groupId>com.huawei.paas.cse</groupId>
+                    <artifactId>foundation-auth</artifactId>
+                    <version>${huaweicloud.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.huawei.paas.cse</groupId>
+                    <artifactId>foundation-config-cc</artifactId>
+                    <version>${huaweicloud.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.huawei.paas.cse</groupId>
+                    <artifactId>cse-handler-tracing</artifactId>
+                    <version>${huaweicloud.version}</version>
+                </dependency>
+            </dependencies>
 
-			<repositories>
-				<repository>
-					<id>huawei_cloud_dependencies</id>
-					<name>huawei_cloud_dependencies</name>
-					<url>http://cse.servicecomb.io/maven</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-					<snapshots>
-						<enabled>false</enabled>
-					</snapshots>
-				</repository>
-			</repositories>
-			<pluginRepositories>
-				<pluginRepository>
-					<id>huawei_cloud_dependencies</id>
-					<name>huawei_cloud_dependencies</name>
-					<url>http://cse.servicecomb.io/maven</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-					<snapshots>
-						<enabled>false</enabled>
-					</snapshots>
-				</pluginRepository>
-			</pluginRepositories>
-		</profile>
+            <repositories>
+                <repository>
+                    <id>huawei_cloud_dependencies</id>
+                    <name>huawei_cloud_dependencies</name>
+                    <url>http://cse.servicecomb.io/maven</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>huawei_cloud_dependencies</id>
+                    <name>huawei_cloud_dependencies</name>
+                    <url>http://cse.servicecomb.io/maven</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
     </profiles>
 
     <properties>
@@ -123,6 +123,7 @@
         <swagger.version>1.5.12</swagger.version>
         <acmeair.version>2.0.0-SNAPSHOT</acmeair.version>
         <servicecomb.version>0.1.0</servicecomb.version>
+        <huaweicloud.version>2.1.1</huaweicloud.version>
     </properties>
 
     <dependencyManagement>
