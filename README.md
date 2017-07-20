@@ -1,9 +1,6 @@
-# Acme Air Sample and Benchmark [![Build Status](https://travis-ci.org/WillemJiang/acmeair.svg?branch=master)](https://travis-ci.org/WillemJiang/acmeair)[![Coverage Status](https://coveralls.io/repos/github/WillemJiang/acmeair/badge.svg)](https://coveralls.io/github/WillemJiang/acmeair)
+# Acme Air Sample and Benchmark [![Build Status](https://travis-ci.org/TankTian/acmeair.svg?branch=master)](https://travis-ci.org/TankTian/acmeair)[![Coverage Status](https://coveralls.io/repos/github/TankTian/acmeair/badge.svg)](https://coveralls.io/github/TankTian/acmeair)
 
-This application shows an implementation of a fictitious airline called "Acme Air".  The application was built with the some key business requirements: the ability to scale to billions of web API calls per day, the need to develop and deploy the application in public clouds (as opposed to dedicated pre-allocated infrastructure), and the need to support multiple channels for user interaction (with mobile enablement first and browser/Web 2.0 second).
-
-There are two implementations of the application tier. Each application implementation, supports multiple data tiers.  They are:
-
+This application shows an implementation of a fictitious airline called "Acme Air".  The application was built with the some key business requirements: the ability to scale to billions of web API calls per day, the need to develop and deploy the application in public clouds (as opposed to dedicated pre-allocated infrastructure).
 ## Repository Contents
 
 Source:
@@ -15,16 +12,14 @@ Source:
 - **acmeair-services**:  The Java data services interface definitions.
 - **acmeair-service-morphia**:  A mongodb data service implementation.
 - **acmeair-booking-service**: The micro service of booking service.
-- **acmeair-webapp**:  The Web 2.0 application frontend which accesses the customer service for login and booking service for booking flight. 
+- **acmeair-website**:  The Web 2.0 application frontend which accesses the customer service for login and booking service for booking flight. 
 
-## How to get started
+## How to build
 
 * Development Environment
   
   * Install [Maven](https://maven.apache.org/) to build the code.
   * We use [Docker](https://www.docker.com/) to run the integration test.
-  * We use [Consul](https://www.consul.io) as service discovery registry. 
-  * We use [MongoDB](https://www.mongodb.com/) as Data Service (it is optional.)
    
 * Instructions for build the code base
 
@@ -40,74 +35,28 @@ Source:
   
       mvn clean install -Pdocker
       
-  If you are using docker machine, please use the following command
-  
-      mvn clean install -Pdocker -Pdocker-machine
       
-* Running Application
+## Acme Air AUTO CI/CD(based on the Service Stage )
+本章节介绍基于华为微服务云应用平台（[Service Stage](https://servicestage.hwclouds.com)），实现自动编译、构建、部署、运行。
 
-  The Acmeair Application have three separated services process: acmeair-customer-service, acmeair-booking-service and acmeair-webapp.
-  Acmeair Application also need to use the Service Registry [consul](https://www.consul.io/) to find out the services which it dependents. 
-  acmeair-booking-service and acmeair-customer-service can use the outside mongoDB service or use the in memory DB by using active profile.
-    
-  Here are the dependencies of these service:
-  
-      acmeair-webapp -----> acmeair-booking-service (DB)  --------+
-           |        |               |                          |
-           |        |               |                          |
-           |        |               v                          |
-           |        +--> acmeair-customer-service (DB)-----+   |
-           |                                               |   |
-           |                                               V   V
-           +-------------------------------------------->Service Registry (Consul)            
-  
-  
-* Running Application with docker-compose
-    
-      docker-compose up
+### auto build
+####  环境准备 
+* linux  
+* docker 1.11.2(当前只支持该版本)   
+* mvn 3.x  
+* jdk 1.8+  
+* 注册Service Stage账号，创建集群（比如：acmeair）,添加集群节点资源，创建好各微服务镜像对应的软件仓库地址。  
+####  步骤  
+* 下载acmeair代码到linux机器。   
+* 修改根目录下脚本./scripts/release_images_to_huaweicloud.sh，设置该脚本依赖的环境变量,参考该脚本中注释进行修改。  
+* 执行脚本release_images_to_huaweicloud.sh，完成编译、镜像制作、镜像上传到Service Stage仓库。  
 
-* Running Application with docker-compose and pre-loaded customers/flights data
-    
-      docker-compose -f docker-compose.yml -f docker-compose.perf.yml up
-  
-* Running Application with java command
-  
-  1.Running Consul with docker
-  
-      docker run -p 8500:8500 consul
-      
-  2.Running MongoDb With docker (optional)
-     
-      docker run -p 27017:27017 mongo
-      
-  3.Starting acmeair-customer-service 
-     
-      #Running the customer service with in memory db
-      java -Dspring.profiles.active=jpa -Dspring.cloud.consul.host=localhost -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
-        
-      #Running the customer service with mongoDB service
-      java -Dspring.profiles.active=mongodb -Dspring.data.mongodb.host=localhost -Dspring.cloud.consul.host=localhost -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
-                   
-  4.Starting acmeair-booking-service 
-   
-      #Running the booking service with in memory db
-      java -Dspring.profiles.active=jpa -Dspring.cloud.consul.host=localhost  -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
-        
-      # Running the booking service with mongoDB service
-      java -Dspring.profiles.active=mongodb -Dspring.data.mongodb.host=localhost -Dspring.cloud.consul.host=localhost  -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
-                
-  5.Starting acmeair-webapp
-      
-      java -Dspring.cloud.consul.host=localhost -Dspring.profiles.active=consul -Dserver.port=8080 -jar acmeair-webapp/target/acmeair/acmeair-webapp-exec.jar
-       
-  6.Access the acmeair-webapp from browser with below address
-  
-      http://localhost:8080/index.html
+### auto deploy  
+**如果想直接部署看到效果，可以不用自己build，直接使用已有镜像，参考下面步骤实现acmeair的部署和应用访问。**  
 
-* Running AcmeAir on [Google Compute Engine](https://cloud.google.com/compute/)
-  
-  The default Java version is 1.7 on Google Compute Engine but AcmeAir is using 1.8. Run the following command to set up Java 8 on Google Compute Engine.
-      
-      sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
-      export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/
+* 导入自动部署模板，进入Service Stage系统，点击进入：应用上线>应用编排>模板，然后点击‘创建模板’，将写好的./scripts/acmeair-blueprint-deploy-template-v1.tar.gz自动部署模板导入即可。  
+* 创建完成模板后，点击模板上部署菜单即可自动完成部署（前提是你的集群名字为：acmeair，部署的镜像地址和模板中一致；如果集群和镜像地址自定义，请修改模板中对应的字段）。  
+* 应用列表界面，查看acmeair-website应用详细页面，点击‘访问地址’中的应用访问地址即可进行acmeeair系统。  
+
+    
       
