@@ -89,6 +89,11 @@
                     <artifactId>cse-handler-performance-stats</artifactId>
                     <version>${huaweicloud.version}</version>
                 </dependency>
+                <dependency>
+                    <groupId>com.huawei.paas.cse</groupId>
+                    <artifactId>cse-handler-cloud-extension</artifactId>
+                    <version>${huaweicloud.version}</version>
+                </dependency>
             </dependencies>
 
             <repositories>
