@@ -15,6 +15,6 @@ cse:
   handler:
     chain:
       Provider:
-        default: bizkeeper-provider
+        default: bizkeeper-provider,qps-flowcontrol-provider
       Consumer:
-        default: bizkeeper-consumer,loadbalance 
+        default: bizkeeper-consumer,loadbalance,qps-flowcontrol-consumer
