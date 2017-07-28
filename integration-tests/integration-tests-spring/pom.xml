@@ -67,7 +67,11 @@
                                             <link>acmeair-consul:consul.acmeair.com</link>
                                         </links>
                                         <wait>
-                                            <log>Tomcat started on port</log>
+                                            <tcp>
+                                                <ports>
+                                                    <port>8080</port>
+                                                </ports>
+                                            </tcp>
                                             <time>100000</time>
                                         </wait>
                                         <ports>
@@ -95,7 +99,11 @@
                                             <link>acmeair-consul:consul.acmeair.com</link>
                                         </links>
                                         <wait>
-                                            <log>Tomcat started on port</log>
+                                            <tcp>
+                                                <ports>
+                                                    <port>8080</port>
+                                                </ports>
+                                            </tcp>
                                             <time>100000</time>
                                         </wait>
                                         <ports>
@@ -119,7 +127,11 @@
                                             <link>acmeair-consul:consul.acmeair.com</link>
                                         </links>
                                         <wait>
-                                            <log>Tomcat started on port</log>
+                                            <tcp>
+                                                <ports>
+                                                    <port>8080</port>
+                                                </ports>
+                                            </tcp>
                                             <time>100000</time>
                                         </wait>
                                         <ports>
