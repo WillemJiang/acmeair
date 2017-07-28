@@ -74,7 +74,11 @@
                                             <link>service-center:sc.servicecomb.io</link>
                                         </links>
                                         <wait>
-                                            <log>Tomcat started on port</log>
+                                            <tcp>
+                                                <ports>
+                                                    <port>8080</port>
+                                                </ports>
+                                            </tcp>
                                             <time>100000</time>
                                         </wait>
                                         <ports>
@@ -105,7 +109,11 @@
                                             <link>service-center:sc.servicecomb.io</link>
                                         </links>
                                         <wait>
-                                            <log>Tomcat started on port</log>
+                                            <tcp>
+                                                <ports>
+                                                    <port>8080</port>
+                                                </ports>
+                                            </tcp>
                                             <time>100000</time>
                                         </wait>
                                         <ports>
@@ -130,7 +138,11 @@
                                             <link>service-center:sc.servicecomb.io</link>
                                         </links>
                                         <wait>
-                                            <log>Catalina.start Server startup in</log>
+                                            <tcp>
+                                                <ports>
+                                                    <port>8080</port>
+                                                </ports>
+                                            </tcp>
                                             <time>100000</time>
                                         </wait>
                                         <ports>
