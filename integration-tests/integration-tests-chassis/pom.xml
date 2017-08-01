@@ -62,7 +62,7 @@
                                         <env>
                                             <JAVA_OPTS>
                                                 -Dcse.service.registry.address=http://sc.servicecomb.io:30100
-                                                -Dspring.profiles.active=jpa
+                                                -Dspring.profiles.active=jpa,cse
                                                 -Dserver.port=8080
                                                 -Dcse.highway.address=0.0.0.0:7072
                                                 -Dcse.rest.address=0.0.0.0:8082
@@ -97,7 +97,7 @@
                                         <env>
                                             <JAVA_OPTS>
                                                 -Dcse.service.registry.address=http://sc.servicecomb.io:30100
-                                                -Dspring.profiles.active=mongodb
+                                                -Dspring.profiles.active=mongodb,cse
                                                 -Dserver.port=8080
                                                 -Dspring.data.mongodb.host=mongo.acmeair.com
                                                 -Dcse.rest.address=0.0.0.0:8082
@@ -127,13 +127,14 @@
                                     </run>
                                 </image>
                                 <image>
-                                    <name>acmeair-proxy:${project.version}</name>
+                                    <name>acmeair-webapp:${project.version}</name>
                                     <alias>gateway</alias>
                                     <run>
                                         <env>
                                             <JAVA_OPTS>
                                                 -Dcse.service.registry.address=http://sc.servicecomb.io:30100
                                             </JAVA_OPTS>
+                                            <JAR_NAME>acmeair-webapp</JAR_NAME>
                                         </env>
                                         <links>
                                             <link>service-center:sc.servicecomb.io</link>
