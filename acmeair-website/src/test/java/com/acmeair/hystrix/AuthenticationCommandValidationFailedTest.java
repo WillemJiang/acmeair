@@ -39,7 +39,7 @@ public class AuthenticationCommandValidationFailedTest {
         return pactDslWithProvider
             .given("No customer Mike found")
             .uponReceiving("a request to validate Mike")
-            .path("/rest/api/login/validate")
+            .path("/api/login/validate")
             .body(objectMapper.writeValueAsString(sessionInfo), ContentType.APPLICATION_JSON)
             .method("POST")
             .willRespondWith()
