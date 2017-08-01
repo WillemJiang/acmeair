@@ -10,6 +10,7 @@ import com.acmeair.service.AuthenticationService;
 import com.acmeair.web.dto.CustomerSessionInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.entity.ContentType;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -21,9 +22,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.http.HttpStatus;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 
 public class AuthenticationCommandValidationTest {
     @Rule
@@ -43,18 +46,17 @@ public class AuthenticationCommandValidationTest {
 
     @Pact(consumer = "AuthenticationService")
     public PactFragment createFragment(PactDslWithProvider pactDslWithProvider) throws JsonProcessingException {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", MediaType.APPLICATION_FORM_URLENCODED);
+        CustomerSessionInfo sessionInfo = new CustomerSessionInfo();
+        sessionInfo.setId(customerSessionInfo.getId());
 
         return pactDslWithProvider
                 .given("Customer Sean is registered")
                 .uponReceiving("a request to validate Sean")
                 .path("/rest/api/login/validate")
+                .body(objectMapper.writeValueAsString(sessionInfo), ContentType.APPLICATION_JSON)
                 .method("POST")
-                .query("sessionId=" + customerSessionInfo.getId())
-                .headers(headers)
                 .willRespondWith()
-                .status(200)
+                .status(HttpStatus.OK.value())
                 .body(objectMapper.writeValueAsString(customerSessionInfo), MediaType.APPLICATION_JSON)
                 .toFragment();
     }

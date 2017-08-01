@@ -38,9 +38,9 @@ public class RESTCookieSessionFilter extends ZuulFilter {
 	private static final Logger logger = LoggerFactory.getLogger(RESTCookieSessionFilter.class);
 	
 	static final String         LOGIN_USER  = "acmeair.login_user";
-	private static final String LOGIN_PATH  = "/rest/api/login";
-	private static final String LOGOUT_PATH = "/rest/api/login/logout";
-	private static final String LOADDB_PATH = "/rest/api/loaddb";
+	private static final String LOGIN_PATH  = "/api/login";
+	private static final String LOGOUT_PATH = "/api/login/logout";
+	private static final String LOADDB_PATH = "/api/loaddb";
 	public static final String  CONFIG_PATH = "/info/config/";
 	public static final String  LOADER_PATH = "/info/loader/";
 	
@@ -87,7 +87,7 @@ public class RESTCookieSessionFilter extends ZuulFilter {
 			}
 			// Need the URLDecoder so that I can get @ not %40
 			CustomerSession cs = getCustomerSession(sessionId);
-            if (cs != null) {
+			if (cs != null) {
 				context.addZuulRequestHeader(LOGIN_USER, cs.getCustomerid());
 				logger.info("Customer {} validated with session id {}", cs.getCustomerid(), sessionId);
 				return;

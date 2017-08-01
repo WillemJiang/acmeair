@@ -15,17 +15,7 @@
 *******************************************************************************/
 package com.acmeair.web;
 
-import com.acmeair.entities.CustomerSession;
-import com.acmeair.entities.TokenInfo;
-import com.acmeair.service.CustomerService;
-import com.acmeair.web.dto.CustomerSessionInfo;
-import io.servicecomb.swagger.invocation.exception.InvocationException;
-import io.servicecomb.provider.rest.common.RestSchema;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.CookieParam;
@@ -104,12 +94,12 @@ public class LoginREST {
 
     @POST
     @Path("/validate")
-    @Consumes({"application/x-www-form-urlencoded"})
+    @Consumes({APPLICATION_JSON_UTF8_VALUE})
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = { @ApiResponse(code = 403, message = "Invalid user information")})
-    public CustomerSessionInfo validateCustomer(@FormParam("sessionId") String sessionId) {
-        logger.info("Received customer validation request with session id {}", sessionId);
-        CustomerSession customerSession = customerService.validateSession(sessionId);
+    public CustomerSessionInfo validateCustomer(CustomerSessionInfo customerSessionInfo) {
+        logger.info("Received customer validation request with session id {}", customerSessionInfo.getId());
+        CustomerSession customerSession = customerService.validateSession(customerSessionInfo.getId());
         if (customerSession != null) {
             logger.info("Found customer session {}", customerSession);
             return new CustomerSessionInfo(customerSession);
