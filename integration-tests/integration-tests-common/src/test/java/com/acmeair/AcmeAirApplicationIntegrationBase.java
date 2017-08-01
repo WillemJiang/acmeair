@@ -1,5 +1,19 @@
 package com.acmeair;
 
+import static java.util.Arrays.asList;
+import static java.util.Calendar.SECOND;
+import static org.apache.commons.lang3.time.DateUtils.truncate;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.fail;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.http.HttpHeaders.COOKIE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.OK;
+
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import com.acmeair.loader.CustomerLoader;
@@ -11,6 +25,10 @@ import com.acmeair.service.KeyGenerator;
 import com.acmeair.service.UserService;
 import com.acmeair.web.dto.BookingInfo;
 import com.acmeair.web.dto.BookingReceiptInfo;
+import io.servicecomb.common.rest.codec.RestObjectMapper;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,24 +47,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
-
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static java.util.Calendar.SECOND;
-import static org.apache.commons.lang3.time.DateUtils.truncate;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.http.HttpHeaders.COOKIE;
-import static org.springframework.http.HttpHeaders.SET_COOKIE;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.OK;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -122,11 +122,11 @@ public class AcmeAirApplicationIntegrationBase {
         assertThat(consumerCount.getStatusCode(), is(OK));
         assertThat(consumerCount.getBody(), is(1L));
     }
-    
+
     @Test
     public void checkBookingWithoutLoggedIn() {
         HttpHeaders headers = new HttpHeaders();
-        
+
         ResponseEntity<String> bookingInfoResponseEntity = restTemplate.exchange(
                 gatewayUrl + "/bookings/rest/api/bookings/bybookingnumber/{userid}/{number}",
                 GET,
@@ -199,11 +199,19 @@ public class AcmeAirApplicationIntegrationBase {
 
         assertThat(responseEntity.getStatusCode(), is(OK));
 
-        List<String> cookies = responseEntity.getHeaders().get(SET_COOKIE);
-        assertThat(cookies, is(notNullValue()));
+        String cookieJson = responseEntity.getBody();
+        assertThat(cookieJson, is(notNullValue()));
+        String cookie = null;
+        try {
+            HashMap<String, String> cookieMap = RestObjectMapper.INSTANCE.readValue(cookieJson, HashMap.class);
+            cookie = cookieMap.get("sessionid");
+        } catch (Exception e) {
+            fail("Error while parsing json when login, error: " + e.getMessage());
+        }
+        assertThat(cookie, is(notNullValue()));
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(COOKIE, String.join(";", cookies));
+        headers.set(COOKIE, "sessionid=" + cookie);
         return headers;
     }
 
