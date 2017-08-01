@@ -43,7 +43,7 @@
                                     </run>
                                 </image>
                                 <image>
-                                    <name>seanyinx/sc</name>
+                                    <name>servicecomb/service-center</name>
                                     <alias>service-center</alias>
                                     <run>
                                         <wait>
@@ -51,7 +51,7 @@
                                             <time>60000</time>
                                         </wait>
                                         <ports>
-                                            <port>service.center.port:9980</port>
+                                            <port>service.center.port:30100</port>
                                         </ports>
                                     </run>
                                 </image>
@@ -61,7 +61,7 @@
                                     <run>
                                         <env>
                                             <JAVA_OPTS>
-                                                -Dcse.service.registry.address=http://sc.servicecomb.io:9980
+                                                -Dcse.service.registry.address=http://sc.servicecomb.io:30100
                                                 -Dspring.profiles.active=jpa,cse
                                                 -Dserver.port=8080
                                                 -Dcse.highway.address=0.0.0.0:7072
@@ -74,7 +74,12 @@
                                             <link>service-center:sc.servicecomb.io</link>
                                         </links>
                                         <wait>
-                                            <log>Tomcat started on port</log>
+                                            <!--<log>Tomcat started on port</log>-->
+                                            <tcp>
+                                                <ports>
+                                                    <port>8080</port>
+                                                </ports>
+                                            </tcp>
                                             <time>100000</time>
                                         </wait>
                                         <ports>
@@ -92,7 +97,7 @@
                                     <run>
                                         <env>
                                             <JAVA_OPTS>
-                                                -Dcse.service.registry.address=http://sc.servicecomb.io:9980
+                                                -Dcse.service.registry.address=http://sc.servicecomb.io:30100
                                                 -Dspring.profiles.active=mongodb,cse
                                                 -Dserver.port=8080
                                                 -Dspring.data.mongodb.host=mongo.acmeair.com
@@ -105,7 +110,12 @@
                                             <link>service-center:sc.servicecomb.io</link>
                                         </links>
                                         <wait>
-                                            <log>Tomcat started on port</log>
+                                            <!--<log>Tomcat started on port</log>-->
+                                            <tcp>
+                                                <ports>
+                                                    <port>8080</port>
+                                                </ports>
+                                            </tcp>
                                             <time>100000</time>
                                         </wait>
                                         <ports>
@@ -118,19 +128,25 @@
                                     </run>
                                 </image>
                                 <image>
-                                    <name>acmeair-website:${project.version}</name>
+                                    <name>acmeair-webapp:${project.version}</name>
                                     <alias>gateway</alias>
                                     <run>
                                         <env>
                                             <JAVA_OPTS>
-                                                -Dcse.service.registry.address=http://sc.servicecomb.io:9980
+                                                -Dcse.service.registry.address=http://sc.servicecomb.io:30100
                                             </JAVA_OPTS>
+                                            <JAR_NAME>acmeair-webapp</JAR_NAME>
                                         </env>
                                         <links>
                                             <link>service-center:sc.servicecomb.io</link>
                                         </links>
                                         <wait>
-                                            <log>Catalina.start Server startup in</log>
+                                            <!--<log>Catalina.start Server startup in</log>-->
+                                            <tcp>
+                                                <ports>
+                                                    <port>8080</port>
+                                                </ports>
+                                            </tcp>
                                             <time>100000</time>
                                         </wait>
                                         <ports>

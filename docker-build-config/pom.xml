@@ -49,7 +49,7 @@
                                         <descriptor>${root.basedir}/assembly/docker_assembly.xml</descriptor>
                                     </assembly>
                                     <entryPoint>
-                                        <shell>java $JAVA_OPTS -Dspring.profiles.active=cse -Dspring.data.mongodb.database=acmeair -Dspring.data.mongodb.host=mongodb -Dspring.data.mongodb.port=32701 -jar /maven/acmeair/$JAR_NAME-${project.version}-exec.jar</shell>
+                                        <shell>java $JAVA_OPTS -jar /maven/acmeair/$JAR_NAME-${project.version}-exec.jar</shell>
                                     </entryPoint>
                                 </build>
                             </image>
