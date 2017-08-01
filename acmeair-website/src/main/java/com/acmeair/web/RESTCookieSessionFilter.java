@@ -115,7 +115,7 @@ public class RESTCookieSessionFilter extends ZuulFilter {
 
 	@Override
 	public int filterOrder() {
-		return 1;
+		return 7;
 	}
 
 	@Override
