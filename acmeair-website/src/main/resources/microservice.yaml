@@ -1,0 +1,14 @@
+APPLICATION_ID: acmeair
+service_description:
+  name: gateway
+  version: 0.0.1
+cse:
+  service:
+    registry:
+      address: http://127.0.0.1:30100
+  rest:
+    address: 0.0.0.0:7001
+  handler:
+    chain:
+      Consumer:
+        default: loadbalance
