@@ -115,8 +115,24 @@ function currencyFormatter(data) {
 // genned from mongo by:  db.airportcodes.find({}, {airportCode:1, airportName:1}).forEach(function(f){print(tojson(f, '', true));});
 // switch airportCode to id
 var airportCodes = [
+	{ airportName : "布鲁塞尔 Brussels", id : "BRU" },
 	{ airportName : "北京 Beijing", id : "PEK" },
 	{ airportName : "上海 Shanghai", id : "SHA" },
+	{ airportName : "开罗 Cairo", id : "CAI" },
+	{ airportName : "迪拜 Dubai", id : "DXB" },
+	{ airportName : "日内瓦 Geneva", id : "GVA" },
+	{ airportName : "伊斯坦布尔 Istanbul", id : "IST" },
+	{ airportName : "卡拉奇 Karachi", id : "KHI" },
+	{ airportName : "科威特 Kuwait", id : "KWI" },
+	{ airportName : "拉各斯 Lagos", id : "LOS" },
+	{ airportName : "马尼拉 Manila", id : "MNL" },
+	{ airportName : "墨西哥城 Mexico City", id : "MEX" },
+	{ airportName : "内罗毕 Nairobi", id : "NBO" },
+	{ airportName : "布拉格 Prague", id : "PRG" },
+	{ airportName : "里约热内卢 Rio de Janeir", id : "GIG" },
+	{ airportName : "斯德哥尔摩 Stockholm", id : "ARN" },
+	{ airportName : "孟买 Mumbai", id : "BOM" },
+	{ airportName : "德里 Delhi", id : "DEL" },
 	{ airportName : "法兰克福 Frankfurt", id : "FRA" },
 	{ airportName : "香港 Hong Kong", id : "HKG" },
 	{ airportName : "伦敦 London", id : "LHR" },
@@ -128,7 +144,10 @@ var airportCodes = [
 	{ airportName : "新加坡 Singapore", id : "SIN" },
 	{ airportName : "悉尼 Sydney", id : "SYD" },
 	{ airportName : "德黑兰 Tehran", id : "IKA" },
-	{ airportName : "东京 Tokyo", id : "NRT" }
+	{ airportName : "东京 Tokyo", id : "NRT" },
+	{ airportName : "阿姆施特丹 Amsterdam", id : "AMS" },
+	{ airportName : "奥克兰 Aukland", id : "AKL" },
+	{ airportName : "曼谷 Bangkok", id : "BKK" }
 ];
 
 function airportCodeToAirportName(airportCode) {

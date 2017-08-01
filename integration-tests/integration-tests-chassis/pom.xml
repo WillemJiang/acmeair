@@ -128,14 +128,14 @@
                                     </run>
                                 </image>
                                 <image>
-                                    <name>acmeair-webapp:${project.version}</name>
+                                    <name>acmeair-website:${project.version}</name>
                                     <alias>gateway</alias>
                                     <run>
                                         <env>
                                             <JAVA_OPTS>
                                                 -Dcse.service.registry.address=http://sc.servicecomb.io:30100
                                             </JAVA_OPTS>
-                                            <JAR_NAME>acmeair-webapp</JAR_NAME>
+                                            <JAR_NAME>acmeair-website</JAR_NAME>
                                         </env>
                                         <links>
                                             <link>service-center:sc.servicecomb.io</link>
