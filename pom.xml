@@ -15,18 +15,18 @@
   <version>2.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <modules>
-    <module>docker-build-config</module>
-    <module>acmeair-common</module>
-    <module>acmeair-loader</module>
-    <module>acmeair-customer-common</module>
-    <module>acmeair-services</module>
-    <module>acmeair-services-morphia</module>
-    <module>acmeair-booking-service</module>
-    <module>acmeair-webapp</module>
-    <module>acmeair-customer-service</module>
-    <module>acmeair-proxy</module>
-  </modules>
+    <modules>
+        <module>docker-build-config</module>
+        <module>acmeair-common</module>
+        <module>acmeair-loader</module>
+        <module>acmeair-customer-common</module>
+        <module>acmeair-services</module>
+        <module>acmeair-services-morphia</module>
+        <module>acmeair-booking-service</module>
+        <module>acmeair-customer-service</module>
+        <module>acmeair-website</module>
+        <module>integration-tests</module>
+    </modules>
 
   <profiles>
     <profile>
