@@ -1,0 +1,7 @@
+acmeair-customerservice:
+  environment:
+    - JAVA_OPTS=-Dspring.profiles.active=mongodb,perf -Dserver.port=8080
+
+acmeair-bookingservice:
+  environment:
+    - JAVA_OPTS=-Dspring.profiles.active=mongodb,perf -Dserver.port=8080 -Dspring.data.mongodb.host=mongo.acmeair.com

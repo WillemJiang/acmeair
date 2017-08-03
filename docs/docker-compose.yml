@@ -1,8 +1,8 @@
-service-center:
-  image: "servicecomb/service-center"
-  hostname: service-center
+acmeair-consul:
+  image: "consul"
+  hostname: consul
   ports:
-    - "30100:30100"
+    - "8500:8500"
 
 acmeair-mongo:
   image: "mongo"
@@ -14,7 +14,7 @@ acmeair-customerservice:
   image: "acmeair-customer-service:2.0.0-SNAPSHOT"
   hostname: customerservice
   links:
-    - "service-center:sc.acmeair.com"
+    - "acmeair-consul:consul.acmeair.com"
     - "acmeair-mongo:mongo.acmeair.com"
   environment:
     - JAVA_OPTS=-Dspring.profiles.active=mongodb -Dserver.port=8080
@@ -27,7 +27,7 @@ acmeair-bookingservice:
   image: "acmeair-booking-service:2.0.0-SNAPSHOT"
   hostname: bookingservice
   links:
-    - "service-center:sc.acmeair.com"
+    - "acmeair-consul:consul.acmeair.com"
     - "acmeair-mongo:mongo.acmeair.com"
   environment:
     - JAVA_OPTS=-Dspring.profiles.active=mongodb -Dserver.port=8080 -Dspring.data.mongodb.host=mongo.acmeair.com
@@ -39,9 +39,9 @@ acmeair-webapp:
   image: "acmeair-webapp:2.0.0-SNAPSHOT"
   hostname: webapp
   links:
-     - "service-center:sc.acmeair.com"
+    - "acmeair-consul:consul.acmeair.com"
   environment:
-    - JAVA_OPTS=-Dserver.port=8080
+    - JAVA_OPTS=-Dspring.profiles.active=consul -Dserver.port=8080
     - JAR_NAME=acmeair-webapp
   ports:
     - "8080:8080"

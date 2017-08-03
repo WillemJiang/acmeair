@@ -72,7 +72,7 @@ Source:
   
 * Running Application with java command
   
-  1.Running Consul with docker
+  1.Running ServiceCenter with docker
   
       docker run -d -p 30100:30100 servicecomb/service-center
       
@@ -86,7 +86,7 @@ Source:
       java -Dspring.profiles.active=jpa -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
         
       #Running the customer service with mongoDB service
-      java -Dspring.profiles.active=mongodb -Dspring.cloud.consul.host=localhost -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
+      java -Dspring.profiles.active=mongodb -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
                    
   4.Starting acmeair-booking-service 
    
@@ -94,11 +94,11 @@ Source:
       java -Dspring.profiles.active=jpa -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
         
       # Running the booking service with mongoDB service
-      java -Dspring.profiles.active=mongodb -Dspring.cloud.consul.host=localhost  -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
+      java -Dspring.profiles.active=mongodb -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
                 
   5.Starting acmeair-webapp
       
-      java -Dspring.cloud.consul.host=localhost -Dserver.port=8080 -jar acmeair-webapp/target/acmeair/acmeair-webapp-exec.jar
+      java -Dserver.port=8080 -jar acmeair-webapp/target/acmeair/acmeair-webapp-exec.jar
        
   6.Access the acmeair-webapp from browser with below address
   

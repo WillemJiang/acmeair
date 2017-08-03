@@ -60,7 +60,7 @@
                                     <alias>customer-service</alias>
                                     <run>
                                         <env>
-                                            <JAVA_OPTS>-Dspring.profiles.active=jpa -Dserver.port=8080</JAVA_OPTS>
+                                            <JAVA_OPTS>-Dspring.profiles.active=jpa,SpringCloud -Dserver.port=8080</JAVA_OPTS>
                                             <JAR_NAME>acmeair-customer-service</JAR_NAME>
                                         </env>
                                         <links>
@@ -89,7 +89,7 @@
                                     <run>
                                         <env>
                                             <JAVA_OPTS>
-                                                -Dspring.profiles.active=mongodb
+                                                -Dspring.profiles.active=mongodb,SpringCloud
                                                 -Dserver.port=8080
                                                 -Dspring.data.mongodb.host=mongo.acmeair.com
                                             </JAVA_OPTS>

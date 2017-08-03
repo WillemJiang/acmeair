@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-@Profile("!cse")
+@Profile("SpringCloud")
 class SpringCloudUserCommand extends UserCommand {
     private static final Logger logger = LoggerFactory.getLogger(SpringCloudUserCommand.class);
 

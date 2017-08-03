@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
-@Profile("cse")
+@Profile("!SpringCloud")
 public class CseUserCommand extends UserCommand {
 
     CseUserCommand() {

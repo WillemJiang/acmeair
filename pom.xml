@@ -65,6 +65,68 @@
               </plugins>
           </build>
       </profile>
+    <profile>
+      <id>HuaweiCloud</id>
+      <!--
+      The dependencies of Huawei CSE which provides the commercial extension in Huawei cloud.
+      Please use this profile to build the application, if you want to deploy the application into Huawei cloud.
+      -->
+      <dependencies>
+        <dependency>
+          <groupId>com.huawei.paas.cse</groupId>
+          <artifactId>foundation-auth</artifactId>
+          <version>${cse.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.huawei.paas.cse</groupId>
+          <artifactId>foundation-config-cc</artifactId>
+          <version>${cse.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.huawei.paas.cse</groupId>
+          <artifactId>cse-handler-tracing</artifactId>
+          <version>${cse.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.huawei.paas.cse</groupId>
+          <artifactId>cse-handler-performance-stats</artifactId>
+          <version>${cse.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.huawei.paas.cse</groupId>
+          <artifactId>cse-handler-cloud-extension</artifactId>
+          <version>${cse.version}</version>
+        </dependency>
+      </dependencies>
+
+      <repositories>
+        <repository>
+          <id>huawei_cloud_cse_dependencies</id>
+          <name>huawei_cloud_cse_dependencies</name>
+          <url>http://cse.servicecomb.io/maven</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>huawei_cloud_cse_dependencies</id>
+          <name>huawei_cloud_cse_dependencies</name>
+          <url>http://cse.servicecomb.io/maven</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+
   </profiles>
 
   <properties>
@@ -75,6 +137,8 @@
     <swagger.version>1.5.12</swagger.version>
     <acmeair.version>2.0.0-SNAPSHOT</acmeair.version>
     <servicecomb.version>0.1.0-m2</servicecomb.version>
+    <!-- CSE the commercial extendsion of HuaweiCloud -->
+    <cse.version>2.1.1</cse.version>
   </properties>
 
   <dependencyManagement>

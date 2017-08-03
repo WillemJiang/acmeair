@@ -16,13 +16,16 @@ public class CustomerServiceApplication {
 
     @Configuration
     @EnableDiscoveryClient
-    @Profile("!cse")
+    @Profile("SpringCloud")
     class ConsulServiceDiscoveryConfig {
+        // Using the spring cloud discovery client to access the customer service
+        // You can enable this feature by using the profile of SpringCloud
     }
 
     @Configuration
-    @Profile("cse")
+    @Profile("!SpringCloud")
     @EnableServiceComb
-    class CseConfig {
+    class ServiceCombConfig {
+        // Here we just enable ServiceComb by default
     }
 }

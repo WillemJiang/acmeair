@@ -13,16 +13,19 @@ public class AcmeAirApplication {
     public static void main(String[] args) {
         SpringApplication.run(AcmeAirApplication.class, args);
     }
-
+    
     @Configuration
-    @Profile("!cse")
+    @Profile("SpringCloud")
     @EnableDiscoveryClient
     class ConsulServiceDiscoveryConfig {
+        // Using the spring cloud discovery client to access the customer service
+        // You can enable this feature by using the profile of SpringCloud
     }
 
     @Configuration
-    @Profile("cse")
+    @Profile("!SpringCloud")
     @EnableServiceComb
-    class CseConfig {
+    class ServiceCombConfig {
+        // Here we just enable ServiceComb by default
     }
 }
