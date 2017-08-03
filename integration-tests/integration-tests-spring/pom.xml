@@ -67,6 +67,7 @@
                                             <link>acmeair-consul:consul.acmeair.com</link>
                                         </links>
                                         <wait>
+                                            <log>Tomcat started on port</log>
                                             <tcp>
                                                 <ports>
                                                     <port>8080</port>
@@ -99,6 +100,7 @@
                                             <link>acmeair-consul:consul.acmeair.com</link>
                                         </links>
                                         <wait>
+                                            <log>Tomcat started on port</log>
                                             <tcp>
                                                 <ports>
                                                     <port>8080</port>
@@ -127,6 +129,7 @@
                                             <link>acmeair-consul:consul.acmeair.com</link>
                                         </links>
                                         <wait>
+                                            <log>Tomcat started on port</log>
                                             <tcp>
                                                 <ports>
                                                     <port>8080</port>
