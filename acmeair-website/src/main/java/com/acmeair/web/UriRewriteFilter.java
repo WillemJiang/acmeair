@@ -34,7 +34,7 @@ public class UriRewriteFilter extends ZuulFilter {
 
   @Override
   public int filterOrder() {
-    return 6;
+    return 4;
   }
 
   @Override
@@ -56,7 +56,7 @@ public class UriRewriteFilter extends ZuulFilter {
     if (position == -1) {
       return null;
     }
-    String newUri = uri.substring(position + 5);
+    String newUri = uri.replaceFirst("/rest", "");
     ctx.put("requestURI", newUri);
 
     return null;
