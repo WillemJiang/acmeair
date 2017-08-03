@@ -52,7 +52,8 @@ public class AuthenticationCommandValidationTest {
         return pactDslWithProvider
                 .given("Customer Sean is registered")
                 .uponReceiving("a request to validate Sean")
-                .path("/api/login/validate")
+                .path("/customers/rest/api/login/validate")
+                .matchPath("/api/login/validate")
                 .body(objectMapper.writeValueAsString(sessionInfo), ContentType.APPLICATION_JSON)
                 .method("POST")
                 .willRespondWith()
