@@ -12,9 +12,3 @@ cse:
     address: 0.0.0.0:7002?sslEnabled=false
   highway:
     address: 0.0.0.0:6002?sslEnabled=false
-  handler:
-    chain:
-      Provider:
-        default: bizkeeper-provider,qps-flowcontrol-provider
-      Consumer:
-        default: bizkeeper-consumer,loadbalance,qps-flowcontrol-consumer

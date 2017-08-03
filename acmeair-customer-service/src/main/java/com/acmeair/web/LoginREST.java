@@ -108,12 +108,12 @@ public class LoginREST {
 
     @POST
     @Path("/validate")
-    @Consumes({APPLICATION_JSON_UTF8_VALUE})
+    @Consumes({"application/x-www-form-urlencoded"})
     @Produces(MediaType.APPLICATION_JSON)
     @ApiResponses(value = { @ApiResponse(code = 403, message = "Invalid user information")})
-    public CustomerSessionInfo validateCustomer(CustomerSessionInfo customerSessionInfo) {
-        logger.info("Received customer validation request with session id {}", customerSessionInfo.getId());
-        CustomerSession customerSession = customerService.validateSession(customerSessionInfo.getId());
+    public CustomerSessionInfo validateCustomer(@FormParam("sessionId") String sessionId) {
+        logger.info("Received customer validation request with session id {}", sessionId);
+        CustomerSession customerSession = customerService.validateSession(sessionId);
         if (customerSession != null) {
             logger.info("Found customer session {}", customerSession);
             return new CustomerSessionInfo(customerSession);

@@ -64,9 +64,7 @@
                                                 -Dcse.service.registry.address=http://sc.servicecomb.io:30100
                                                 -Dspring.profiles.active=jpa,cse
                                                 -Dserver.port=8080
-                                                -Dcse.highway.address=0.0.0.0:7072
                                                 -Dcse.rest.address=0.0.0.0:8082
-                                                -Dcse.grpc.address=0.0.0.0:9092
                                             </JAVA_OPTS>
                                             <JAR_NAME>acmeair-customer-service</JAR_NAME>
                                         </env>
