@@ -23,7 +23,7 @@ Source:
   
   * Install [Maven](https://maven.apache.org/) to build the code.
   * We use [Docker](https://www.docker.com/) to run the integration test.
-  * We use [Consul](https://www.consul.io) as service discovery registry. 
+  * We use [ServiceCenter](https://github.com/ServiceComb/service-center) as service discovery registry. 
   * We use [MongoDB](https://www.mongodb.com/) as Data Service (it is optional.)
    
 * Instructions for build the code base
@@ -47,19 +47,19 @@ Source:
 * Running Application
 
   The Acmeair Application have three separated services process: acmeair-customer-service, acmeair-booking-service and acmeair-webapp.
-  Acmeair Application also need to use the Service Registry [consul](https://www.consul.io/) to find out the services which it dependents. 
+  Acmeair Application also need to use the Service Registry [servcie-center](https://github.com/ServiceComb/service-center) to find out the services which it dependents. 
   acmeair-booking-service and acmeair-customer-service can use the outside mongoDB service or use the in memory DB by using active profile.
     
   Here are the dependencies of these service:
   
-      acmeair-webapp -----> acmeair-booking-service (DB)  --------+
+      acmeair-webapp -----> acmeair-booking-service (DB)  -----+
            |        |               |                          |
            |        |               |                          |
            |        |               v                          |
            |        +--> acmeair-customer-service (DB)-----+   |
            |                                               |   |
            |                                               V   V
-           +-------------------------------------------->Service Registry (Consul)            
+           +-------------------------------------------->Service Registry             
   
   
 * Running Application with docker-compose
@@ -74,7 +74,7 @@ Source:
   
   1.Running Consul with docker
   
-      docker run -p 8500:8500 consul
+      docker run -d -p 30100:30100 servicecomb/service-center
       
   2.Running MongoDb With docker (optional)
      
@@ -82,23 +82,23 @@ Source:
       
   3.Starting acmeair-customer-service 
      
-      #Running the customer service with in memory db
-      java -Dspring.profiles.active=jpa -Dspring.cloud.consul.host=localhost -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
+      #Running the customer service with in memory DB
+      java -Dspring.profiles.active=jpa -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
         
       #Running the customer service with mongoDB service
-      java -Dspring.profiles.active=mongodb -Dspring.data.mongodb.host=localhost -Dspring.cloud.consul.host=localhost -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
+      java -Dspring.profiles.active=mongodb -Dspring.cloud.consul.host=localhost -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
                    
   4.Starting acmeair-booking-service 
    
-      #Running the booking service with in memory db
-      java -Dspring.profiles.active=jpa -Dspring.cloud.consul.host=localhost  -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
+      #Running the booking service with in memory DB
+      java -Dspring.profiles.active=jpa -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
         
       # Running the booking service with mongoDB service
-      java -Dspring.profiles.active=mongodb -Dspring.data.mongodb.host=localhost -Dspring.cloud.consul.host=localhost  -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
+      java -Dspring.profiles.active=mongodb -Dspring.cloud.consul.host=localhost  -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
                 
   5.Starting acmeair-webapp
       
-      java -Dspring.cloud.consul.host=localhost -Dspring.profiles.active=consul -Dserver.port=8080 -jar acmeair-webapp/target/acmeair/acmeair-webapp-exec.jar
+      java -Dspring.cloud.consul.host=localhost -Dserver.port=8080 -jar acmeair-webapp/target/acmeair/acmeair-webapp-exec.jar
        
   6.Access the acmeair-webapp from browser with below address
   
@@ -110,4 +110,3 @@ Source:
       
       sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
       export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/
-      
