@@ -6,12 +6,11 @@ import com.acmeair.web.dto.CustomerSessionInfo;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import io.servicecomb.provider.springmvc.reference.RestTemplateBuilder;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Service;
@@ -59,12 +58,9 @@ public class AuthenticationCommand implements AuthenticationService {
         return "cse://" + customerServiceName;
     }
 
-    private HttpEntity<CustomerSessionInfo> validationRequest(String sessionId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-
-        CustomerSessionInfo customerSessionInfo = new CustomerSessionInfo();
-        customerSessionInfo.setId(sessionId);
-        return new HttpEntity<>(customerSessionInfo, headers);
+    Object validationRequest(String sessionId) {
+        Map<String, String> map = new HashMap<>();
+        map.put("sessionId", sessionId);
+        return map;
     }
 }
