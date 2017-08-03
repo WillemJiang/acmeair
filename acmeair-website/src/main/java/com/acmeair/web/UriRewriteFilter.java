@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UriRewriteFilter extends ZuulFilter {
+
   private static final Logger logger = LoggerFactory.getLogger(UriRewriteFilter.class);
 
   @Override
@@ -34,29 +35,22 @@ public class UriRewriteFilter extends ZuulFilter {
 
   @Override
   public int filterOrder() {
-    return 4;
+    return Integer.MAX_VALUE;
   }
 
   @Override
   public boolean shouldFilter() {
     HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
     String uri = request.getRequestURI();
-    if (uri.contains("/rest/")) {
-      return true;
-    } else {
-      return false;
-    }
+    return uri.contains("/rest/");
   }
 
   @Override
   public Object run() {
     RequestContext ctx = RequestContext.getCurrentContext();
-    String uri = ctx.getRequest().getRequestURI();
-    int position = uri.indexOf("/rest");
-    if (position == -1) {
-      return null;
-    }
-    String newUri = uri.replaceFirst("/rest", "");
+    String uri = ctx.get("requestURI").toString();
+    String newUri = uri.replaceFirst("^/rest", "");
+    logger.info("Rewritten request uri from {} to {}", uri, newUri);
     ctx.put("requestURI", newUri);
 
     return null;
