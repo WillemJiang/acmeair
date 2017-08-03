@@ -90,8 +90,19 @@
 		</dependency>
 
 	</dependencies>
+
 	<build>
 		<finalName>ROOT</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.4.6.v20170531</version>
+				<configuration>
+					<war>${project.basedir}/target/ROOT.war</war>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
     <profiles>
@@ -108,7 +119,7 @@
                                     <name>${project.artifactId}:${project.version}</name>
                                     <alias>${project.artifactId}</alias>
                                     <build>
-										<dockerFileDir>${project.basedir}/src/docker</dockerFileDir>
+																			  <dockerFileDir>${project.basedir}/src/docker</dockerFileDir>
                                         <assembly>
                                             <descriptorRef>rootWar</descriptorRef>
                                         </assembly>
