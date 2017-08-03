@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-@Profile("!cse")
+@Profile("SpringCloud")
 class SpringCloudCustomerLoader extends RemoteCustomerLoader {
     private static final Logger logger = LoggerFactory.getLogger(SpringCloudCustomerLoader.class);
 

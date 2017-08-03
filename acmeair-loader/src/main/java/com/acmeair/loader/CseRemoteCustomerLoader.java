@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("cse")
+@Profile("!SpringCloud")
 class CseRemoteCustomerLoader extends RemoteCustomerLoader {
     CseRemoteCustomerLoader() {
         super(RestTemplateBuilder.create());

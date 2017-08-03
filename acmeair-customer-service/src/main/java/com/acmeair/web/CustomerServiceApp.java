@@ -25,14 +25,14 @@ public class CustomerServiceApp extends ResourceConfig {
     private String apiPath;
     
     @PostConstruct
-    @Profile("cse")
+    @Profile("!SpringCloud")
     public void init() {
         // The init method is called
         configureSwagger();
     }
 
     @PostConstruct
-    @Profile("!cse")
+    @Profile("SpringCloud")
     public void initWithSpringCloud() {
         register(CustomerExceptionHandler.class);
         register(LoginResponseFilter.class);
