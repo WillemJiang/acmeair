@@ -1,6 +1,7 @@
 acmeair-consul:
   image: "consul"
   hostname: consul
+  
   ports:
     - "8500:8500"
 
@@ -17,7 +18,7 @@ acmeair-customerservice:
     - "acmeair-consul:consul.acmeair.com"
     - "acmeair-mongo:mongo.acmeair.com"
   environment:
-    - JAVA_OPTS=-Dspring.profiles.active=mongodb -Dserver.port=8080
+    - JAVA_OPTS=-Dspring.profiles.active=mongodb,SpringCloud -Dserver.port=8080
     - JAR_NAME=acmeair-customer-service
   ports:
     - "8082:8080"
@@ -30,7 +31,7 @@ acmeair-bookingservice:
     - "acmeair-consul:consul.acmeair.com"
     - "acmeair-mongo:mongo.acmeair.com"
   environment:
-    - JAVA_OPTS=-Dspring.profiles.active=mongodb -Dserver.port=8080 -Dspring.data.mongodb.host=mongo.acmeair.com
+    - JAVA_OPTS=-Dspring.profiles.active=mongodb,SpringCloud -Dserver.port=8080 -Dspring.data.mongodb.host=mongo.acmeair.com
     - JAR_NAME=acmeair-booking-service
   ports:
     - "8084:8080"
@@ -41,7 +42,7 @@ acmeair-webapp:
   links:
     - "acmeair-consul:consul.acmeair.com"
   environment:
-    - JAVA_OPTS=-Dspring.profiles.active=consul -Dserver.port=8080
+    - JAVA_OPTS=-Dspring.profiles.active=consul -Dserver.port=8080 -Dribbon.ReadTimeout=10000
     - JAR_NAME=acmeair-webapp
   ports:
     - "8080:8080"
