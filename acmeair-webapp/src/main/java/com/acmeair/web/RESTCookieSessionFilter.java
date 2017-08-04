@@ -31,24 +31,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Arrays;
-
 @Component
 @Profile({"!test"})
 public class RESTCookieSessionFilter extends ZuulFilter {
 	private static final Logger logger = LoggerFactory.getLogger(RESTCookieSessionFilter.class);
 	
-	static final String         LOGIN_USER  = "acmeair.login_user";
+	private static final String LOGIN_USER  = "acmeair.login_user";
 	private static final String LOGIN_PATH  = "/rest/api/login";
 	private static final String LOGOUT_PATH = "/rest/api/login/logout";
 	private static final String LOADDB_PATH = "/rest/api/loaddb";
-	public static final String  CONFIG_PATH = "/info/config/";
-	public static final String  LOADER_PATH = "/info/loader/";
+	private static final String CONFIG_PATH = "/info/config/";
+	private static final String LOADER_PATH = "/info/loader/";
 	
 	@Autowired
 	private AuthenticationService authenticationService;
