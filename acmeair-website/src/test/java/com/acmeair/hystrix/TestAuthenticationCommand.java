@@ -13,7 +13,7 @@ import org.springframework.util.MultiValueMap;
 @Primary
 @Service
 @Profile("test")
-class TestAuthenticationCommand extends AuthenticationCommand {
+class TestAuthenticationCommand extends CseAuthenticationCommand {
     private final String customerServiceAddress;
 
     TestAuthenticationCommand(@Value("${customer.service.address}") String customerServiceAddress) {
