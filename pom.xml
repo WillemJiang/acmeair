@@ -25,7 +25,6 @@
         <module>acmeair-booking-service</module>
         <module>acmeair-customer-service</module>
         <module>acmeair-webapp</module>
-        <module>integration-tests</module>
     </modules>
 
   <profiles>
