@@ -19,15 +19,15 @@ import org.springframework.web.client.RestTemplate;
 
 
 @Service
-public class AuthenticationCommand implements AuthenticationService {
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationCommand.class);
+public class CseAuthenticationCommand implements AuthenticationService {
+    private static final Logger logger = LoggerFactory.getLogger(CseAuthenticationCommand.class);
 
     private RestTemplate restTemplate = RestTemplateBuilder.create();
 
     @Value("${customer.service.name:customerServiceApp}")
     private String customerServiceName;
 
-    AuthenticationCommand() {
+    CseAuthenticationCommand() {
         this.restTemplate.setErrorHandler(new ResponseErrorHandler() {
             @Override
             public boolean hasError(ClientHttpResponse clientHttpResponse) throws IOException {

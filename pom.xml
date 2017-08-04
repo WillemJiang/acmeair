@@ -24,7 +24,7 @@
         <module>acmeair-services-morphia</module>
         <module>acmeair-booking-service</module>
         <module>acmeair-customer-service</module>
-        <module>acmeair-website</module>
+        <module>acmeair-webapp</module>
         <module>integration-tests</module>
     </modules>
 

@@ -21,10 +21,12 @@ import com.netflix.zuul.context.RequestContext;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+@Profile("!SpringCloud")
 @Component
-public class UriRewriteFilter extends ZuulFilter {
+class UriRewriteFilter extends ZuulFilter {
 
   private static final Logger logger = LoggerFactory.getLogger(UriRewriteFilter.class);
 
