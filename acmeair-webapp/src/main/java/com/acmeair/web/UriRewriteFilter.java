@@ -44,13 +44,13 @@ class UriRewriteFilter extends ZuulFilter {
   public boolean shouldFilter() {
     HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
     String uri = request.getRequestURI();
-    return uri.contains("/rest/");
+    return uri.startsWith("/rest/");
   }
 
   @Override
   public Object run() {
     RequestContext ctx = RequestContext.getCurrentContext();
-    String uri = ctx.get("requestURI").toString();
+    String uri = ctx.getRequest().getRequestURI();
     String newUri = uri.replaceFirst("^/rest", "");
     logger.info("Rewritten request uri from {} to {}", uri, newUri);
     ctx.put("requestURI", newUri);

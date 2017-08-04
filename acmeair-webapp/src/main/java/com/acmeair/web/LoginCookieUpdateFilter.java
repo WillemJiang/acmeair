@@ -54,7 +54,7 @@ public class LoginCookieUpdateFilter extends ZuulFilter {
   @Override
   public boolean shouldFilter() {
     RequestContext ctx = RequestContext.getCurrentContext();
-    return ctx.getRequest().getRequestURI().contains("/api/login") &&
+    return ctx.getRequest().getRequestURI().endsWith("/api/login") &&
         ctx.getResponseStatusCode() == 200 &&
         ctx.getResponse().getHeader(SET_COOKIE) == null;
   }
