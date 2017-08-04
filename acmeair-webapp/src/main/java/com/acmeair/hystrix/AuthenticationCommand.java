@@ -4,10 +4,13 @@ import com.acmeair.entities.CustomerSession;
 import com.acmeair.service.AuthenticationService;
 import com.acmeair.web.dto.CustomerSessionInfo;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 public abstract class AuthenticationCommand implements AuthenticationService {
@@ -19,6 +22,16 @@ public abstract class AuthenticationCommand implements AuthenticationService {
 
   public AuthenticationCommand(RestTemplate restTemplate) {
     this.restTemplate = restTemplate;
+    restTemplate.setErrorHandler(new ResponseErrorHandler() {
+      @Override
+      public boolean hasError(ClientHttpResponse clientHttpResponse) throws IOException {
+        return false;
+      }
+
+      @Override
+      public void handleError(ClientHttpResponse clientHttpResponse) throws IOException {
+      }
+    });
   }
 
   @HystrixCommand
