@@ -15,8 +15,15 @@
 *******************************************************************************/
 package com.acmeair.web;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
+import com.acmeair.entities.CustomerSession;
+import com.acmeair.entities.TokenInfo;
+import com.acmeair.service.CustomerService;
+import com.acmeair.web.dto.CustomerSessionInfo;
+import io.servicecomb.provider.rest.common.RestSchema;
+import io.servicecomb.swagger.invocation.exception.InvocationException;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.FormParam;
@@ -27,6 +34,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RestSchema(schemaId = "login")
 @Path("/api/login")
