@@ -17,25 +17,16 @@
 package com.acmeair.web;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import com.netflix.zuul.context.RequestContext;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.mock.web.MockHttpServletRequest;
 
 public class UriRewriteFilterTest {
 
   private UriRewriteFilter filter = new UriRewriteFilter();
-  private MockHttpServletRequest request = new MockHttpServletRequest();
-
-
-  @Before
-  public void setUp() throws Exception {
-    RequestContext ctx = RequestContext.getCurrentContext();
-    ctx.setRequest(request);
-  }
+  private RequestContext context = RequestContext.getCurrentContext();
 
   @After
   public void tearDown() throws Exception {
@@ -44,22 +35,22 @@ public class UriRewriteFilterTest {
 
   @Test
   public void skippedIfRestNotInRequestURI() {
-    request.setRequestURI("/api/login");
+    context.set("requestURI", "/api/login");
     assertThat(this.filter.shouldFilter(), is(false));
   }
 
   @Test
   public void skippedIfRequestURINotStartsWithRest() {
-    request.setRequestURI("/abc/rest/api/login");
+    context.set("requestURI", "/abc/rest/api/login");
     assertThat(this.filter.shouldFilter(), is(false));
   }
 
   @Test
   public void ensureRestRemoveFromRequestURI() {
-    request.setRequestURI("/rest/api/login");
+    context.set("requestURI", "/rest/api/login");
     assertThat(this.filter.shouldFilter(), is(true));
 
     this.filter.run();
-    assertThat(RequestContext.getCurrentContext().get("requestURI"), is("/api/login"));
+    assertThat(context.get("requestURI"), is("/api/login"));
   }
 }
