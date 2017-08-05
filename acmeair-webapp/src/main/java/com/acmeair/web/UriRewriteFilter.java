@@ -18,7 +18,6 @@ package com.acmeair.web;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
-import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -42,15 +41,15 @@ class UriRewriteFilter extends ZuulFilter {
 
   @Override
   public boolean shouldFilter() {
-    HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
-    String uri = request.getRequestURI();
+    RequestContext context = RequestContext.getCurrentContext();
+    String uri = context.get("requestURI").toString();
     return uri.startsWith("/rest/");
   }
 
   @Override
   public Object run() {
     RequestContext ctx = RequestContext.getCurrentContext();
-    String uri = ctx.getRequest().getRequestURI();
+    String uri = ctx.get("requestURI").toString();
     String newUri = uri.replaceFirst("^/rest", "");
     logger.info("Rewritten request uri from {} to {}", uri, newUri);
     ctx.put("requestURI", newUri);
