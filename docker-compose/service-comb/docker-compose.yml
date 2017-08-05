@@ -36,12 +36,12 @@ acmeair-bookingservice:
     - "8086:8082"
 
 acmeair-webapp:
-  image: "acmeair-proxy:2.0.0-SNAPSHOT"
+  image: "acmeair-webapp:2.0.0-SNAPSHOT"
   hostname: webapp
   links:
      - "service-center:sc.servicecomb.io"
   environment:
-    - JAVA_OPTS=-Dcse.service.registry.address=http://sc.servicecomb.io:30100
-    - JAR_NAME=acmeair-proxy
+    - JAVA_OPTS=-Dcse.service.registry.address=http://sc.servicecomb.io:30100 -Dspring.profiles.active=sc
+    - JAR_NAME=acmeair-webapp
   ports:
     - "8080:8080"
