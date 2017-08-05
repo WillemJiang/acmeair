@@ -26,7 +26,7 @@ Source:
   * We use [ServiceCenter](https://github.com/ServiceComb/service-center) as service discovery registry. 
   * We use [MongoDB](https://www.mongodb.com/) as Data Service (it is optional.)
    
-* Instructions for build the code base
+* Instructions to build the code base
 
   You can build the code by using maven from the root without running the test
         
@@ -50,7 +50,7 @@ Source:
   Acmeair Application also need to use the Service Registry [servcie-center](https://github.com/ServiceComb/service-center) to find out the services which it dependents. 
   acmeair-booking-service and acmeair-customer-service can use the outside mongoDB service or use the in memory DB by using active profile.
     
-  Here are the dependencies of these service:
+  Here are the dependencies of these services:
   
       acmeair-webapp -----> acmeair-booking-service (DB)  -----+
            |        |               |                          |
@@ -64,11 +64,11 @@ Source:
   
 * Running Application with docker-compose
     
-      docker-compose up
+      cd docker-compose/service-comb; docker-compose up
 
 * Running Application with docker-compose and pre-loaded customers/flights data
     
-      docker-compose -f docker-compose.yml -f docker-compose.perf.yml up
+      cd docker-compose/service-comb; docker-compose -f docker-compose.yml -f docker-compose.perf.yml up
   
 * Running Application with java command
   
@@ -76,7 +76,7 @@ Source:
   
       docker run -d -p 30100:30100 servicecomb/service-center
       
-  2.Running MongoDb With docker (optional)
+  2.Running MongoDB With docker (optional)
      
       docker run -p 27017:27017 mongo
       
