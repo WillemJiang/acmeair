@@ -94,5 +94,6 @@ public class LoginCookieUpdateFilterTest {
     // there is no way to get the cookie in response,
     // we can only validate the data stream had been consumed.
     assertThat(context.getResponseDataStream().read(), is(-1));
+    assertThat(context.getResponseBody(), is("logged in"));
   }
 }
