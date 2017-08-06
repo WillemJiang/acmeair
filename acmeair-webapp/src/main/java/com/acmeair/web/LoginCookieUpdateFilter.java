@@ -69,7 +69,9 @@ public class LoginCookieUpdateFilter extends ZuulFilter {
 
     HttpServletResponse response = ctx.getResponse();
     for (Map.Entry<String, String> entry : cookies.entrySet()) {
-      response.addCookie(new Cookie(entry.getKey(), entry.getValue()));
+      Cookie cookie = new Cookie(entry.getKey(), entry.getValue());
+      cookie.setPath("/");
+      response.addCookie(cookie);
     }
     ctx.setResponse(response);
     ctx.setResponseBody("logged in");
