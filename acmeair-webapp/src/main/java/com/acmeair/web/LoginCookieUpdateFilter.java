@@ -72,6 +72,7 @@ public class LoginCookieUpdateFilter extends ZuulFilter {
       response.addCookie(new Cookie(entry.getKey(), entry.getValue()));
     }
     ctx.setResponse(response);
+    ctx.setResponseBody("logged in");
 
     return null;
   }
