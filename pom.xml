@@ -135,7 +135,7 @@
     <pact.version>3.2.13</pact.version>
     <swagger.version>1.5.12</swagger.version>
     <acmeair.version>2.0.0-SNAPSHOT</acmeair.version>
-    <servicecomb.version>0.1.0-m2</servicecomb.version>
+    <servicecomb.version>0.1.0</servicecomb.version>
     <!-- CSE the commercial extendsion of HuaweiCloud -->
     <cse.version>2.1.1</cse.version>
   </properties>
