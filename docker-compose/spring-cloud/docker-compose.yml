@@ -42,7 +42,7 @@ acmeair-webapp:
   links:
     - "acmeair-consul:consul.acmeair.com"
   environment:
-    - JAVA_OPTS=-Dspring.profiles.active=consul -Dserver.port=8080 -Dribbon.ReadTimeout=10000
+    - JAVA_OPTS=-Dspring.profiles.active=consul,SpringCloud -Dserver.port=8080 -Dribbon.ReadTimeout=10000
     - JAR_NAME=acmeair-webapp
   ports:
     - "8080:8080"
