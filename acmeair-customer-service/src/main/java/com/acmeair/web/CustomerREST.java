@@ -49,14 +49,18 @@ public class CustomerREST {
 	private static final Logger logger = LoggerFactory.getLogger(CustomerREST.class);
 	static final String LOGIN_USER = "acmeair.login_user";
 
-	@Autowired
-	private CustomerService customerService;
+	private final CustomerService customerService;
 
 	@Context
 	private HttpServletRequest request;
 
 	@Autowired
 	private CustomerValidationRule customerValidationRule;
+	
+	@Autowired
+	CustomerREST(CustomerService customerService) {
+		this.customerService = customerService;
+	}
 
 	private boolean validate(String customerid) {
 		return customerValidationRule.validate(customerid, request);
@@ -140,5 +144,5 @@ public class CustomerREST {
 		
 		return customerFromDB;
 	}
-
+	
 }

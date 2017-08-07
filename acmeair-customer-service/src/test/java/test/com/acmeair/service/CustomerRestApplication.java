@@ -2,6 +2,7 @@ package test.com.acmeair.service;
 
 import com.acmeair.loader.CustomerLoaderREST;
 import com.acmeair.service.CustomerService;
+import com.acmeair.service.CustomerServiceSupport;
 import com.acmeair.service.KeyGenerator;
 import com.acmeair.web.CustomerREST;
 import com.acmeair.web.CustomerValidationRuleConfig;
@@ -23,7 +24,7 @@ import javax.ws.rs.ApplicationPath;
 public class CustomerRestApplication {
 
     private final KeyGenerator    keyGenerator    = Mockito.mock(KeyGenerator.class);
-    private final CustomerService customerService = Mockito.mock(CustomerService.class);
+    private final CustomerService customerService = Mockito.mock(CustomerServiceSupport.class);
 
     public static void main(String[] args) {
         SpringApplication.run(CustomerRestApplication.class, args);

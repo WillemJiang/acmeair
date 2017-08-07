@@ -3,21 +3,20 @@ package com.acmeair.morphia.services;
 import com.acmeair.entities.Customer;
 import com.acmeair.entities.Customer.MemberShipStatus;
 import com.acmeair.entities.Customer.PhoneType;
-import com.acmeair.entities.CustomerAddress;
 import com.acmeair.entities.CustomerSession;
 import com.acmeair.morphia.entities.CustomerAddressImpl;
 import com.acmeair.morphia.entities.CustomerImpl;
 import com.acmeair.morphia.entities.CustomerSessionImpl;
 import com.acmeair.morphia.repositories.CustomerRepository;
 import com.acmeair.morphia.repositories.CustomerSessionRepository;
-import com.acmeair.service.CustomerService;
+import com.acmeair.service.CustomerServiceSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 @Service
-class CustomerServiceImpl extends CustomerService {
+class CustomerServiceImpl extends CustomerServiceSupport {
 		
 //	private final static Logger logger = Logger.getLogger(CustomerService.class.getName()); 
 
