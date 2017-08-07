@@ -140,7 +140,7 @@
                                             <link>service-center:sc.servicecomb.io</link>
                                         </links>
                                         <wait>
-                                            <log>Catalina.start Server startup in</log>
+                                            <log>Tomcat started on port</log>
                                             <tcp>
                                                 <ports>
                                                     <port>8080</port>
