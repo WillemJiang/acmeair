@@ -1,0 +1,33 @@
+server:
+  port: ${appPort:8055}
+spring:
+  cloud:
+    consul:
+      host: consul.acmeair.com
+      port: 8500
+      discovery:
+#        ipAddress: 127.0.0.1
+        preferIpAddress: true
+
+# Spring MVC dispatcher servlet path. Needs to be different than Jersey's to enable/disable Actuator endpoints access (/info, /health, ...)
+server.servlet-path: /
+# Jersey dispatcher servlet
+spring.jersey.application-path: /rest
+
+# http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-endpoints
+# http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-use-actuator-with-jersey
+endpoints:
+  enabled: false
+  info:
+    enabled: true
+  health:
+    enabled: true
+  metrics:
+    enabled: true
+
+# app name and build version updated during build process from Maven properties.
+info:
+  app:
+    name: @project.artifactId@
+  build:
+    version: @project.version@

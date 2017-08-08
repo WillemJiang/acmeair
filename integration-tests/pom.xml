@@ -133,6 +133,8 @@
                         <spring.data.mongodb.port>${mongo.port}</spring.data.mongodb.port>
                         <!-- Uses customer service address to load the data for integration test-->
                         <customer.service.address>http://${docker.hostname}:${customer.service.port}</customer.service.address>
+                        <coupon.command.service.address>http://${docker.hostname}:${coupon.command.service.port}</coupon.command.service.address>
+                        <coupon.query.service.address>http://${docker.hostname}:${coupon.query.service.port}</coupon.query.service.address>
                         <gateway.address>http://${docker.hostname}:${gateway.port}</gateway.address>
                         <cse.service.registry.address>http://${docker.hostname}:${service.center.port}</cse.service.registry.address>
                     </systemPropertyVariables>

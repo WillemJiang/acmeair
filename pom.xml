@@ -18,6 +18,9 @@
     <modules>
         <module>docker-build-config</module>
         <module>acmeair-common</module>
+        <module>acmeair-coupon-command-service</module>
+        <module>acmeair-coupon-query-service</module>
+        <module>acmeair-coupon-common</module>
         <module>acmeair-loader</module>
         <module>acmeair-customer-common</module>
         <module>acmeair-services</module>
@@ -231,6 +234,42 @@
                         <groupId>commons-logging</groupId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+              <groupId>acmeair</groupId>
+              <artifactId>acmeair-coupon-common</artifactId>
+              <version>2.0.0-SNAPSHOT</version>
+              <scope>compile</scope>
+              <exclusions>
+                <exclusion>
+                  <artifactId>commons-logging</artifactId>
+                  <groupId>commons-logging</groupId>
+                </exclusion>
+              </exclusions>
+            </dependency>
+            <dependency>
+              <groupId>acmeair</groupId>
+              <artifactId>acmeair-coupon-command-service</artifactId>
+              <version>2.0.0-SNAPSHOT</version>
+              <scope>compile</scope>
+              <exclusions>
+                <exclusion>
+                  <artifactId>commons-logging</artifactId>
+                  <groupId>commons-logging</groupId>
+                </exclusion>
+              </exclusions>
+            </dependency>
+            <dependency>
+              <groupId>acmeair</groupId>
+              <artifactId>acmeair-coupon-query-service</artifactId>
+              <version>2.0.0-SNAPSHOT</version>
+              <scope>compile</scope>
+              <exclusions>
+                <exclusion>
+                  <artifactId>commons-logging</artifactId>
+                  <groupId>commons-logging</groupId>
+                </exclusion>
+              </exclusions>
             </dependency>
             <dependency>
                 <groupId>acmeair</groupId>
