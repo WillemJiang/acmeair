@@ -83,22 +83,22 @@ Source:
   3.Starting acmeair-customer-service 
      
       #Running the customer service with in memory DB
-      java -Dspring.profiles.active=jpa -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
+      java -Dspring.profiles.active=jpa -Dcse.rest.address=0.0.0.0:8082 -Dcse.service.registry.address=http://localhost:30100 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
         
       #Running the customer service with mongoDB service
-      java -Dspring.profiles.active=mongodb -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
+      java -Dspring.profiles.active=mongodb -Dcse.rest.address=0.0.0.0:8082 -Dspring.data.mongodb.host=localhost -Dcse.service.registry.address=http://localhost:30100 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
                    
   4.Starting acmeair-booking-service 
    
       #Running the booking service with in memory DB
-      java -Dspring.profiles.active=jpa -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
+      java -Dspring.profiles.active=jpa -Dcse.rest.address=0.0.0.0:8081 -Dcse.service.registry.address=http://localhost:30100 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
         
       # Running the booking service with mongoDB service
-      java -Dspring.profiles.active=mongodb -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
+      java -Dspring.profiles.active=mongodb -Dcse.rest.address=0.0.0.0:8081 -Dspring.data.mongodb.host=localhost -Dcse.service.registry.address=http://localhost:30100 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
                 
   5.Starting acmeair-webapp
       
-      java -Dserver.port=8080 -jar acmeair-webapp/target/acmeair/acmeair-webapp-exec.jar
+      java -Dcse.rest.address=0.0.0.0:8080 -Dspring.profiles.active=sc -Dcse.service.registry.address=http://localhost:30100 -jar acmeair-webapp/target/acmeair/acmeair-webapp-exec.jar
        
   6.Access the acmeair-webapp from browser with below address
   

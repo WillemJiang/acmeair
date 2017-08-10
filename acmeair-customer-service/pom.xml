@@ -8,6 +8,10 @@
 		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 
+	<properties>
+    <myFinalName>acmeair-customer-service</myFinalName>
+	</properties>
+
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>acmeair-customer-service</artifactId>
 	<dependencies>
