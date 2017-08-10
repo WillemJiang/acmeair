@@ -15,6 +15,7 @@
 
     <properties>
         <myFinalName>acmeair-webapp</myFinalName>
+        <service.name>webapp</service.name>
     </properties>
 
     <dependencies>
@@ -76,10 +77,14 @@
             <artifactId>spring-boot-starter</artifactId>
             <exclusions>
                 <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
         <dependency>
             <groupId>acmeair</groupId>
@@ -191,6 +196,18 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>HuaweiCloud</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
     </profiles>
 
 </project>

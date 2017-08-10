@@ -10,10 +10,13 @@
 
 	<properties>
     <myFinalName>acmeair-customer-service</myFinalName>
+		<service.name>customer</service.name>
 	</properties>
 
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>acmeair-customer-service</artifactId>
+
+
 	<dependencies>
 		<dependency>
 			<groupId>io.servicecomb</groupId>
@@ -88,13 +91,16 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
-			<scope>compile</scope>
 			<exclusions>
 				<exclusion>
-					<artifactId>commons-logging</artifactId>
-					<groupId>commons-logging</groupId>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -180,5 +186,17 @@
                 </plugins>
             </build>
         </profile>
+		<profile>
+			<id>HuaweiCloud</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
 	</profiles>
 </project>
