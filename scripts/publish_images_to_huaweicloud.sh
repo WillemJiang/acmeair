@@ -5,12 +5,12 @@
 # 2. Execute: bash publish_images_to_huaweicloud.sh
 
 # config example
-# TARGET_VERSION=0.0.1                                                  # ---------huawei cloud images repository target version.
+# TARGET_VERSION=0.1.0                                                  # ---------huawei cloud images repository target version.
 # ORIGIN_VERSION=2.0.0-SNAPSHOT                                         # ---------local images version.
 # TENANT_NAME=xxxxxxxxxxx                                               # ---------huawei cloud tenant name.
 # REPO_ADDRESS=registry.cn-north-1.hwclouds.com                         # ---------huawei cloud images repository address.
 # USER_NAME=xxxxx                                                       # ---------username: login huawei cloud images repository.
-# PW=xxxxxxx                                                            # ---------paasword: login huawei cloud images repository.
+# PW=xxxxxxx                                                            # ---------password: login huawei cloud images repository.
 CUSTOMER_NAME=acmeair-customer-service						                      # ---------customer name, created by maven docker plugin.
 BOOKING_NAME=acmeair-booking-service						                        # ---------booking name, created by maven docker plugin.
 WEBAPP_NAME=acmeair-webapp						                                  # ---------webapp name, created by maven docker plugin.
