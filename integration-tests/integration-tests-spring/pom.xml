@@ -117,6 +117,68 @@
                                         </dependsOn>
                                     </run>
                                 </image>
+
+                                <!--coupon command service-->
+                                <image>
+                                    <name>acmeair-coupon-command-service:${project.version}</name>
+                                    <alias>coupon-command-service</alias>
+                                    <run>
+                                        <env>
+                                            <JAVA_OPTS>-Dspring.profiles.active=jpa,SpringCloud -Dserver.port=8080</JAVA_OPTS>
+                                            <JAR_NAME>acmeair-coupon-command-service</JAR_NAME>
+                                        </env>
+                                        <links>
+                                            <link>acmeair-consul:consul.acmeair.com</link>
+                                        </links>
+                                        <wait>
+                                            <log>Tomcat started on port</log>
+                                            <tcp>
+                                                <ports>
+                                                    <port>8080</port>
+                                                </ports>
+                                            </tcp>
+                                            <time>100000</time>
+                                        </wait>
+                                        <ports>
+                                            <port>coupon.command.service.port:8080</port>
+                                        </ports>
+                                        <dependsOn>
+                                            <dependsOn>acmeair-consul</dependsOn>
+                                        </dependsOn>
+                                    </run>
+                                </image>
+
+                                <!--coupon query service-->
+                                <image>
+                                    <name>acmeair-coupon-query-service:${project.version}</name>
+                                    <alias>coupon-query-service</alias>
+                                    <run>
+                                        <env>
+                                            <JAVA_OPTS>-Dspring.profiles.active=jpa,SpringCloud -Dserver.port=8080</JAVA_OPTS>
+                                            <JAR_NAME>acmeair-coupon-query-service</JAR_NAME>
+                                        </env>
+                                        <links>
+                                            <link>acmeair-consul:consul.acmeair.com</link>
+                                        </links>
+                                        <wait>
+                                            <log>Tomcat started on port</log>
+                                            <tcp>
+                                                <ports>
+                                                    <port>8080</port>
+                                                </ports>
+                                            </tcp>
+                                            <time>100000</time>
+                                        </wait>
+                                        <ports>
+                                            <port>coupon.query.service.port:8080</port>
+                                        </ports>
+                                        <dependsOn>
+                                            <dependsOn>acmeair-consul</dependsOn>
+                                        </dependsOn>
+                                    </run>
+                                </image>
+
+
                                 <image>
                                     <name>acmeair-webapp:${project.version}</name>
                                     <alias>gateway</alias>
