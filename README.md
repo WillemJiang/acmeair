@@ -110,3 +110,26 @@ Source:
       
       sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
       export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/
+
+* Auto deploy on [Huawei Cloud][huawei_cloud]  
+  To auto compile, build, deploy and run this demo on Huawei Cloud's [Service Stage Platform][service_stage], you need the following steps:
+
+  1.A registered [Service Stage][service_stage] account.  
+  2.Auto build and publish your docker image to Huawei's Image Warehouse, details can refer to [auto publish guide][publish_guide].  
+  3.Auto deploy using Huawei Cloud's orchestration feature, details can refer to [orchestration guide][orchestration_guide].   
+
+[huawei_cloud]: http://www.hwclouds.com
+[publish_guide]: docs/how-to-auto-publish-images-to-huawei-cloud.md
+[orchestration_guide]: docs/how-to-auto-deploy-on-huawei-cloud.md
+
+* 在华为云上自动部署  
+
+  本章节介绍基于华为微服务云应用平台[Service Stage ][service_stage]，实现自动编译、构建、部署和运行的步骤。
+
+  1.一个已注册的[Service Stage][service_stage]帐号。  
+  2.自动编译、构建和发布Docker镜像到华为的镜像仓库，详情可见[自动发布指南][publish_guide_cn] 。  
+  3.使用华为云的编排功能自动部署微服务，详情可见[自动部署指南][orchestration_guide_cn] 。  
+
+[service_stage]: https://servicestage.hwclouds.com/servicestage
+[publish_guide_cn]: docs/how-to-auto-publish-images-to-huawei-cloud-cn.md
+[orchestration_guide_cn]: docs/how-to-auto-deploy-on-huawei-cloud-cn.md
