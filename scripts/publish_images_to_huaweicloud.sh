@@ -41,8 +41,9 @@ for property in ${properties[@]}; do
     isPropertySet $property ${!property}
 done
 
-ROOT_PATH=$(cd "$(dirname $0)/.."; pwd)
-cd $ROOT_PATH
+CUR_PATH=$(cd "$(dirname $0)/"; pwd)
+ROOT_PATH=$(cd "${CUR_PATH}/../"; pwd)
+cd "${ROOT_PATH}"
 ORIGIN_VERSION=$(mvn help:evaluate -Dexpression=project.version | grep Building | awk '{print $4}')
 
 modules=($CUSTOMER_NAME $BOOKING_NAME $WEBAPP_NAME)
@@ -55,9 +56,7 @@ for module in ${modules[@]}; do
 done
 
 echo "Generating new docker images"
-CUR_PATH=$(cd "$(dirname "$0")"; pwd)
-ROOT_PATH="${CUR_PATH}/../"
-cd "${ROOT_PATH}"
+
 mvn clean package -DskipTests -DskipITs -PHuaweiCloud -Pdocker
 
 echo "Tagging image versions"
