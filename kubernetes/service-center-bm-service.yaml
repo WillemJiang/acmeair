@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: service-center
+  name: service-center
+spec:
+  ports:
+  - name: "30100"
+    port: 30100
+    targetPort: 30100
+  selector:
+    io.kompose.service: service-center
+status:
+  loadBalancer: {}

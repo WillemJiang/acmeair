@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: acmeair-bookingservice
+  name: acmeair-bookingservice
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: acmeair-bookingservice
+    spec:
+      containers:
+      - env:
+        - name: JAR_NAME
+          value: acmeair-booking-service
+        - name: JAVA_OPTS
+          value: -Dspring.profiles.active=mongodb -Dserver.port=8080 -Dspring.data.mongodb.host=acmeair-mongo
+            -Dcse.service.registry.address=http://service-center:30100
+        image: zenlintechnofreak/acmeair-booking-service:2.0.0-SNAPSHOT
+        name: acmeair-bookingservice
+        ports:
+        - containerPort: 8082
+        resources: {}
+      restartPolicy: Always
+status: {}

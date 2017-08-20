@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: acmeair-bookingservice
+  name: acmeair-bookingservice
+spec:
+  ports:
+  - name: "8086"
+    port: 8086
+    targetPort: 8082
+  selector:
+    io.kompose.service: acmeair-bookingservice
+status:
+  loadBalancer: {}

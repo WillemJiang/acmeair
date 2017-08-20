@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: acmeair-customerservice
+  name: acmeair-customerservice
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: acmeair-customerservice
+    spec:
+      containers:
+      - env:
+        - name: JAR_NAME
+          value: acmeair-customer-service
+        - name: JAVA_OPTS
+          value: -Dspring.profiles.active=mongodb -Dserver.port=8080 -Dspring.data.mongodb.host=acmeair-mongo -Dcse.service.registry.address=http://service-center:30100
+        image: zenlintechnofreak/acmeair-customer-service:2.0.0-SNAPSHOT
+        name: acmeair-customerservice
+        ports:
+        - containerPort: 8082
+        resources: {}
+      restartPolicy: Always
+status: {}

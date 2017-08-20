@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: acmeair-webapp
+  name: acmeair-webapp
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: acmeair-webapp
+    spec:
+      containers:
+      - env:
+        - name: JAR_NAME
+          value: acmeair-webapp
+        - name: JAVA_OPTS
+          value: -Dcse.service.registry.address=http://service-center:30100 -Dspring.profiles.active=sc
+        image: zenlintechnofreak/acmeair-webapp:2.0.0-SNAPSHOT
+        name: acmeair-webapp
+        ports:
+        - containerPort: 8080
+        resources: {}
+      restartPolicy: Always
+status: {}
