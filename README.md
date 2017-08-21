@@ -104,6 +104,10 @@ Source:
   
       http://localhost:8080/index.html
 
+* Running AcmeAir on bare metal kubernetes cluster
+  
+  Reference to [Run Acmeair on Kubernetes](kubernetes/README.md)
+
 * Running AcmeAir on [Google Compute Engine](https://cloud.google.com/compute/)
   
   The default Java version is 1.7 on Google Compute Engine but AcmeAir is using 1.8. Run the following command to set up Java 8 on Google Compute Engine.
