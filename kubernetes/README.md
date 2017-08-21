@@ -36,18 +36,16 @@ kubectl get svc acmeair-webapp -o yaml | grep nodePort -C 1
 ```
 curl http://<EXTERNAL-IP>:<NODE-PORT>/index.html
 ```
-Notes:
-If no external ip canbe reserved by kubernetes, try to visit with the node ip.
-1. Get node ip
+
+***Notes:***
+*If no free external-ip can be reserved by kubernetes, try to visit with the public-ip with the node.*
 ```
-# get NODE-NAME which api gateway is runing on
-kubectl get po -owide |grep acmeair-webapp
+# get NODE-NAME of the node which api gateway is runing on
+  kubectl get po -owide |grep acmeair-webapp
 # get PUBLIC-IP which of the node
-kubectl describe  node <NODE-NAME> |grep public-ip
-```
-2. Visit website
-```
-curl http://<PUBLIC-IP>:<NODE-PORT>/index.html
+  kubectl describe  node <NODE-NAME> |grep public-ip
+# visit website
+  curl http://<PUBLIC-IP>:<NODE-PORT>/index.html
 ```
 
 ## Clean up
