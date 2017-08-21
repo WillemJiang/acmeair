@@ -21,7 +21,9 @@ kubectl get svc |grep acmeair-webapp
 ```
 
 * Visit website
-http://<CLUSTER-IP>:<TARGET-PORT>/index.html
+```
+curl http://<CLUSTER-IP>:<TARGET-PORT>/index.html
+```
 
 ### Check result outside the cluster
 * Get EXTERNAL-IP and NODE-PORT with api gateway
@@ -31,8 +33,9 @@ kubectl get svc acmeair-webapp -o yaml | grep nodePort -C 1
 ```
 
 * Visit website
-http://<EXTERNAL-IP>:<NODE-PORT>/index.html
-
+```
+curl http://<EXTERNAL-IP>:<NODE-PORT>/index.html
+```
 Notes:
 If no external ip canbe reserved by kubernetes, try to visit with the node ip.
 1. Get node ip
@@ -40,10 +43,12 @@ If no external ip canbe reserved by kubernetes, try to visit with the node ip.
 # get NODE-NAME which api gateway is runing on
 kubectl get po -owide |grep acmeair-webapp
 # get PUBLIC-IP which of the node
-kubectl describe  node zenlinnode2 |grep public-ip
+kubectl describe  node <NODE-NAME> |grep public-ip
 ```
 2. Visit website
-http://<PUBLIC-IP>:<NODE-PORT>/index.html
+```
+curl http://<PUBLIC-IP>:<NODE-PORT>/index.html
+```
 
 ## Clean up
 ```
