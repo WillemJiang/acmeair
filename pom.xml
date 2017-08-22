@@ -80,11 +80,13 @@
               <groupId>org.slf4j</groupId>
               <artifactId>slf4j-log4j12</artifactId>
             </exclusion>
-          </exclusions>
-          <exclusions>
             <exclusion>
               <groupId>io.servicecomb</groupId>
-              <artifactId>*</artifactId>
+              <artifactId>foundation-config</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>io.servicecomb</groupId>
+              <artifactId>java-chassis-core</artifactId>
             </exclusion>
           </exclusions>
         </dependency>
@@ -95,7 +97,11 @@
           <exclusions>
             <exclusion>
               <groupId>io.servicecomb</groupId>
-              <artifactId>*</artifactId>
+              <artifactId>foundation-config</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>io.servicecomb</groupId>
+              <artifactId>java-chassis-core</artifactId>
             </exclusion>
           </exclusions>
         </dependency>
@@ -106,7 +112,11 @@
           <exclusions>
             <exclusion>
               <groupId>io.servicecomb</groupId>
-              <artifactId>*</artifactId>
+              <artifactId>foundation-config</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>io.servicecomb</groupId>
+              <artifactId>java-chassis-core</artifactId>
             </exclusion>
           </exclusions>
         </dependency>
@@ -117,7 +127,11 @@
           <exclusions>
             <exclusion>
               <groupId>io.servicecomb</groupId>
-              <artifactId>*</artifactId>
+              <artifactId>foundation-config</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>io.servicecomb</groupId>
+              <artifactId>java-chassis-core</artifactId>
             </exclusion>
           </exclusions>
         </dependency>
@@ -128,7 +142,11 @@
           <exclusions>
             <exclusion>
               <groupId>io.servicecomb</groupId>
-              <artifactId>*</artifactId>
+              <artifactId>foundation-config</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>io.servicecomb</groupId>
+              <artifactId>java-chassis-core</artifactId>
             </exclusion>
           </exclusions>
         </dependency>
