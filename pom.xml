@@ -81,26 +81,56 @@
               <artifactId>slf4j-log4j12</artifactId>
             </exclusion>
           </exclusions>
+          <exclusions>
+            <exclusion>
+              <groupId>io.servicecomb</groupId>
+              <artifactId>*</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
         <dependency>
           <groupId>com.huawei.paas.cse</groupId>
           <artifactId>foundation-config-cc</artifactId>
           <version>${cse.version}</version>
+          <exclusions>
+            <exclusion>
+              <groupId>io.servicecomb</groupId>
+              <artifactId>*</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
         <dependency>
           <groupId>com.huawei.paas.cse</groupId>
           <artifactId>cse-handler-tracing</artifactId>
           <version>${cse.version}</version>
+          <exclusions>
+            <exclusion>
+              <groupId>io.servicecomb</groupId>
+              <artifactId>*</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
         <dependency>
           <groupId>com.huawei.paas.cse</groupId>
           <artifactId>cse-handler-performance-stats</artifactId>
           <version>${cse.version}</version>
+          <exclusions>
+            <exclusion>
+              <groupId>io.servicecomb</groupId>
+              <artifactId>*</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
         <dependency>
           <groupId>com.huawei.paas.cse</groupId>
           <artifactId>cse-handler-cloud-extension</artifactId>
           <version>${cse.version}</version>
+          <exclusions>
+            <exclusion>
+              <groupId>io.servicecomb</groupId>
+              <artifactId>*</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
       </dependencies>
 
