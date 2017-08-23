@@ -4,4 +4,4 @@ RUN mkdir -p /maven/acmeair/
 
 COPY ./*-exec.jar  /maven/acmeair/
 
-CMD ["java","$JAVA_OPTS", "-jar","/maven/acmeair/$JAR_NAME-exec.jar"]
+ENTRYPOINT java $JAVA_OPTS -jar /maven/acmeair/$JAR_NAME-exec.jar
