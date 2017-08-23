@@ -37,6 +37,8 @@ spec:
         name: acmeair-customerservice
         ports:
         - containerPort: 8082
-        resources: {}
+        resources:
+          requests:
+            cpu: 200m
       restartPolicy: Always
 status: {}
