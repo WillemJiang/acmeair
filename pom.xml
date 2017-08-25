@@ -217,7 +217,7 @@
     <acmeair.version>2.0.0-SNAPSHOT</acmeair.version>
     <servicecomb.version>0.2.0</servicecomb.version>
     <!-- CSE the commercial extendsion of HuaweiCloud -->
-    <cse.version>2.1.1</cse.version>
+    <cse.version>2.1.12</cse.version>
   </properties>
 
     <dependencyManagement>
