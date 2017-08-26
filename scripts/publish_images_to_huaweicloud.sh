@@ -71,7 +71,7 @@ done
 
 ROOT_PATH=$(cd "$(dirname $0)/.."; pwd)
 cd $ROOT_PATH
-PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version | grep Building | awk '{print $4}')
+PROJECT_VERSION=$(mvn help:evaluate -B -Dexpression=project.version | grep Building | awk '{print $4}')
 
 PREV_PROJECT_VERSION=0.0.0
 BUILD_VERSION=0
