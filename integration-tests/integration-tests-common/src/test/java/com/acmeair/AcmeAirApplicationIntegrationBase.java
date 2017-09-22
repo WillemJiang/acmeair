@@ -1,5 +1,19 @@
 package com.acmeair;
 
+import static java.util.Arrays.asList;
+import static java.util.Calendar.SECOND;
+import static org.apache.commons.lang3.time.DateUtils.truncate;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.http.HttpHeaders.COOKIE;
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.OK;
+
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import com.acmeair.loader.CustomerLoader;
@@ -11,6 +25,9 @@ import com.acmeair.service.KeyGenerator;
 import com.acmeair.service.UserService;
 import com.acmeair.web.dto.BookingInfo;
 import com.acmeair.web.dto.BookingReceiptInfo;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,30 +47,12 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static java.util.Calendar.SECOND;
-import static org.apache.commons.lang3.time.DateUtils.truncate;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.http.HttpHeaders.COOKIE;
-import static org.springframework.http.HttpHeaders.SET_COOKIE;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.OK;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-        classes = AcmeAirSitApplication.class,
-        webEnvironment = RANDOM_PORT,
-        properties = {
-        })
+    classes = AcmeAirSitApplication.class,
+    webEnvironment = RANDOM_PORT,
+    properties = {
+    })
 @ActiveProfiles({"sit"})
 public class AcmeAirApplicationIntegrationBase {
     private final boolean oneWay         = false;
@@ -113,27 +112,27 @@ public class AcmeAirApplicationIntegrationBase {
         HttpHeaders headers = headerWithCookieOfLoginSession();
 
         ResponseEntity<Long> consumerCount = restTemplate.exchange(
-                gatewayUrl + "/customers/rest/info/config/countCustomers",
-                GET,
-                new HttpEntity<>(headers),
-                Long.class
+            gatewayUrl + "/customers/rest/info/config/countCustomers",
+            GET,
+            new HttpEntity<>(headers),
+            Long.class
         );
 
         assertThat(consumerCount.getStatusCode(), is(OK));
         assertThat(consumerCount.getBody(), is(1L));
     }
-    
+
     @Test
     public void checkBookingWithoutLoggedIn() {
         HttpHeaders headers = new HttpHeaders();
-        
+
         ResponseEntity<String> bookingInfoResponseEntity = restTemplate.exchange(
-                gatewayUrl + "/bookings/rest/api/bookings/bybookingnumber/{userid}/{number}",
-                GET,
-                new HttpEntity<String>(headers),
-                String.class,
-                booking.getCustomerId(),
-                booking.getBookingId()
+            gatewayUrl + "/bookings/rest/api/bookings/bybookingnumber/{userid}/{number}",
+            GET,
+            new HttpEntity<String>(headers),
+            String.class,
+            booking.getCustomerId(),
+            booking.getBookingId()
         );
         // Just make sure we need to login first
         assertThat(bookingInfoResponseEntity.getStatusCode(), is(FORBIDDEN));
@@ -144,12 +143,12 @@ public class AcmeAirApplicationIntegrationBase {
         HttpHeaders headers = headerWithCookieOfLoginSession();
 
         ResponseEntity<BookingInfo> bookingInfoResponseEntity = restTemplate.exchange(
-                gatewayUrl + "/bookings/rest/api/bookings/bybookingnumber/{userid}/{number}",
-                GET,
-                new HttpEntity<String>(headers),
-                BookingInfo.class,
-                booking.getCustomerId(),
-                booking.getBookingId()
+            gatewayUrl + "/bookings/rest/api/bookings/bybookingnumber/{userid}/{number}",
+            GET,
+            new HttpEntity<String>(headers),
+            BookingInfo.class,
+            booking.getCustomerId(),
+            booking.getBookingId()
         );
 
         assertThat(bookingInfoResponseEntity.getStatusCode(), is(OK));
@@ -175,10 +174,10 @@ public class AcmeAirApplicationIntegrationBase {
         map.add("oneWayFlight", String.valueOf(oneWay));
 
         ResponseEntity<BookingReceiptInfo> bookingInfoResponseEntity = restTemplate.exchange(
-                gatewayUrl + "/bookings/rest/api/bookings/bookflights",
-                POST,
-                new HttpEntity<>(map, headers),
-                BookingReceiptInfo.class
+            gatewayUrl + "/bookings/rest/api/bookings/bookflights",
+            POST,
+            new HttpEntity<>(map, headers),
+            BookingReceiptInfo.class
         );
 
         assertThat(bookingInfoResponseEntity.getStatusCode(), is(OK));
@@ -192,9 +191,9 @@ public class AcmeAirApplicationIntegrationBase {
 
     private HttpHeaders headerWithCookieOfLoginSession() {
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(
-                gatewayUrl + "/customers/rest/api/login",
-                loginRequest(customerId, password),
-                String.class
+            gatewayUrl + "/customers/rest/api/login",
+            loginRequest(customerId, password),
+            String.class
         );
 
         assertThat(responseEntity.getStatusCode(), is(OK));

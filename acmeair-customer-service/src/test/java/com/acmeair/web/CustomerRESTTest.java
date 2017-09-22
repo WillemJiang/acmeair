@@ -32,7 +32,7 @@ import static org.springframework.http.HttpHeaders.COOKIE;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles({"test", "dev"})
+@ActiveProfiles({"test", "dev", "SpringCloud"})
 @Import({CustomerValidationRuleConfig.class, CustomerServiceApp.class})
 public class CustomerRESTTest {
 

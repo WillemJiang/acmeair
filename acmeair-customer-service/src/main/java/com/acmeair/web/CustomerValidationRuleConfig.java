@@ -6,13 +6,13 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 public class CustomerValidationRuleConfig {
-    @Profile("!cse")
+    @Profile("SpringCloud")
     @Bean
     CustomerValidationRule customerValidationRule() {
         return new CustomerValidationRuleImpl();
     }
 
-    @Profile("cse")
+    @Profile("!SpringCloud")
     @Bean
     CustomerValidationRule alwaysPassCustomerValidationRule() {
         return CustomerValidationRule.alwaysPassValidationRule;

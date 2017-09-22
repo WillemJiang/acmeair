@@ -24,6 +24,7 @@
                                 <goal>repackage</goal>
                             </goals>
                             <configuration>
+                                <finalName>${myFinalName}</finalName>
                                 <outputDirectory>${project.build.directory}/acmeair</outputDirectory>
                                 <classifier>exec</classifier>
                             </configuration>
@@ -41,16 +42,14 @@
                                 <build>
                                     <from>openjdk:8-jre-alpine</from>
                                     <ports>
-                                        <port>7072</port>
                                         <port>8082</port>
-                                        <port>9092</port>
                                     </ports>
                                     <assembly>
                                         <mode>tar</mode>
                                         <descriptor>${root.basedir}/assembly/docker_assembly.xml</descriptor>
                                     </assembly>
                                     <entryPoint>
-                                        <shell>java $JAVA_OPTS -jar /maven/acmeair/$JAR_NAME-${project.version}-exec.jar</shell>
+                                        <shell>java $JAVA_OPTS -jar /maven/acmeair/$JAR_NAME-exec.jar</shell>
                                     </entryPoint>
                                 </build>
                             </image>

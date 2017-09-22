@@ -8,6 +8,11 @@
 		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 
+	<properties>
+		<myFinalName>acmeair-booking-service</myFinalName>
+		<service.name>booking</service.name>
+	</properties>
+
 	<artifactId>acmeair-booking-service</artifactId>
 	<version>2.0.0-SNAPSHOT</version>
 
@@ -70,6 +75,20 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>acmeair</groupId>
@@ -172,6 +191,17 @@
 					<plugin>
 						<groupId>org.commonjava.maven.plugins</groupId>
 						<artifactId>directory-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>HuaweiCloud</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.8</version>
 					</plugin>
 				</plugins>
 			</build>

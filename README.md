@@ -26,7 +26,7 @@ Source:
   * We use [ServiceCenter](https://github.com/ServiceComb/service-center) as service discovery registry. 
   * We use [MongoDB](https://www.mongodb.com/) as Data Service (it is optional.)
    
-* Instructions for build the code base
+* Instructions to build the code base
 
   You can build the code by using maven from the root without running the test
         
@@ -50,7 +50,7 @@ Source:
   Acmeair Application also need to use the Service Registry [servcie-center](https://github.com/ServiceComb/service-center) to find out the services which it dependents. 
   acmeair-booking-service and acmeair-customer-service can use the outside mongoDB service or use the in memory DB by using active profile.
     
-  Here are the dependencies of these service:
+  Here are the dependencies of these services:
   
       acmeair-webapp -----> acmeair-booking-service (DB)  -----+
            |        |               |                          |
@@ -64,11 +64,11 @@ Source:
   
 * Running Application with docker-compose
     
-      docker-compose up
+      cd docker-compose/service-comb; docker-compose up
 
 * Running Application with docker-compose and pre-loaded customers/flights data
     
-      docker-compose -f docker-compose.yml -f docker-compose.perf.yml up
+      cd docker-compose/service-comb; docker-compose -f docker-compose.yml -f docker-compose.perf.yml up
   
 * Running Application with java command
   
@@ -76,33 +76,37 @@ Source:
   
       docker run -d -p 30100:30100 servicecomb/service-center
       
-  2.Running MongoDb With docker (optional)
+  2.Running MongoDB With docker (optional)
      
       docker run -p 27017:27017 mongo
       
   3.Starting acmeair-customer-service 
      
       #Running the customer service with in memory DB
-      java -Dspring.profiles.active=jpa -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
+      java -Dspring.profiles.active=jpa -Dcse.rest.address=0.0.0.0:8082 -Dcse.service.registry.address=http://localhost:30100 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
         
       #Running the customer service with mongoDB service
-      java -Dspring.profiles.active=mongodb -Dserver.port=8082 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
+      java -Dspring.profiles.active=mongodb -Dcse.rest.address=0.0.0.0:8082 -Dspring.data.mongodb.host=localhost -Dcse.service.registry.address=http://localhost:30100 -jar acmeair-customer-service/target/acmeair/acmeair-customer-service-exec.jar
                    
   4.Starting acmeair-booking-service 
    
       #Running the booking service with in memory DB
-      java -Dspring.profiles.active=jpa -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
+      java -Dspring.profiles.active=jpa -Dcse.rest.address=0.0.0.0:8081 -Dcse.service.registry.address=http://localhost:30100 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
         
       # Running the booking service with mongoDB service
-      java -Dspring.profiles.active=mongodb -Dserver.port=8081 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
+      java -Dspring.profiles.active=mongodb -Dcse.rest.address=0.0.0.0:8081 -Dspring.data.mongodb.host=localhost -Dcse.service.registry.address=http://localhost:30100 -jar acmeair-booking-service/target/acmeair/acmeair-booking-service-exec.jar
                 
   5.Starting acmeair-webapp
       
-      java -Dserver.port=8080 -jar acmeair-webapp/target/acmeair/acmeair-webapp-exec.jar
+      java -Dcse.rest.address=0.0.0.0:8080 -Dspring.profiles.active=sc -Dcse.service.registry.address=http://localhost:30100 -jar acmeair-webapp/target/acmeair/acmeair-webapp-exec.jar
        
   6.Access the acmeair-webapp from browser with below address
   
       http://localhost:8080/index.html
+
+* Running AcmeAir on bare metal kubernetes cluster
+  
+  Reference to [Run Acmeair on Kubernetes](kubernetes/README.md)
 
 * Running AcmeAir on [Google Compute Engine](https://cloud.google.com/compute/)
   
@@ -110,3 +114,26 @@ Source:
       
       sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
       export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/
+
+* Auto deploy on [Huawei Cloud][huawei_cloud]  
+  To auto compile, build, deploy and run this demo on Huawei Cloud's [Service Stage Platform][service_stage], you need the following steps:
+
+  1.A registered [Service Stage][service_stage] account.  
+  2.Auto build and publish your docker image to Huawei's Image Warehouse, details can refer to [auto publish guide][publish_guide].  
+  3.Auto deploy using Huawei Cloud's orchestration feature, details can refer to [orchestration guide][orchestration_guide].   
+
+[huawei_cloud]: http://www.hwclouds.com
+[publish_guide]: docs/how-to-auto-publish-images-to-huawei-cloud.md
+[orchestration_guide]: docs/how-to-auto-deploy-on-huawei-cloud.md
+
+* 在华为云上自动部署  
+
+  本章节介绍基于华为微服务云应用平台[Service Stage ][service_stage]，实现自动编译、构建、部署和运行的步骤。
+
+  1.一个已注册的[Service Stage][service_stage]帐号。  
+  2.自动编译、构建和发布Docker镜像到华为的镜像仓库，详情可见[自动发布指南][publish_guide_cn] 。  
+  3.使用华为云的编排功能自动部署微服务，详情可见[自动部署指南][orchestration_guide_cn] 。  
+
+[service_stage]: https://servicestage.hwclouds.com/servicestage
+[publish_guide_cn]: docs/how-to-auto-publish-images-to-huawei-cloud-cn.md
+[orchestration_guide_cn]: docs/how-to-auto-deploy-on-huawei-cloud-cn.md

@@ -12,7 +12,11 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>acmeair-webapp</artifactId>
     <version>2.0.0-SNAPSHOT</version>
-    
+
+    <properties>
+        <myFinalName>acmeair-webapp</myFinalName>
+        <service.name>webapp</service.name>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -42,6 +46,14 @@
             <artifactId>acmeair-services</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.servicecomb</groupId>
+            <artifactId>spring-boot-starter-provider</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.servicecomb</groupId>
+            <artifactId>spring-boot-starter-discovery</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-hystrix</artifactId>
         </dependency>
@@ -65,10 +77,18 @@
             <artifactId>spring-boot-starter</artifactId>
             <exclusions>
                 <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-web</artifactId>
         </dependency>
         <dependency>
             <groupId>acmeair</groupId>
@@ -180,6 +200,18 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>HuaweiCloud</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
     </profiles>
 
 </project>

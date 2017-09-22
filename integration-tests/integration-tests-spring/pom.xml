@@ -122,7 +122,7 @@
                                     <alias>gateway</alias>
                                     <run>
                                         <env>
-                                            <JAVA_OPTS>-Dspring.profiles.active=consul -Dserver.port=8080</JAVA_OPTS>
+                                            <JAVA_OPTS>-Dspring.profiles.active=consul,SpringCloud -Dserver.port=8080</JAVA_OPTS>
                                             <JAR_NAME>acmeair-webapp</JAR_NAME>
                                         </env>
                                         <links>

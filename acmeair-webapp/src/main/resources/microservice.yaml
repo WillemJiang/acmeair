@@ -1,0 +1,15 @@
+APPLICATION_ID: acmeair
+service_description:
+  name: gateway
+  version: 0.0.1
+cse:
+  service:
+    registry:
+      address: http://127.0.0.1:30100
+  isolation:
+    bookingServiceApp:
+      timeoutInMilliseconds: 30000
+    customerServiceApp:
+      timeoutInMilliseconds: 30000
+    validateCustomerSession:
+      timeoutInMilliseconds: 30000
