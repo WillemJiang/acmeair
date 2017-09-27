@@ -13,3 +13,5 @@ cse:
       timeoutInMilliseconds: 30000
     validateCustomerSession:
       timeoutInMilliseconds: 30000
+    seckillServiceApp:
+      timeoutInMilliseconds: 30000
