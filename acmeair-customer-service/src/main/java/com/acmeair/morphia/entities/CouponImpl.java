@@ -73,6 +73,9 @@ public class CouponImpl implements Coupon, Serializable {
         isUsed = used;
     }
 
+    public CouponImpl(){
+    }
+
     public CouponImpl(int id, String promotionId, Date time, float discount, String customerId, boolean isUsed) {
         this.id = id;
         this.promotionId = promotionId;
