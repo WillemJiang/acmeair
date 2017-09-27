@@ -2,6 +2,7 @@ package com.acmeair.web;
 
 import com.acmeair.config.AcmeAirConfiguration;
 import com.acmeair.config.LoaderREST;
+import com.acmeair.problems.ProblemInjectFilter;
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.jaxrs.listing.ApiListingResource;
 import io.swagger.jaxrs.listing.SwaggerSerializers;
@@ -29,6 +30,7 @@ public class AcmeAirApp extends ResourceConfig {
     @PostConstruct
     public void init() {
         // The init method is called
+        register(ProblemInjectFilter.class);
         configureSwagger();
     }
 
