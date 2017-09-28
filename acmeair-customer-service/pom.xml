@@ -152,6 +152,10 @@
 			<artifactId>pact-jvm-model_2.11</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>acmeair</groupId>
+			<artifactId>acmeair-common</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

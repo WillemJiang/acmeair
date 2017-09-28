@@ -13,6 +13,13 @@
     <version>2.0.0-SNAPSHOT</version>
 
     <dependencies>
+        <!-- add the dependency of jaxrs api for inject the message -->
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.0.1</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
