@@ -2,13 +2,12 @@ package com.acmeair.hystrix;
 
 import com.acmeair.service.SeckillService;
 import com.acmeair.web.dto.CouponInfo;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
@@ -16,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 abstract class SeckillCommand implements SeckillService {
 
@@ -44,14 +42,10 @@ abstract class SeckillCommand implements SeckillService {
     public List<CouponInfo> getCoupons(String username) {
         String address = getSeckillServiceAddress();
         log.info("Sending GET request to remote coupon at {} with username {}", address, username);
-        ResponseEntity<Object> resp = restTemplate.getForEntity(address + "/query/coupons/{customerId}", Object.class, username);
-        if (resp.getStatusCode() != HttpStatus.OK) {
-            throw new NoSuchElementException("No such customer with id " + username);
-        }
-
+        List<CouponInfo> resp = restTemplate.getForObject(address + "/query/coupons/{customerId}", List.class, username);
         ObjectMapper json = new ObjectMapper();
         List<CouponInfo> results = new ArrayList<>();
-        for (Object coupon : (ArrayList<Object>) resp.getBody()) {
+        for (Object coupon : resp) {
             try {
                 results.add(json.readValue(json.writeValueAsString(coupon), CouponInfo.class));
             } catch (Exception e) {

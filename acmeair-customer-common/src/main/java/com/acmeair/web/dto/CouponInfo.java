@@ -1,29 +1,17 @@
 package com.acmeair.web.dto;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Date;
 
-@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
-@XmlRootElement(name = "Coupon")
 public class CouponInfo implements Serializable {
     private static final long serialVersionUID = 1L;
-    @XmlElement(name = "id")
     private int id;
-    @XmlElement(name = "promotionId")
     private String promotionId;
-    @XmlElement(name = "time")
     private Date time;
-    @XmlElement(name = "discount")
     private float discount;
-    @XmlElement(name = "customerId")
     private String customerId;
 
     public CouponInfo() {
-
     }
 
     public static long getSerialVersionUID() {
