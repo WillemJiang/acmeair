@@ -4,57 +4,62 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class CouponInfo implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private int id;
-    private String promotionId;
-    private Date time;
-    private float discount;
-    private String customerId;
+  private static final long serialVersionUID = 1L;
 
-    public CouponInfo() {
-    }
+  private int id;
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+  private String promotionId;
 
-    public int getId() {
-        return id;
-    }
+  private Date time;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  private float discount;
 
-    public String getPromotionId() {
-        return promotionId;
-    }
+  private String customerId;
 
-    public void setPromotionId(String promotionId) {
-        this.promotionId = promotionId;
-    }
+  public CouponInfo() {
+  }
 
-    public Date getTime() {
-        return time;
-    }
+  public static long getSerialVersionUID() {
+    return serialVersionUID;
+  }
 
-    public void setTime(Date time) {
-        this.time = time;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public float getDiscount() {
-        return discount;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public void setDiscount(float discount) {
-        this.discount = discount;
-    }
+  public String getPromotionId() {
+    return promotionId;
+  }
 
-    public String getCustomerId() {
-        return customerId;
-    }
+  public void setPromotionId(String promotionId) {
+    this.promotionId = promotionId;
+  }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
+  public Date getTime() {
+    return time;
+  }
+
+  public void setTime(Date time) {
+    this.time = time;
+  }
+
+  public float getDiscount() {
+    return discount;
+  }
+
+  public void setDiscount(float discount) {
+    this.discount = discount;
+  }
+
+  public String getCustomerId() {
+    return customerId;
+  }
+
+  public void setCustomerId(String customerId) {
+    this.customerId = customerId;
+  }
 }

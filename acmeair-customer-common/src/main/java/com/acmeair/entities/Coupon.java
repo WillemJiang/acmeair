@@ -4,27 +4,27 @@ import java.util.Date;
 
 public interface Coupon {
 
-    int getId();
+  int getId();
 
-    void setId(int id);
+  void setId(int id);
 
-    String getPromotionId();
+  String getPromotionId();
 
-    void setPromotionId(String promotionId);
+  void setPromotionId(String promotionId);
 
-    Date getTime();
+  Date getTime();
 
-    void setTime(Date time);
+  void setTime(Date time);
 
-    float getDiscount();
+  float getDiscount();
 
-    void setDiscount(float discount);
+  void setDiscount(float discount);
 
-    String getCustomerId();
+  String getCustomerId();
 
-    void setCustomerId(String customerId);
+  void setCustomerId(String customerId);
 
-    boolean isUsed();
+  boolean isUsed();
 
-    void setUsed(boolean used);
+  void setUsed(boolean used);
 }

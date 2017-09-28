@@ -1,87 +1,93 @@
 package com.acmeair.morphia.entities;
 
-import com.acmeair.entities.Coupon;
-import org.springframework.data.mongodb.core.mapping.Document;
+import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.io.Serializable;
-import java.util.Date;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.acmeair.entities.Coupon;
 
 @Document(collection = "coupon")
 @Entity(name = "coupon")
 public class CouponImpl implements Coupon, Serializable {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "id")
-    private int id;
-    private String promotionId;
-    private Date time;
-    private float discount;
-    private String customerId;
+  @Id
+  @Column(name = "id")
+  private int id;
 
-    private boolean isUsed;
+  private String promotionId;
 
-    public int getId() {
-        return id;
-    }
+  private Date time;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  private float discount;
 
-    public String getPromotionId() {
-        return promotionId;
-    }
+  private String customerId;
 
-    public void setPromotionId(String promotionId) {
-        this.promotionId = promotionId;
-    }
+  private boolean isUsed;
 
-    public Date getTime() {
-        return time;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public void setTime(Date time) {
-        this.time = time;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public float getDiscount() {
-        return discount;
-    }
+  public String getPromotionId() {
+    return promotionId;
+  }
 
-    public void setDiscount(float discount) {
-        this.discount = discount;
-    }
+  public void setPromotionId(String promotionId) {
+    this.promotionId = promotionId;
+  }
 
-    public String getCustomerId() {
-        return customerId;
-    }
+  public Date getTime() {
+    return time;
+  }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
+  public void setTime(Date time) {
+    this.time = time;
+  }
 
-    public boolean isUsed() {
-        return isUsed;
-    }
+  public float getDiscount() {
+    return discount;
+  }
 
-    public void setUsed(boolean used) {
-        isUsed = used;
-    }
+  public void setDiscount(float discount) {
+    this.discount = discount;
+  }
 
-    public CouponImpl(){
-    }
+  public String getCustomerId() {
+    return customerId;
+  }
 
-    public CouponImpl(int id, String promotionId, Date time, float discount, String customerId, boolean isUsed) {
-        this.id = id;
-        this.promotionId = promotionId;
-        this.time = time;
-        this.discount = discount;
-        this.customerId = customerId;
-        this.isUsed = isUsed;
-    }
+  public void setCustomerId(String customerId) {
+    this.customerId = customerId;
+  }
+
+  public boolean isUsed() {
+    return isUsed;
+  }
+
+  public void setUsed(boolean used) {
+    isUsed = used;
+  }
+
+  public CouponImpl() {
+  }
+
+  public CouponImpl(int id, String promotionId, Date time, float discount, String customerId, boolean isUsed) {
+    this.id = id;
+    this.promotionId = promotionId;
+    this.time = time;
+    this.discount = discount;
+    this.customerId = customerId;
+    this.isUsed = isUsed;
+  }
 }

@@ -11,18 +11,18 @@ import org.springframework.web.client.RestTemplate;
 @Service
 @Profile("SpringCloud")
 public class SpringCloudSeckillCommand extends SeckillCommand {
-    private static final Logger logger = LoggerFactory.getLogger(SpringCloudSeckillCommand.class);
+  private static final Logger logger = LoggerFactory.getLogger(SpringCloudSeckillCommand.class);
 
-    @Autowired
-    private LoadBalancerClient loadBalancer;
+  @Autowired
+  private LoadBalancerClient loadBalancer;
 
-    SpringCloudSeckillCommand() {
-        super(new RestTemplate());
-    }
+  SpringCloudSeckillCommand() {
+    super(new RestTemplate());
+  }
 
-    protected String getSeckillServiceAddress() {
-        String address = loadBalancer.choose(seckillServiceName).getUri().toString();
-        logger.info("Just get the address {} from LoadBalancer.", address);
-        return address + "/rest";
-    }
+  protected String getSeckillServiceAddress() {
+    String address = loadBalancer.choose(seckillServiceName).getUri().toString();
+    logger.info("Just get the address {} from LoadBalancer.", address);
+    return address + "/rest";
+  }
 }
