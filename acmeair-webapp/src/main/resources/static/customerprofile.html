@@ -70,7 +70,7 @@
             });
 
             dojo.xhrGet({
-                url: 'seckill/rest/query/coupons/' + userid,
+                url: "customers/rest/api/coupon/" + userid,
                 handleAs: "json",
                 load: function (response, ioArgs) {
                     var couponData = {items: response};
