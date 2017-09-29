@@ -13,7 +13,7 @@ cse:
       Consumer:
         default: loadbalance
 
-  references:
-    customerServiceApp:
-      version-rule: 0.0.1
-      transport: rest
+#  references:
+#    customerServiceApp:
+#      version-rule: 0.0.1
+#      transport: rest

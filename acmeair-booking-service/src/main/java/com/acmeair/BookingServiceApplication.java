@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @SpringBootApplication
-public class AcmeAirApplication {
+public class BookingServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AcmeAirApplication.class, args);
+        SpringApplication.run(BookingServiceApplication.class, args);
     }
     
     @Configuration

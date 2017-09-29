@@ -7,7 +7,7 @@ import org.springframework.test.context.ActiveProfiles;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(
-        classes = AcmeAirApplication.class,
+        classes = BookingServiceApplication.class,
         webEnvironment = RANDOM_PORT,
         properties = {
                 "flights.max.per.segment=3",

@@ -17,6 +17,8 @@
 package com.acmeair.morphia.services;
 
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,29 +32,34 @@ import com.acmeair.web.dto.CouponInfo;
 @Service
 public class CouponServiceImpl implements CouponService {
 
-  @Autowired
-  private CouponRepository couponRepository;
+
+  private final CouponRepository couponRepository;
+
+  private final SeckillService seckillService;
 
   @Autowired
-  private SeckillService seckillService;
+  public CouponServiceImpl(CouponRepository couponRepository, SeckillService seckillService) {
+    this.couponRepository = couponRepository;
+    this.seckillService = seckillService;
 
-  @Override
-  public void syncCoupons(String username) {
-    CouponImpl latestCoupon = couponRepository.findTopByCustomerIdOrderByIdDesc(username);
-    int latestCouponId = latestCoupon == null ? 0 : latestCoupon.getId();
-    List<CouponInfo> seckillCoupons = seckillService.getCoupons(username);
-    for (CouponInfo coupon : seckillCoupons) {
-      if (coupon.getId() > latestCouponId) {
-        //couponRepository.save((CouponImpl) coupon);
-        couponRepository.save(new CouponImpl(
-            coupon.getId(),
-            coupon.getPromotionId(),
-            coupon.getTime(),
-            coupon.getDiscount(),
-            coupon.getCustomerId(),
-            false));
+    final Runnable executor = () -> {
+      CouponImpl latestCoupon = this.couponRepository.findTopByOrderByIdDesc();
+      int latestId = latestCoupon == null ? 0 : latestCoupon.getId();
+      List<CouponInfo> seckillCoupons = this.seckillService.syncCoupons(latestId);
+      for (CouponInfo coupon : seckillCoupons) {
+        if (coupon.getId() > latestId) {
+          couponRepository.save(new CouponImpl(
+              coupon.getId(),
+              coupon.getPromotionId(),
+              coupon.getTime(),
+              coupon.getDiscount(),
+              coupon.getCustomerId(),
+              false));
+        }
       }
-    }
+    };
+
+    Executors.newScheduledThreadPool(1).scheduleWithFixedDelay(executor, 5000, 1000, TimeUnit.MILLISECONDS);
   }
 
   @Override
