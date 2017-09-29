@@ -3,6 +3,7 @@ package com.acmeair.web;
 
 import com.acmeair.config.CustomerConfiguration;
 import com.acmeair.loader.CustomerLoaderREST;
+import com.acmeair.problems.ProblemInjectFilter;
 import io.servicecomb.swagger.invocation.exception.InvocationException;
 import io.swagger.jaxrs.config.BeanConfig;
 import io.swagger.jaxrs.listing.ApiListingResource;
@@ -27,6 +28,8 @@ public class CustomerServiceApp extends ResourceConfig {
     @PostConstruct
     @Profile("!SpringCloud")
     public void init() {
+        // Add the problem inject
+        register(ProblemInjectFilter.class);
         // The init method is called
         configureSwagger();
     }
@@ -34,6 +37,8 @@ public class CustomerServiceApp extends ResourceConfig {
     @PostConstruct
     @Profile("SpringCloud")
     public void initWithSpringCloud() {
+        // Add the problem inject
+        register(ProblemInjectFilter.class);
         register(CustomerExceptionHandler.class);
         register(LoginResponseFilter.class);
 
