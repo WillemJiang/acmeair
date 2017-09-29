@@ -160,6 +160,10 @@
 			<groupId>acmeair</groupId>
 			<artifactId>acmeair-common</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>acmeair</groupId>
+      <artifactId>acmeair-services</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
