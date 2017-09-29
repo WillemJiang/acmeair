@@ -71,13 +71,14 @@ abstract class SeckillCommand implements SeckillService {
           try {
             results.add(json.readValue(json.writeValueAsString(coupon), CouponInfo.class));
           } catch (Exception e) {
-            e.printStackTrace();
+            log.error("parse coupon error", e);
           }
         }
         return results;
       }
       return new ArrayList<>();
-    } catch (Exception ex) {
+    } catch (Exception e) {
+      log.error("sync call error", e);
       return new ArrayList<>();
     }
   }

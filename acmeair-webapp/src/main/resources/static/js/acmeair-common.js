@@ -48,16 +48,6 @@ function updateLoggedInUserWelcome() {
 	}
 }
 
-//change backend auto sync
-// function syncCoupon(customerId) {
-// 	  dojo.xhrGet({
-// 		    url: 'customers/rest/api/coupon/sync/'.concat(customerId),
-// 		    error: function(response, ioArgs) {
-// 			      alert('failed to sync coupon: ' + response);
-// 		    }
-// 	  });
-// }
-
 function login() {
 	hideLoginDialog();
 	showLoginWaitDialog();
@@ -77,8 +67,6 @@ function login() {
 				return;
 			}
 			dojo.cookie("loggedinuser", userString, {expires: 5});
-			  //change backend auto sync
-        //syncCoupon(userString);
 			updateLoggedInUserWelcome();
 		},
 		error: function(response, ioArgs) {
