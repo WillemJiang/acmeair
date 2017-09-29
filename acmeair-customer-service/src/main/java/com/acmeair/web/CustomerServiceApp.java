@@ -21,10 +21,10 @@ import javax.ws.rs.ext.Provider;
 
 @Configuration
 public class CustomerServiceApp extends ResourceConfig {
-    
+
     @Value("${spring.jersey.application-path:/}")
     private String apiPath;
-    
+
     @PostConstruct
     @Profile("!SpringCloud")
     public void init() {
@@ -45,25 +45,25 @@ public class CustomerServiceApp extends ResourceConfig {
         // The init method is called
         configureSwagger();
     }
-    
+
     private void configureSwagger() {
         register(ApiListingResource.class);
         register(SwaggerSerializers.class);
-        
+
         // Just setup the configuration of the swagger API
         BeanConfig config = new BeanConfig();
         config.setConfigId("AcmeAire-CustomerService");
         config.setTitle("AcmeAire + CustomerService ");
         config.setVersion("v1");
-        config.setSchemes(new String[] {"http"});
+        config.setSchemes(new String[]{"http"});
         config.setBasePath(apiPath);
         config.setResourcePackage("com.acmeair");
         config.setPrettyPrint(true);
         config.setScan(true);
     }
-    
+
     public CustomerServiceApp() {
-        registerClasses(CustomerREST.class, LoginREST.class, CustomerConfiguration.class, CustomerLoaderREST.class);
+        registerClasses(CustomerREST.class, LoginREST.class, CouponREST.class, CustomerConfiguration.class, CustomerLoaderREST.class);
     }
 
     @Provider
