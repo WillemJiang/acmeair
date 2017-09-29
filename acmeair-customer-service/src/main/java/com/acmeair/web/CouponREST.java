@@ -56,21 +56,6 @@ public class CouponREST {
   }
 
   @GET
-  @Path("/sync/{customername}")
-  @Produces(MediaType.APPLICATION_JSON)
-  @ApiOperation(value = "sync coupon from seckill.", notes = "sync coupon from seckill.", produces = MediaType.APPLICATION_JSON)
-  @ApiResponses(value = {@ApiResponse(code = 403, message = "Invalid user information"),
-      @ApiResponse(code = 500, message = "CustomerService Internal Server Error")})
-  public void sync(@ApiParam(value = "customer name", required = true) @PathParam("customername") String customername) {
-    try {
-      couponService.syncCoupons(customername);
-    } catch (Exception e) {
-      logger.warn("Failed sync", e);
-      throw new InvocationException(Response.Status.INTERNAL_SERVER_ERROR, "Internal Server Error");
-    }
-  }
-
-  @GET
   @Path("/{customername}")
   @Produces(MediaType.APPLICATION_JSON)
   @ApiOperation(value = "query all available coupon.", notes = "query all available coupon.", produces = MediaType.APPLICATION_JSON)

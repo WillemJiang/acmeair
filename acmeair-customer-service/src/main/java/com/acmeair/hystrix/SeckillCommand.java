@@ -56,21 +56,31 @@ abstract class SeckillCommand implements SeckillService {
   }
 
   @HystrixCommand
-  public List<CouponInfo> getCoupons(String username) {
-    String address = getSeckillServiceAddress();
-    log.info("Sending GET request to remote coupon at {} with username {}", address, username);
-    List<CouponInfo> resp = restTemplate.getForObject(address + "/query/coupons/{customerId}", List.class, username);
-    ObjectMapper json = new ObjectMapper();
-    List<CouponInfo> results = new ArrayList<>();
-    for (Object coupon : resp) {
-      try {
-        results.add(json.readValue(json.writeValueAsString(coupon), CouponInfo.class));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
+  public List<CouponInfo> syncCoupons(int latestId) {
+    try {
+      String address = getSeckillServiceAddress();
+      log.info("Sending GET request to remote coupon at {} with latestId {}", address, latestId);
+      List<CouponInfo> resp = restTemplate.getForObject(address + "/sync/{latestId}",
+          List.class, String.valueOf(latestId));
 
-    return results;
+      if (!resp.isEmpty()) {
+        //TODO : JAV420 serialiaztion unmatch , output is cse.gen
+        ObjectMapper json = new ObjectMapper();
+        List<CouponInfo> results = new ArrayList<>();
+        for (Object coupon : resp) {
+          try {
+            results.add(json.readValue(json.writeValueAsString(coupon), CouponInfo.class));
+          } catch (Exception e) {
+            log.error("parse coupon error", e);
+          }
+        }
+        return results;
+      }
+      return new ArrayList<>();
+    } catch (Exception e) {
+      log.error("sync call error", e);
+      return new ArrayList<>();
+    }
   }
 
   protected abstract String getSeckillServiceAddress();
