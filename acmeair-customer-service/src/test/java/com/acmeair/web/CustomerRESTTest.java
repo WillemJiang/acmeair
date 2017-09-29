@@ -4,6 +4,7 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import com.acmeair.entities.Customer;
 import com.acmeair.morphia.entities.CustomerImpl;
+import com.acmeair.service.CouponService;
 import com.acmeair.service.CustomerService;
 import com.acmeair.web.dto.CustomerInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,6 +39,9 @@ public class CustomerRESTTest {
 
     @MockBean
     private CustomerService customerService;
+
+    @MockBean
+    private CouponService couponService;
 
     @Autowired
     private TestRestTemplate restTemplate;
