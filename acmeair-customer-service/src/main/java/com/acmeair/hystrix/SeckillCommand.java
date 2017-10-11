@@ -38,7 +38,7 @@ abstract class SeckillCommand implements SeckillService {
 
   private final RestTemplate restTemplate;
 
-  @Value("${customer.service.name:seckillServiceApp}")
+  @Value("${customer.service.name:seckillQueryService}")
   String seckillServiceName;
 
   SeckillCommand(RestTemplate restTemplate) {

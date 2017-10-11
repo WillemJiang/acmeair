@@ -31,6 +31,6 @@ public class CseSeckillCommand extends SeckillCommand {
 
   @Override
   protected String getSeckillServiceAddress() {
-    return "cse://" + seckillServiceName;
+    return "cse://seckill:" + seckillServiceName;
   }
 }
