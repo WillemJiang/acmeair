@@ -81,16 +81,27 @@
                         document.getElementById('coupon').style.display = "none";
                         return true;
                     }
+                    theData.coupons.sort(function(a, b) {
+                        if (a.discount > b.discount) {
+                            return 1;
+                        } else if (a.discount < b.discount) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    });
                     var selectList = document.getElementById('couponSelection');
-                    for (var i = 0; i < selectList.length - 1; i++) {
-                        selectList.remove(i);
-                    }
+                    selectList.length = 0;
                     for (var i = 0; i < couponNumbers; i++) {
                         var option = document.createElement('option');
                         option.text = theData.coupons[i].discount * 10 + "折优惠券";
                         option.value = theData.coupons[i].id;
-                        selectList.insertBefore(option, selectList.firstChild);
+                        selectList.add(option);
                     }
+                    var option = document.createElement('option');
+                    option.text = "不使用优惠券";
+                    option.value = "noCoupon";
+                    selectList.add(option);
 
                     selectList.selectedIndex = 0;
                     document.getElementById('coupon').style.display = "block";
@@ -123,7 +134,29 @@
             });
         }
 
+        function bookFlightsCheck() {
+            if (returnIfNotLoggedIn()) {
+                return false;
+            }
+
+            if (selectedIndexForToFlights == -1) {
+                alert("please select an outbound flight");
+                return false;
+            }
+            var oneWayFlight = dijit.byId('oneWayCheck').checked;
+            if (!oneWayFlight) {
+                if (selectedIndexForRetFlights == -1) {
+                    alert("please select an return flight");
+                    return false;
+                }
+            }
+            return true;
+        }
+
         function showOrderDialog() {
+            if (!bookFlightsCheck()) {
+                return;
+            }
             queryCoupons();
             dijit.byId('orderDialog').show();
         }
@@ -340,16 +373,8 @@
         }
 
         function bookFlights() {
-            if (returnIfNotLoggedIn()) {
-                return
-            }
-
             var loggedinuser = dojo.cookie("loggedinuser");
 
-            if (selectedIndexForToFlights == -1) {
-                alert("please select an outbound flight");
-                return;
-            }
             var grid = dijit.byId("gridOutbound");
             var toFlightId = grid.store.getValue(grid.getItem(selectedIndexForToFlights), "_id");
             var toFlightSegId = grid.store.getValue(grid.getItem(selectedIndexForToFlights), "flightSegmentId");
@@ -358,10 +383,6 @@
             var retFlightSegId;
             var oneWayFlight = dijit.byId('oneWayCheck').checked;
             if (!oneWayFlight) {
-                if (selectedIndexForRetFlights == -1) {
-                    alert("please select an return flight");
-                    return;
-                }
                 var grid = dijit.byId("gridReturn");
                 retFlightId = grid.store.getValue(grid.getItem(selectedIndexForRetFlights), "_id");
                 retFlightSegId = grid.store.getValue(grid.getItem(selectedIndexForRetFlights), "flightSegmentId");
@@ -459,9 +480,7 @@
 </div>
 <div dojoType="dijit.Dialog" id="orderDialog" title="订单确认">
     <div id="coupon" style="display: none">
-        <select id="couponSelection">
-            <option value="noCoupon">不使用优惠券</option>
-        </select>
+        <select id="couponSelection"></select>
     </div><br/>
     <table width="256" border="0" cellspacing="0" cellpadding="0">
         <tr>
