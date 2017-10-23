@@ -38,8 +38,10 @@ abstract class SeckillCommand implements SeckillService {
 
   private final RestTemplate restTemplate;
 
-  @Value("${customer.service.name:seckillServiceApp}")
+  @Value("${customer.service.name:seckillQueryService}")
   String seckillServiceName;
+
+  private ObjectMapper mapper = new ObjectMapper();
 
   SeckillCommand(RestTemplate restTemplate) {
     this.restTemplate = restTemplate;
@@ -65,22 +67,20 @@ abstract class SeckillCommand implements SeckillService {
 
       if (!resp.isEmpty()) {
         //TODO : JAV420 serialiaztion unmatch , output is cse.gen
-        ObjectMapper json = new ObjectMapper();
         List<CouponInfo> results = new ArrayList<>();
         for (Object coupon : resp) {
           try {
-            results.add(json.readValue(json.writeValueAsString(coupon), CouponInfo.class));
+            results.add(mapper.readValue(mapper.writeValueAsString(coupon), CouponInfo.class));
           } catch (Exception e) {
             log.error("parse coupon error", e);
           }
         }
         return results;
       }
-      return new ArrayList<>();
     } catch (Exception e) {
       log.error("sync call error", e);
-      return new ArrayList<>();
     }
+    return new ArrayList<>();
   }
 
   protected abstract String getSeckillServiceAddress();
